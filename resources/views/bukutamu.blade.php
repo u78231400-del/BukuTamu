@@ -108,35 +108,6 @@
         <hr style="margin: 30px 0;">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="mb-0">Daftar Tamu:</h3>
-            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#exportModal">
-                Export Excel
-            </button>
-        </div>
-
-        <!-- Modal Export -->
-        <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="exportModalLabel">Export Data Tamu ke Excel</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p class="text-muted mb-3">Pilih jenis data yang ingin di-export:</p>
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('buku-tamu.export', ['filter' => 'semua']) }}" class="btn btn-outline-success">
-                                Semua Data
-                            </a>
-                            <a href="{{ route('buku-tamu.export', ['filter' => 'mingguan']) }}" class="btn btn-outline-primary">
-                                Minggu Ini
-                            </a>
-                            <a href="{{ route('buku-tamu.export', ['filter' => 'bulanan']) }}" class="btn btn-outline-warning">
-                                Bulan Ini
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         @forelse($tamus as $tamu)

@@ -1,0 +1,183 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+use App\Models\Tamu;
+use App\Exports\TamuExport;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
+class TamuController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+
+        $tamus = Tamu::when($search, function ($query, $search) {
+                        return $query->where('nama', 'like', "%{$search}%")
+                                     ->orWhere('kontak', 'like', "%{$search}%")
+                                     ->orWhere('instansi', 'like', "%{$search}%")
+                                     ->orWhere('pesan', 'like', "%{$search}%");
+                    })
+                    ->latest()
+                    ->paginate(3)
+                    ->withQueryString();
+
+        $totalTamu = Tamu::count();
+        $tamuHariIni = Tamu::whereDate('created_at', Carbon::today())->count();
+        $tamuBulanIni = Tamu::whereMonth('created_at', Carbon::now()->month)
+                            ->whereYear('created_at', Carbon::now()->year)
+                            ->count();
+
+        return view('bukutamu', compact('tamus', 'totalTamu', 'tamuHariIni', 'tamuBulanIni'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|min:3|max:100|regex:/^[a-zA-Z\s]+$/',
+            'kontak' => 'required|min:5|max:100',
+            'instansi' => 'required|min:2|max:100',
+            'pesan' => 'required|min:5|max:1000',
+        ], [
+            'nama.required' => 'Nama wajib diisi!',
+            'nama.min' => 'Nama minimal 3 huruf!',
+            'nama.max' => 'Nama maksimal 100 huruf!',
+            'nama.regex' => 'Nama hanya boleh huruf dan spasi!',
+            'kontak.required' => 'No tlp/Email wajib diisi!',
+            'kontak.min' => 'No tlp/Email minimal 5 karakter!',
+            'kontak.max' => 'No tlp/Email maksimal 100 karakter!',
+            'instansi.required' => 'Asal Instansi/Kota wajib diisi!',
+            'instansi.min' => 'Asal Instansi/Kota minimal 2 huruf!',
+            'instansi.max' => 'Asal Instansi/Kota maksimal 100 huruf!',
+            'pesan.required' => 'Pesan wajib diisi!',
+            'pesan.min' => 'Pesan minimal 5 karakter!',
+            'pesan.max' => 'Pesan maksimal 1000 karakter!',
+        ]);
+
+        Tamu::create($request->all());
+
+        return redirect('/bukutamu')->with('success', 'Pesan berhasil dikirim!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Tamu $tamu)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $tamu = Tamu::findOrFail($id);
+        return view('edit_tamu', compact('tamu'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|min:3|max:100|regex:/^[a-zA-Z\s]+$/',
+            'kontak' => 'required|min:5|max:100',
+            'instansi' => 'required|min:2|max:100',
+            'pesan' => 'required|min:5|max:1000',
+        ], [
+            'nama.required' => 'Nama wajib diisi!',
+            'nama.min' => 'Nama minimal 3 huruf!',
+            'nama.max' => 'Nama maksimal 100 huruf!',
+            'nama.regex' => 'Nama hanya boleh huruf dan spasi!',
+            'kontak.required' => 'No tlp/Email wajib diisi!',
+            'kontak.min' => 'No tlp/Email minimal 5 karakter!',
+            'kontak.max' => 'No tlp/Email maksimal 100 karakter!',
+            'instansi.required' => 'Asal Instansi/Kota wajib diisi!',
+            'instansi.min' => 'Asal Instansi/Kota minimal 2 huruf!',
+            'instansi.max' => 'Asal Instansi/Kota maksimal 100 huruf!',
+            'pesan.required' => 'Pesan wajib diisi!',
+            'pesan.min' => 'Pesan minimal 5 karakter!',
+            'pesan.max' => 'Pesan maksimal 1000 karakter!',
+        ]);
+
+        $tamu = Tamu::findOrFail($id);
+        $tamu->update($request->all());
+        return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+    DB::table('tamus')->where('id', $id)->delete();
+    return redirect('/bukutamu')->with('success', 'Data berhasil dihapus!');
+    }
+
+public function export(Request $request)
+{
+    $filter = $request->input('filter', 'semua');
+
+    $filename = match ($filter) {
+        'mingguan' => 'data-tamu-mingguan-' . Carbon::now()->format('Y-m-d') . '.xlsx',
+        'bulanan' => 'data-tamu-bulanan-' . Carbon::now()->format('F-Y') . '.xlsx',
+        default => 'data-tamu-semua-' . Carbon::now()->format('Y-m-d') . '.xlsx',
+    };
+
+    return Excel::download(new TamuExport($filter), $filename);
+}
+
+public function dashboard()
+{
+    $totalTamu = Tamu::count();
+    $tamuHariIni = Tamu::whereDate('created_at', Carbon::today())->count();
+    $tamuMingguIni = Tamu::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->count();
+    $tamuBulanIni = Tamu::whereMonth('created_at', Carbon::now()->month)
+                        ->whereYear('created_at', Carbon::now()->year)
+                        ->count();
+    
+    $hariTerakhir = [];
+    $labels7hari = [];
+    for ($i = 6; $i >= 0; $i--) {
+        $date = Carbon::now()->subDays($i);
+        $labels7hari[] = $date->format('d M');
+        $hariTerakhir[] = Tamu::whereDate('created_at', $date)->count();
+    }
+    
+    $tamuTerbaru = Tamu::latest()->take(5)->get();
+    
+    $dataPerBulan = [];
+    $labelsBulan = [];
+    for ($i = 1; $i <= 12; $i++) {
+        $labelsBulan[] = Carbon::create()->month($i)->format('M');
+        $dataPerBulan[] = Tamu::whereMonth('created_at', $i)
+                              ->whereYear('created_at', Carbon::now()->year)
+                              ->count();
+    }
+    
+    return view('dashboard', compact(
+        'totalTamu', 
+        'tamuHariIni', 
+        'tamuMingguIni', 
+        'tamuBulanIni',
+        'hariTerakhir',
+        'labels7hari',
+        'tamuTerbaru',
+        'dataPerBulan',
+        'labelsBulan'
+    ));
+}
+}

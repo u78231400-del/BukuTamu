@@ -65,20 +65,38 @@
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
 
-            <label>No Tlp/Email:</label>
-            <input type="text" name="kontak" placeholder="No telepon atau email..." value="{{ old('kontak') }}" required>
-            @error('kontak')
+            <label>Email (opsional):</label>
+            <input type="email" name="email" placeholder="email@example.com" value="{{ old('email') }}">
+            @error('email')
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
 
-            <label>Asal Instansi/Kota:</label>
+            <label>Nomor HP:</label>
+            <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
+            @error('nomor_hp')
+                <div class="text-danger small mb-2">{{ $message }}</div>
+            @enderror
+
+            <label>Instansi/Asal:</label>
             <input type="text" name="instansi" placeholder="Asal instansi atau kota..." value="{{ old('instansi') }}" required>
             @error('instansi')
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
 
-            <label>Pesan/Saran:</label>
-            <textarea name="pesan" rows="4" placeholder="Tulis pesan atau saran..." required>{{ old('pesan') }}</textarea>
+            <label>Keperluan:</label>
+            <input type="text" name="keperluan" placeholder="Keperluan kunjungan..." value="{{ old('keperluan') }}" required>
+            @error('keperluan')
+                <div class="text-danger small mb-2">{{ $message }}</div>
+            @enderror
+
+            <label>Tujuan Bertemu:</label>
+            <input type="text" name="tujuan" placeholder="Siapa yang ingin ditemui..." value="{{ old('tujuan') }}" required>
+            @error('tujuan')
+                <div class="text-danger small mb-2">{{ $message }}</div>
+            @enderror
+
+            <label>Pesan/Keterangan:</label>
+            <textarea name="pesan" rows="4" placeholder="Tulis pesan atau keterangan...">{{ old('pesan') }}</textarea>
             @error('pesan')
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
@@ -118,7 +136,13 @@
                             <b>{{ $tamu->nama }}</b>
                             <small style="color:gray;">{{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }} • {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}</small>
                         </div>
-                        <small class="text-muted">{{ $tamu->kontak }} • {{ $tamu->instansi }}</small>
+                        <small class="text-muted">
+                            {{ $tamu->nomor_hp }}
+                            @if($tamu->email) • {{ $tamu->email }} @endif
+                            • {{ $tamu->instansi }}
+                        </small>
+                        <br>
+                        <small class="text-muted">Keperluan: {{ $tamu->keperluan }} | Tujuan: {{ $tamu->tujuan }}</small>
                     </div>
                     <div class="btn-group btn-group-sm">
                         <a href="{{ route('buku-tamu.edit', $tamu->id) }}" class="btn btn-warning btn-sm py-0 px-2 me-1">Edit</a>
@@ -130,6 +154,7 @@
                     </div>
                 </div>
                 
+                @if($tamu->pesan)
                 <p class="mb-0">
                     {{ Str::limit($tamu->pesan, 150) }}
                     @if(strlen($tamu->pesan) > 150)
@@ -138,6 +163,7 @@
                         </a>
                     @endif
                 </p>
+                @endif
             </div>
 
             <!-- Modal Detail -->

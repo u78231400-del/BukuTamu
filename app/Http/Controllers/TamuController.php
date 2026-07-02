@@ -20,8 +20,11 @@ class TamuController extends Controller
 
         $tamus = Tamu::when($search, function ($query, $search) {
                         return $query->where('nama', 'like', "%{$search}%")
-                                     ->orWhere('kontak', 'like', "%{$search}%")
+                                     ->orWhere('email', 'like', "%{$search}%")
+                                     ->orWhere('nomor_hp', 'like', "%{$search}%")
                                      ->orWhere('instansi', 'like', "%{$search}%")
+                                     ->orWhere('keperluan', 'like', "%{$search}%")
+                                     ->orWhere('tujuan', 'like', "%{$search}%")
                                      ->orWhere('pesan', 'like', "%{$search}%");
                     })
                     ->latest()
@@ -52,22 +55,32 @@ class TamuController extends Controller
     {
         $request->validate([
             'nama' => 'required|min:3|max:100|regex:/^[a-zA-Z\s]+$/',
-            'kontak' => 'required|min:5|max:100',
+            'email' => 'nullable|email|max:100',
+            'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'instansi' => 'required|min:2|max:100',
-            'pesan' => 'required|min:5|max:1000',
+            'keperluan' => 'required|min:3|max:100',
+            'tujuan' => 'required|min:3|max:100',
+            'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
             'nama.min' => 'Nama minimal 3 huruf!',
             'nama.max' => 'Nama maksimal 100 huruf!',
             'nama.regex' => 'Nama hanya boleh huruf dan spasi!',
-            'kontak.required' => 'No tlp/Email wajib diisi!',
-            'kontak.min' => 'No tlp/Email minimal 5 karakter!',
-            'kontak.max' => 'No tlp/Email maksimal 100 karakter!',
+            'email.email' => 'Format email tidak valid!',
+            'email.max' => 'Email maksimal 100 karakter!',
+            'nomor_hp.required' => 'Nomor HP wajib diisi!',
+            'nomor_hp.min' => 'Nomor HP minimal 10 digit!',
+            'nomor_hp.max' => 'Nomor HP maksimal 15 digit!',
+            'nomor_hp.regex' => 'Nomor HP hanya boleh angka!',
             'instansi.required' => 'Asal Instansi/Kota wajib diisi!',
             'instansi.min' => 'Asal Instansi/Kota minimal 2 huruf!',
             'instansi.max' => 'Asal Instansi/Kota maksimal 100 huruf!',
-            'pesan.required' => 'Pesan wajib diisi!',
-            'pesan.min' => 'Pesan minimal 5 karakter!',
+            'keperluan.required' => 'Keperluan wajib diisi!',
+            'keperluan.min' => 'Keperluan minimal 3 karakter!',
+            'keperluan.max' => 'Keperluan maksimal 100 karakter!',
+            'tujuan.required' => 'Tujuan bertemu wajib diisi!',
+            'tujuan.min' => 'Tujuan bertemu minimal 3 karakter!',
+            'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
@@ -97,22 +110,32 @@ class TamuController extends Controller
     {
         $request->validate([
             'nama' => 'required|min:3|max:100|regex:/^[a-zA-Z\s]+$/',
-            'kontak' => 'required|min:5|max:100',
+            'email' => 'nullable|email|max:100',
+            'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'instansi' => 'required|min:2|max:100',
-            'pesan' => 'required|min:5|max:1000',
+            'keperluan' => 'required|min:3|max:100',
+            'tujuan' => 'required|min:3|max:100',
+            'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
             'nama.min' => 'Nama minimal 3 huruf!',
             'nama.max' => 'Nama maksimal 100 huruf!',
             'nama.regex' => 'Nama hanya boleh huruf dan spasi!',
-            'kontak.required' => 'No tlp/Email wajib diisi!',
-            'kontak.min' => 'No tlp/Email minimal 5 karakter!',
-            'kontak.max' => 'No tlp/Email maksimal 100 karakter!',
+            'email.email' => 'Format email tidak valid!',
+            'email.max' => 'Email maksimal 100 karakter!',
+            'nomor_hp.required' => 'Nomor HP wajib diisi!',
+            'nomor_hp.min' => 'Nomor HP minimal 10 digit!',
+            'nomor_hp.max' => 'Nomor HP maksimal 15 digit!',
+            'nomor_hp.regex' => 'Nomor HP hanya boleh angka!',
             'instansi.required' => 'Asal Instansi/Kota wajib diisi!',
             'instansi.min' => 'Asal Instansi/Kota minimal 2 huruf!',
             'instansi.max' => 'Asal Instansi/Kota maksimal 100 huruf!',
-            'pesan.required' => 'Pesan wajib diisi!',
-            'pesan.min' => 'Pesan minimal 5 karakter!',
+            'keperluan.required' => 'Keperluan wajib diisi!',
+            'keperluan.min' => 'Keperluan minimal 3 karakter!',
+            'keperluan.max' => 'Keperluan maksimal 100 karakter!',
+            'tujuan.required' => 'Tujuan bertemu wajib diisi!',
+            'tujuan.min' => 'Tujuan bertemu minimal 3 karakter!',
+            'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 

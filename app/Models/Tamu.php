@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tamu extends Model
 {
-    protected $fillable = ['nama', 'kontak', 'instansi', 'pesan'];
+    protected $fillable = [
+        'nama',
+        'email',
+        'nomor_hp',
+        'instansi',
+        'keperluan',
+        'tujuan',
+        'pesan',
+    ];
 }

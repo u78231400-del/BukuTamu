@@ -45,7 +45,7 @@ class TamuExport implements FromCollection, WithHeadings, WithMapping, WithStyle
 
     public function headings(): array
     {
-        return ['No', 'Nama', 'Kontak', 'Instansi', 'Pesan', 'Tanggal'];
+        return ['No', 'Nama', 'Email', 'Nomor HP', 'Instansi', 'Keperluan', 'Tujuan', 'Pesan', 'Tanggal'];
     }
 
     public function map($tamu): array
@@ -53,8 +53,11 @@ class TamuExport implements FromCollection, WithHeadings, WithMapping, WithStyle
         return [
             ++$this->rowNumber,
             $tamu->nama,
-            $tamu->kontak,
+            $tamu->email,
+            $tamu->nomor_hp,
             $tamu->instansi,
+            $tamu->keperluan,
+            $tamu->tujuan,
             $tamu->pesan,
             Carbon::parse($tamu->created_at)->format('d-m-Y H:i'),
         ];
@@ -83,9 +86,12 @@ class TamuExport implements FromCollection, WithHeadings, WithMapping, WithStyle
             'A' => 8,
             'B' => 25,
             'C' => 25,
-            'D' => 25,
-            'E' => 50,
-            'F' => 20,
+            'D' => 18,
+            'E' => 25,
+            'F' => 25,
+            'G' => 25,
+            'H' => 50,
+            'I' => 20,
         ];
     }
 

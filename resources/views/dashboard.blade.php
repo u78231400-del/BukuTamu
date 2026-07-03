@@ -34,10 +34,10 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <form method="POST" action="/logout">
+                            <form id="logout-form" method="POST" action="/logout">
                                 @csrf
-                                <button type="submit" class="dropdown-item">Logout</button>
                             </form>
+                            <button type="button" class="dropdown-item" onclick="confirmLogout()">Logout</button>
                         </li>
                     </ul>
                 </div>
@@ -246,8 +246,26 @@
                 }
             }
         });
+
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Yakin ingin keluar?',
+                text: 'Anda akan keluar dari dashboard.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Keluar',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @include('partials.toast')
 </body>
 </html>

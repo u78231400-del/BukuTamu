@@ -11,15 +11,16 @@
         .list-box { max-height: calc(100vh - 120px); overflow-y: auto; }
         h3 { color: #333; }
         textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        input[type="text"], input[type="search"], input[type="email"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         label { margin-bottom: 0; display: block; }
         .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
         .btn-submit:hover { background: #41b632; }
-        .stat-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-card { padding: 15px 10px; border-radius: 12px; color: #fff; text-align: center; }
-        .stat-card .stat-icon { font-size: 22px; margin-bottom: 5px; opacity: 0.85; }
-        .stat-card .stat-number { font-size: 22px; font-weight: 700; line-height: 1; }
-        .stat-card .stat-label { font-size: 11px; opacity: 0.9; margin-top: 3px; }
+        .search-input { border-radius: 5px; }
+        .search-btn { border-radius: 5px; }
+        .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
+        .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
+        .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
+        .stat-card-sm .stat-label { font-size: 10px; opacity: 0.9; }
         .card-total { background: linear-gradient(135deg, #4e73df, #224abe); }
         .card-today { background: linear-gradient(135deg, #1cc88a, #13855c); }
         .card-month { background: linear-gradient(135deg, #f6c23e, #dda20a); }
@@ -44,24 +45,6 @@
         <div class="row g-4">
             <div class="col-lg-5">
                 <div class="form-box scrollbar-thin">
-                    <div class="stat-cards">
-                        <div class="stat-card card-total">
-                            <div class="stat-icon">👥</div>
-                            <div class="stat-number">{{ $totalTamu }}</div>
-                            <div class="stat-label">Total Tamu</div>
-                        </div>
-                        <div class="stat-card card-today">
-                            <div class="stat-icon">📅</div>
-                            <div class="stat-number">{{ $tamuHariIni }}</div>
-                            <div class="stat-label">Hari Ini</div>
-                        </div>
-                        <div class="stat-card card-month">
-                            <div class="stat-icon">📆</div>
-                            <div class="stat-number">{{ $tamuBulanIni }}</div>
-                            <div class="stat-label">Bulan Ini</div>
-                        </div>
-                    </div>
-
                     <h3>📝 Isi Buku Tamu</h3>
                     <form action="/bukutamu" method="POST">
                         @csrf
@@ -114,19 +97,32 @@
 
             <div class="col-lg-7">
                 <div class="list-box scrollbar-thin">
+                    <div class="stat-cards-horizontal">
+                        <div class="stat-card-sm card-total">
+                            <div class="stat-number">{{ $totalTamu }}</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-card-sm card-today">
+                            <div class="stat-number">{{ $tamuHariIni }}</div>
+                            <div class="stat-label">Hari Ini</div>
+                        </div>
+                        <div class="stat-card-sm card-month">
+                            <div class="stat-number">{{ $tamuBulanIni }}</div>
+                            <div class="stat-label">Bulan Ini</div>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3 class="mb-0">📋 Daftar Tamu</h3>
                         <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
                     </div>
 
-                    <form action="/bukutamu" method="GET" class="mb-3">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
-                            <button class="btn btn-primary" type="submit">Cari</button>
-                            @if(request('search'))
-                                <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
-                            @endif
-                        </div>
+                    <form action="/bukutamu" method="GET" class="d-flex gap-2 mb-3">
+                        <input type="text" name="search" class="form-control search-input" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
+                        <button class="btn btn-primary search-btn" type="submit">Cari</button>
+                        @if(request('search'))
+                            <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                        @endif
                     </form>
 
                     @if(request('search') && $tamus->isEmpty())

@@ -15,8 +15,6 @@
         label { margin-bottom: 0; display: block; }
         .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
         .btn-submit:hover { background: #41b632; }
-        .search-input { border-radius: 5px; }
-        .search-btn { border-radius: 5px; }
         .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
         .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
         .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
@@ -117,12 +115,14 @@
                         <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
                     </div>
 
-                    <form action="/bukutamu" method="GET" class="d-flex gap-2 mb-3">
-                        <input type="text" name="search" class="form-control search-input" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
-                        <button class="btn btn-primary search-btn" type="submit">Cari</button>
-                        @if(request('search'))
-                            <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
-                        @endif
+                    <form action="/bukutamu" method="GET" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="search" class="form-control" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
+                            <button class="btn btn-primary" type="submit">Cari</button>
+                            @if(request('search'))
+                                <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                            @endif
+                        </div>
                     </form>
 
                     @if(request('search') && $tamus->isEmpty())

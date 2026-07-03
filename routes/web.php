@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TamuController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AppointmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,3 +26,11 @@ Route::middleware('auth')->group(function () {
 // Public routes (tidak butuh login)
 Route::get('/bukutamu', [TamuController::class, 'index']);
 Route::post('/bukutamu', [TamuController::class, 'store']);
+Route::get('/buat-janji', [AppointmentController::class, 'create']);
+Route::post('/buat-janji', [AppointmentController::class, 'store']);
+
+// Protected appointment routes
+Route::middleware('auth')->group(function () {
+    Route::post('/appointment/{id}/approve', [AppointmentController::class, 'approve'])->name('appointment.approve');
+    Route::post('/appointment/{id}/reject', [AppointmentController::class, 'reject'])->name('appointment.reject');
+});

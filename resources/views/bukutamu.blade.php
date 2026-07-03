@@ -26,6 +26,9 @@
         .guest-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .search-box { display: flex; align-items: center; gap: 0; }
+        .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
+        .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -86,32 +89,33 @@
                     <div class="stat-cards-horizontal">
                         <div class="stat-card-sm card-total">
                             <div class="stat-number">{{ $totalTamu }}</div>
-                            <div class="stat-label">Total</div>
+                            <div class="stat-label">Total Kunjungan</div>
                         </div>
                         <div class="stat-card-sm card-today">
                             <div class="stat-number">{{ $tamuHariIni }}</div>
-                            <div class="stat-label">Hari Ini</div>
+                            <div class="stat-label">Kunjungan Hari Ini</div>
                         </div>
                         <div class="stat-card-sm card-month">
                             <div class="stat-number">{{ $tamuBulanIni }}</div>
-                            <div class="stat-label">Bulan Ini</div>
+                            <div class="stat-label">Kunjungan Bulan Ini</div>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3 class="mb-0">📋 Daftar Tamu</h3>
-                        <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
-                    </div>
-
-                    <form action="/bukutamu" method="GET" class="mb-3">
-                        <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
-                            <button class="btn btn-primary" type="submit">Cari</button>
-                            @if(request('search'))
-                                <a href="/bukutamu" class="btn btn-outline-secondary ms-1">Reset</a>
-                            @endif
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <h3 class="mb-0">📋 Daftar Tamu</h3>
+                            <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
                         </div>
-                    </form>
+                        <form action="/bukutamu" method="GET" class="mb-0">
+                            <div class="search-box">
+                                <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
+                                <button class="btn btn-primary" type="submit">Cari</button>
+                                @if(request('search'))
+                                    <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                                @endif
+                            </div>
+                        </form>
+                    </div>
 
                     @if(request('search') && $tamus->isEmpty())
                         <div class="alert alert-warning text-center">

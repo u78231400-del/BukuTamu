@@ -8,9 +8,15 @@ use Carbon\Carbon;
 
 class AppointmentController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        $appointments = Appointment::latest()->paginate(5);
+        $query = Appointment::query();
+
+        if ($request->has('search') && $request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        $appointments = $query->latest()->paginate(5)->appends($request->query());
         $totalAppointment = Appointment::count();
         $menunggu = Appointment::where('status', 'menunggu')->count();
         $disetujui = Appointment::where('status', 'disetujui')->count();

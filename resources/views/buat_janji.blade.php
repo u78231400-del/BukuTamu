@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Buat Janji</title>
+    <title>Buat Janji Tamu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
@@ -15,11 +15,10 @@
         label { margin-bottom: 0; display: block; }
         .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
         .btn-submit:hover { background: #41b632; }
-        .btn-nav { padding: 8px 16px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; }
-        .btn-nav:hover { background: #5a6268; color: white; }
         .card-total { background: linear-gradient(135deg, #4e73df, #224abe); }
-        .card-pending { background: linear-gradient(135deg, #f6c23e, #dda20a); }
-        .card-approved { background: linear-gradient(135deg, #1cc88a, #13855c); }
+        .card-menunggu { background: linear-gradient(135deg, #f6c23e, #dda20a); }
+        .card-disetujui { background: linear-gradient(135deg, #1cc88a, #13855c); }
+        .card-ditolak { background: linear-gradient(135deg, #e74a3b, #be3c30); }
         .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
         .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
         .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
@@ -28,6 +27,16 @@
         .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; }
         .scrollbar-thin::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+        .search-box { display: flex; align-items: center; gap: 0; }
+        .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
+        .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
+        .filter-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+        .filter-btns .btn { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
+        .filter-btns .btn.active { background: #4e73df; color: white; border-color: #4e73df; }
+        .timeline { position: relative; padding-left: 20px; }
+        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #dee2e6; }
+        .timeline-item { position: relative; margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
         .badge-menunggu { background: #f6c23e; }
         .badge-disetujui { background: #1cc88a; }
         .badge-ditolak { background: #e74a3b; }
@@ -48,8 +57,8 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-5">
-                <div class="form-box">
-                    <h3>📅 Form Buat Janji</h3>
+                <div class="form-box scrollbar-thin">
+                    <h3>Form Buat Janji</h3>
 
                     @if(session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -110,11 +119,11 @@
                             <div class="stat-number">{{ $totalAppointment }}</div>
                             <div class="stat-label">Total Janji</div>
                         </div>
-                        <div class="stat-card-sm card-pending">
+                        <div class="stat-card-sm card-menunggu">
                             <div class="stat-number">{{ $menunggu }}</div>
                             <div class="stat-label">Menunggu</div>
                         </div>
-                        <div class="stat-card-sm card-approved">
+                        <div class="stat-card-sm card-disetujui">
                             <div class="stat-number">{{ $disetujui }}</div>
                             <div class="stat-label">Disetujui</div>
                         </div>
@@ -122,62 +131,85 @@
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <div class="d-flex align-items-center gap-2">
-                            <h3 class="mb-0">📋 Daftar Janji</h3>
+                            <h3 class="mb-0">Daftar Janji</h3>
                             <span class="badge bg-primary">{{ $appointments->total() }} janji</span>
                         </div>
-                        <a href="/buat-janji" class="btn-nav">+ Buat Janji</a>
+                        <form action="/buat-janji" method="GET" class="mb-0">
+                            <div class="search-box">
+                                <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
+                                <button class="btn btn-primary" type="submit">Cari</button>
+                                @if(request('search'))
+                                    <a href="/buat-janji" class="btn btn-outline-secondary">Reset</a>
+                                @endif
+                            </div>
+                        </form>
                     </div>
 
+                    @if(request('search') && $appointments->isEmpty())
+                        <div class="alert alert-warning text-center">
+                            <strong>Data tidak ditemukan</strong><br>
+                            Janji dengan nama "{{ request('search') }}" tidak ada di daftar.
+                        </div>
+                    @endif
+
+                    <div class="timeline">
                     @forelse($appointments as $apt)
-                        <div class="appointment-card">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <b>{{ $apt->nama }}</b>
-                                        <span class="badge badge-{{ $apt->status == 'menunggu' ? 'menunggu' : ($apt->status == 'disetujui' ? 'disetujui' : 'ditolak') }}">
-                                            {{ ucfirst($apt->status) }}
-                                        </span>
-                                    </div>
-                                    <small class="text-muted">
-                                        {{ $apt->nomor_hp }}
-                                    </small>
-                                    <br>
-                                    <small class="text-muted">Tujuan: {{ $apt->tujuan }}</small>
-                                    <br>
-                                    <small class="text-muted">
-                                        📅 {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }} • 🕐 {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}
-                                    </small>
-                                </div>
-                                @auth
-                                <div class="btn-group btn-group-sm">
-                                    <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success btn-sm py-0 px-2">✓</button>
-                                    </form>
-                                    <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm py-0 px-2">✗</button>
-                                    </form>
-                                </div>
-                                @endauth
+                        <div class="timeline-item">
+                            <div class="timeline-dot" style="background: 
+                                @if($apt->status == 'disetujui') #1cc88a
+                                @elseif($apt->status == 'ditolak') #e74a3b
+                                @else #f6c23e @endif;">
                             </div>
-                            
-                            @if($apt->pesan)
-                            <p class="mb-0">
-                                {{ Str::limit($apt->pesan, 100) }}
-                                @if(strlen($apt->pesan) > 100)
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $apt->id }}">Baca selengkapnya...</a>
+                            <div class="appointment-card" style="margin-bottom: 12px;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <b>{{ $apt->nama }}</b>
+                                            <span class="badge badge-{{ $apt->status }}">
+                                                {{ ucfirst($apt->status) }}
+                                            </span>
+                                        </div>
+                                        <small class="text-muted">
+                                            {{ $apt->nomor_hp }}
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">Tujuan: {{ $apt->tujuan }}</small>
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }} - {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}
+                                        </small>
+                                    </div>
+                                    @auth
+                                    <div class="btn-group btn-group-sm">
+                                        <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-success btn-sm py-0 px-2" title="Setujui">✓</button>
+                                        </form>
+                                        <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
+                                        </form>
+                                    </div>
+                                    @endauth
+                                </div>
+                                
+                                @if($apt->pesan)
+                                <p class="mb-0">
+                                    {{ Str::limit($apt->pesan, 120) }}
+                                    @if(strlen($apt->pesan) > 120)
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $apt->id }}">Baca selengkapnya...</a>
+                                    @endif
+                                </p>
                                 @endif
-                            </p>
-                            @endif
+                            </div>
                         </div>
 
-                        <div class="modal fade" id="detailModal{{ $apt->id }}" tabindex="-1">
+                        <div class="modal fade" id="detailModal{{ $apt->id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $apt->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-scrollable">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Detail Pesan: {{ $apt->nama }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        <h5 class="modal-title" id="detailModalLabel{{ $apt->id }}">Detail Pesan: {{ $apt->nama }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body" style="white-space: pre-wrap;">{{ $apt->pesan }}</div>
                                     <div class="modal-footer">
@@ -189,9 +221,10 @@
                     @empty
                         <p class="text-center text-muted py-5">Belum ada janji yang dibuat.</p>
                     @endforelse
+                    </div>
 
                     <div class="d-flex justify-content-center mt-3">
-                        {{ $appointments->links() }}
+                        {{ $appointments->appends(['search' => request('search')])->links() }}
                     </div>
                 </div>
             </div>

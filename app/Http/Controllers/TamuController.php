@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -85,13 +86,13 @@ class TamuController extends Controller
             'pesan' => $request->pesan,
         ]);
 
-        return redirect('/bukutamu')->with('success', 'Pesan berhasil dikirim!');
+        return redirect('/bukutamu')->with('success', 'Pesan berhasil terkirim!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Tamu $tamu)
+    public function show(string $id)
     {
         //
     }

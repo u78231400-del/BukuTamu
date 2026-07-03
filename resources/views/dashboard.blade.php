@@ -98,13 +98,13 @@
         </div>
 
         <div class="row g-4 mb-4">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div class="chart-container">
                     <h5 class="mb-3">Data Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h5>
                     <canvas id="chartBulanan"></canvas>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="chart-container text-center">
                     <h5 class="mb-3">Statistik Janji Tamu</h5>
                     <div class="row g-2 mt-2">

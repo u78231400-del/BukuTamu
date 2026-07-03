@@ -129,12 +129,10 @@
                                         <small style="color:gray;">{{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }} • {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}</small>
                                     </div>
                                     <small class="text-muted">
-                                        {{ $tamu->nomor_hp }}
-                                        @if($tamu->email) • {{ $tamu->email }} @endif
-                                        • {{ $tamu->instansi }}
+                                        {{ $tamu->nomor_hp }} • {{ $tamu->jumlah_orang }} orang
                                     </small>
                                     <br>
-                                    <small class="text-muted">Keperluan: {{ $tamu->keperluan }} | Tujuan: {{ $tamu->tujuan }}</small>
+                                    <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>
                                 </div>
                                 <div class="btn-group btn-group-sm">
                                     <a href="{{ route('buku-tamu.edit', $tamu->id) }}" class="btn btn-warning btn-sm py-0 px-2 me-1">Edit</a>

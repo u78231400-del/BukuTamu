@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 use App\Models\Tamu;
+use App\Models\Appointment;
 use App\Exports\TamuExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -188,6 +189,11 @@ public function dashboard()
                               ->whereYear('created_at', Carbon::now()->year)
                               ->count();
     }
+
+    $totalAppointment = Appointment::count();
+    $appointmentMenunggu = Appointment::where('status', 'menunggu')->count();
+    $appointmentDisetujui = Appointment::where('status', 'disetujui')->count();
+    $appointmentDitolak = Appointment::where('status', 'ditolak')->count();
     
     return view('dashboard', compact(
         'totalTamu', 
@@ -198,7 +204,11 @@ public function dashboard()
         'labels7hari',
         'tamuTerbaru',
         'dataPerBulan',
-        'labelsBulan'
+        'labelsBulan',
+        'totalAppointment',
+        'appointmentMenunggu',
+        'appointmentDisetujui',
+        'appointmentDitolak'
     ));
 }
 }

@@ -19,6 +19,9 @@
         .chart-container { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
         .table { font-size: 0.9rem; }
         .navbar-brand { font-weight: 600; }
+        .badge-menunggu { background: #f6c23e; color: #000; }
+        .badge-disetujui { background: #1cc88a; }
+        .badge-ditolak { background: #e74a3b; }
     </style>
 </head>
 <body>
@@ -55,26 +58,41 @@
         <div class="row g-3 mb-4">
             <div class="col-md-3">
                 <div class="stat-box stat-total">
-                    <div class="stat-icon-box">👥</div>
+                    <div class="stat-icon-box">&#128100;</div>
                     <div><div class="stat-number">{{ $totalTamu }}</div><div class="stat-label">Total Tamu</div></div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-box stat-today">
-                    <div class="stat-icon-box">📅</div>
+                    <div class="stat-icon-box">&#128197;</div>
                     <div><div class="stat-number">{{ $tamuHariIni }}</div><div class="stat-label">Hari Ini</div></div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-box stat-week">
-                    <div class="stat-icon-box">📊</div>
+                    <div class="stat-icon-box">&#128202;</div>
                     <div><div class="stat-number">{{ $tamuMingguIni }}</div><div class="stat-label">Minggu Ini</div></div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="stat-box stat-month">
-                    <div class="stat-icon-box">📆</div>
+                    <div class="stat-icon-box">&#128198;</div>
                     <div><div class="stat-number">{{ $tamuBulanIni }}</div><div class="stat-label">Bulan Ini</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="chart-container">
+                    <h5 class="mb-3">Status Janji Tamu</h5>
+                    <canvas id="chartJanji"></canvas>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="chart-container">
+                    <h5 class="mb-3">Tren Tamu 7 Hari Terakhir</h5>
+                    <canvas id="chart7hari"></canvas>
                 </div>
             </div>
         </div>
@@ -82,14 +100,39 @@
         <div class="row g-4 mb-4">
             <div class="col-md-6">
                 <div class="chart-container">
-                    <h5 class="mb-3">Tren Tamu 7 Hari Terakhir</h5>
-                    <canvas id="chart7hari"></canvas>
+                    <h5 class="mb-3">Data Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h5>
+                    <canvas id="chartBulanan"></canvas>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="chart-container">
-                    <h5 class="mb-3">Data Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h5>
-                    <canvas id="chartBulanan"></canvas>
+                <div class="chart-container text-center">
+                    <h5 class="mb-3">Statistik Janji Tamu</h5>
+                    <div class="row g-2 mt-2">
+                        <div class="col-6">
+                            <div class="p-3 rounded" style="background:#f6c23e20; border:1px solid #f6c23e;">
+                                <div class="fw-bold fs-4" style="color:#dda20a;">{{ $appointmentMenunggu }}</div>
+                                <div class="small text-muted">Menunggu</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded" style="background:#1cc88a20; border:1px solid #1cc88a;">
+                                <div class="fw-bold fs-4" style="color:#13855c;">{{ $appointmentDisetujui }}</div>
+                                <div class="small text-muted">Disetujui</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded" style="background:#e74a3b20; border:1px solid #e74a3b;">
+                                <div class="fw-bold fs-4" style="color:#c0392b;">{{ $appointmentDitolak }}</div>
+                                <div class="small text-muted">Ditolak</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="p-3 rounded" style="background:#4e73df20; border:1px solid #4e73df;">
+                                <div class="fw-bold fs-4" style="color:#224abe;">{{ $totalAppointment }}</div>
+                                <div class="small text-muted">Total Janji</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,6 +188,35 @@
     </div>
 
     <script>
+        const ctxJanji = document.getElementById('chartJanji').getContext('2d');
+        new Chart(ctxJanji, {
+            type: 'doughnut',
+            data: {
+                labels: ['Menunggu', 'Disetujui', 'Ditolak'],
+                datasets: [{
+                    data: [{{ $appointmentMenunggu }}, {{ $appointmentDisetujui }}, {{ $appointmentDitolak }}],
+                    backgroundColor: ['#f6c23e', '#1cc88a', '#e74a3b'],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { padding: 15, font: { size: 12 } }
+                    },
+                    tooltip: {
+                        backgroundColor: '#333',
+                        padding: 10,
+                        cornerRadius: 8
+                    }
+                },
+                cutout: '55%'
+            }
+        });
+
         const ctx7hari = document.getElementById('chart7hari').getContext('2d');
         const gradient7hari = ctx7hari.createLinearGradient(0, 0, 0, 300);
         gradient7hari.addColorStop(0, 'rgba(78, 115, 223, 0.3)');
@@ -178,12 +250,7 @@
                         titleFont: { size: 13 },
                         bodyFont: { size: 12 },
                         padding: 10,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y + ' tamu';
-                            }
-                        }
+                        cornerRadius: 8
                     }
                 },
                 scales: {
@@ -192,9 +259,7 @@
                         ticks: { stepSize: 1 },
                         grid: { color: 'rgba(0,0,0,0.05)' }
                     },
-                    x: {
-                        grid: { display: false }
-                    }
+                    x: { grid: { display: false } }
                 }
             }
         });
@@ -227,12 +292,7 @@
                         titleFont: { size: 13 },
                         bodyFont: { size: 12 },
                         padding: 10,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y + ' tamu';
-                            }
-                        }
+                        cornerRadius: 8
                     }
                 },
                 scales: {
@@ -241,9 +301,7 @@
                         ticks: { stepSize: 1 },
                         grid: { color: 'rgba(0,0,0,0.05)' }
                     },
-                    x: {
-                        grid: { display: false }
-                    }
+                    x: { grid: { display: false } }
                 }
             }
         });

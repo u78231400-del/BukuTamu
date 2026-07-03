@@ -13,6 +13,7 @@ class Tamu extends Model
         'instansi',
         'keperluan',
         'tujuan',
+        'jumlah_orang',
         'pesan',
     ];
 }

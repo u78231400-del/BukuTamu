@@ -46,33 +46,21 @@
                     <h3>📝 Isi Buku Tamu</h3>
                     <form action="/bukutamu" method="POST">
                         @csrf
-                        <label>Nama:</label>
-                        <input type="text" name="nama" placeholder="Tulis namamu..." value="{{ old('nama') }}" required>
+                        <label>Nama/Instansi:</label>
+                        <input type="text" name="nama" placeholder="Nama atau instansi..." value="{{ old('nama') }}" required>
                         @error('nama')
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
-                        <label>Email (opsional):</label>
-                        <input type="email" name="email" placeholder="email@example.com" value="{{ old('email') }}">
-                        @error('email')
+                        <label>Jumlah Orang:</label>
+                        <input type="number" name="jumlah_orang" placeholder="Jumlah orang..." value="{{ old('jumlah_orang', 1) }}" min="1" required>
+                        @error('jumlah_orang')
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
                         <label>Nomor HP:</label>
                         <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
                         @error('nomor_hp')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Instansi/Asal:</label>
-                        <input type="text" name="instansi" placeholder="Asal instansi atau kota..." value="{{ old('instansi') }}" required>
-                        @error('instansi')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Keperluan:</label>
-                        <input type="text" name="keperluan" placeholder="Keperluan kunjungan..." value="{{ old('keperluan') }}" required>
-                        @error('keperluan')
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
@@ -120,7 +108,7 @@
                             <input type="text" name="search" class="form-control" placeholder="Cari nama, kontak, instansi..." value="{{ request('search') }}">
                             <button class="btn btn-primary" type="submit">Cari</button>
                             @if(request('search'))
-                                <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                                <a href="/bukutamu" class="btn btn-outline-secondary ms-1">Reset</a>
                             @endif
                         </div>
                     </form>

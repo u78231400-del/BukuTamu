@@ -109,38 +109,26 @@ class TamuController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama' => 'required|min:3|max:100|regex:/^[a-zA-Z\s]+$/',
-            'email' => 'nullable|email|max:100',
+            'nama' => 'required|min:2|max:100',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
-            'instansi' => 'required|min:2|max:100',
-            'keperluan' => 'required|min:3|max:100',
-            'tujuan' => 'required|min:3|max:100',
+            'tujuan' => 'required|min:2|max:100',
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
-            'nama.min' => 'Nama minimal 3 huruf!',
-            'nama.max' => 'Nama maksimal 100 huruf!',
-            'nama.regex' => 'Nama hanya boleh huruf dan spasi!',
-            'email.email' => 'Format email tidak valid!',
-            'email.max' => 'Email maksimal 100 karakter!',
+            'nama.min' => 'Nama minimal 2 karakter!',
+            'nama.max' => 'Nama maksimal 100 karakter!',
             'nomor_hp.required' => 'Nomor HP wajib diisi!',
             'nomor_hp.min' => 'Nomor HP minimal 10 digit!',
             'nomor_hp.max' => 'Nomor HP maksimal 15 digit!',
             'nomor_hp.regex' => 'Nomor HP hanya boleh angka!',
-            'instansi.required' => 'Asal Instansi/Kota wajib diisi!',
-            'instansi.min' => 'Asal Instansi/Kota minimal 2 huruf!',
-            'instansi.max' => 'Asal Instansi/Kota maksimal 100 huruf!',
-            'keperluan.required' => 'Keperluan wajib diisi!',
-            'keperluan.min' => 'Keperluan minimal 3 karakter!',
-            'keperluan.max' => 'Keperluan maksimal 100 karakter!',
             'tujuan.required' => 'Tujuan bertemu wajib diisi!',
-            'tujuan.min' => 'Tujuan bertemu minimal 3 karakter!',
+            'tujuan.min' => 'Tujuan bertemu minimal 2 karakter!',
             'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
         $tamu = Tamu::findOrFail($id);
-        $tamu->update($request->all());
+        $tamu->update($request->only(['nama', 'nomor_hp', 'tujuan', 'pesan']));
         return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
     }
 

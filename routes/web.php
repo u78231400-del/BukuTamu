@@ -18,10 +18,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [TamuController::class, 'dashboard'])->name('dashboard');
     Route::get('/bukutamu/export', [TamuController::class, 'export'])->name('buku-tamu.export');
-    Route::get('/bukutamu/{id}/edit', [TamuController::class, 'edit'])->name('buku-tamu.edit');
-    Route::put('/bukutamu/{id}', [TamuController::class, 'update'])->name('buku-tamu.update');
     Route::delete('/bukutamu/{id}', [TamuController::class, 'destroy'])->name('buku-tamu.destroy');
 });
+
+// Public edit routes (tanpa login)
+Route::get('/bukutamu/{id}/edit', [TamuController::class, 'edit'])->name('buku-tamu.edit');
+Route::put('/bukutamu/{id}', [TamuController::class, 'update'])->name('buku-tamu.update');
 
 // Public routes (tidak butuh login)
 Route::get('/bukutamu', [TamuController::class, 'index']);

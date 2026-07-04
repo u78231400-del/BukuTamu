@@ -60,10 +60,6 @@
                 <div class="form-box scrollbar-thin">
                     <h3>Form Buat Janji</h3>
 
-                    @if(session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
                     <form action="/buat-janji" method="POST">
                         @csrf
                         <label>Nama/Instansi:</label>

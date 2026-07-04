@@ -24,33 +24,15 @@
         <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST">
             @csrf
             @method('PUT')
-            <label>Nama:</label>
+            <label>Nama/Instansi:</label>
             <input type="text" name="nama" value="{{ old('nama', $tamu->nama) }}" required>
             @error('nama')
-                <div class="text-danger small mb-2">{{ $message }}</div>
-            @enderror
-
-            <label>Email (opsional):</label>
-            <input type="email" name="email" value="{{ old('email', $tamu->email) }}">
-            @error('email')
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
 
             <label>Nomor HP:</label>
             <input type="text" name="nomor_hp" value="{{ old('nomor_hp', $tamu->nomor_hp) }}" required>
             @error('nomor_hp')
-                <div class="text-danger small mb-2">{{ $message }}</div>
-            @enderror
-
-            <label>Instansi/Asal:</label>
-            <input type="text" name="instansi" value="{{ old('instansi', $tamu->instansi) }}" required>
-            @error('instansi')
-                <div class="text-danger small mb-2">{{ $message }}</div>
-            @enderror
-
-            <label>Keperluan:</label>
-            <input type="text" name="keperluan" value="{{ old('keperluan', $tamu->keperluan) }}" required>
-            @error('keperluan')
                 <div class="text-danger small mb-2">{{ $message }}</div>
             @enderror
 

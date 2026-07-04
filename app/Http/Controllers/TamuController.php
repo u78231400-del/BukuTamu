@@ -30,7 +30,7 @@ class TamuController extends Controller
                                      ->orWhere('pesan', 'like', "%{$search}%");
                     })
                     ->latest()
-                    ->paginate(3)
+                    ->paginate(5)
                     ->withQueryString();
 
         $totalTamu = Tamu::count();

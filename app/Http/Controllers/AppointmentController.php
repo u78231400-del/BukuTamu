@@ -32,6 +32,7 @@ class AppointmentController extends Controller
             'tujuan' => 'required|min:2|max:100',
             'tanggal_janji' => 'required|date|after_or_equal:today',
             'jam_janji' => 'required',
+            'jumlah_orang' => 'required|integer|min:1|max:100',
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
@@ -47,6 +48,10 @@ class AppointmentController extends Controller
             'tanggal_janji.required' => 'Tanggal janji wajib diisi!',
             'tanggal_janji.after_or_equal' => 'Tanggal janji tidak boleh sebelum hari ini!',
             'jam_janji.required' => 'Jam janji wajib diisi!',
+            'jumlah_orang.required' => 'Jumlah orang wajib diisi!',
+            'jumlah_orang.integer' => 'Jumlah orang harus angka!',
+            'jumlah_orang.min' => 'Jumlah orang minimal 1!',
+            'jumlah_orang.max' => 'Jumlah orang maksimal 100!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 

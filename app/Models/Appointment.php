@@ -10,6 +10,7 @@ class Appointment extends Model
         'nama',
         'nomor_hp',
         'tujuan',
+        'jumlah_orang',
         'pesan',
         'tanggal_janji',
         'jam_janji',

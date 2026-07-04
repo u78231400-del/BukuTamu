@@ -80,6 +80,12 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
+                        <label>Jumlah Orang:</label>
+                        <input type="number" name="jumlah_orang" min="1" max="100" value="{{ old('jumlah_orang', 1) }}" required>
+                        @error('jumlah_orang')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                        @enderror
+
                         <div class="row">
                             <div class="col-6">
                                 <label>Tanggal Janji:</label>
@@ -170,6 +176,8 @@
                                         </small>
                                         <br>
                                         <small class="text-muted">Tujuan: {{ $apt->tujuan }}</small>
+                                        <br>
+                                        <small class="text-muted">Jumlah: {{ $apt->jumlah_orang }} orang</small>
                                         <br>
                                         <small class="text-muted">
                                             {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }} - {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}

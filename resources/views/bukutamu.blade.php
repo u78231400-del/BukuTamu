@@ -29,6 +29,15 @@
         .search-box { display: flex; align-items: center; gap: 0; }
         .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
         .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
+        .filter-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+        .filter-btns .btn { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
+        .filter-btns .btn.active { background: #4e73df; color: white; border-color: #4e73df; }
+        .timeline { position: relative; padding-left: 20px; }
+        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #dee2e6; }
+        .timeline-item { position: relative; margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
+        .appointment-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
+        .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
@@ -125,40 +134,49 @@
                         </div>
                     @endif
 
+                    <div class="timeline">
                     @forelse($tamus as $tamu)
-                        <div class="guest-card">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <b>{{ $tamu->nama }}</b>
-                                        <small style="color:gray;">{{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }} • {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}</small>
+                        <div class="timeline-item">
+                            <div class="timeline-dot" style="background: #1cc88a;"></div>
+                            <div class="guest-card" style="margin-bottom: 12px;">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <b>{{ $tamu->nama }}</b>
+                                        </div>
+                                        <small class="text-muted">
+                                            {{ $tamu->nomor_hp }}
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }} - {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
+                                        </small>
+                                        <br>
+                                        <small class="text-muted">Jumlah: {{ $tamu->jumlah_orang }} orang</small>
                                     </div>
-                                    <small class="text-muted">
-                                        {{ $tamu->nomor_hp }} • {{ $tamu->jumlah_orang }} orang
-                                    </small>
-                                    <br>
-                                    <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>
+                                    <div class="btn-group">
+                                        <a href="{{ route('buku-tamu.edit', $tamu->id) }}" class="btn btn-warning btn-sm" title="Edit" style="padding: 4px 10px; font-size: 13px;">Edit</a>
+                                        <form action="{{ route('buku-tamu.destroy', $tamu->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus tamu ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="padding: 4px 10px; font-size: 13px;">Hapus</button>
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="btn-group btn-group-sm">
-                                    <a href="{{ route('buku-tamu.edit', $tamu->id) }}" class="btn btn-warning btn-sm py-0 px-2 me-1">Edit</a>
-                                    <form action="{{ route('buku-tamu.destroy', $tamu->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm py-0 px-2" onclick="return confirm('Yakin hapus?')">Hapus</button>
-                                    </form>
-                                </div>
-                            </div>
-                            
-                            @if($tamu->pesan)
-                            <p class="mb-0">
-                                {{ Str::limit($tamu->pesan, 120) }}
-                                @if(strlen($tamu->pesan) > 120)
-                                    <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $tamu->id }}">
-                                        Baca selengkapnya...
-                                    </a>
+                                
+                                @if($tamu->pesan)
+                                <p class="mb-0">
+                                    {{ Str::limit($tamu->pesan, 120) }}
+                                    @if(strlen($tamu->pesan) > 120)
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $tamu->id }}">
+                                            Baca selengkapnya...
+                                        </a>
+                                    @endif
+                                </p>
                                 @endif
-                            </p>
-                            @endif
+                            </div>
                         </div>
 
                         <div class="modal fade" id="detailModal{{ $tamu->id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $tamu->id }}" aria-hidden="true">
@@ -178,6 +196,7 @@
                     @empty
                         <p class="text-center text-muted py-5">Belum ada tamu yang mengisi buku tamu.</p>
                     @endforelse
+                    </div>
 
                     <div class="d-flex justify-content-center mt-3">
                         {{ $tamus->appends(['search' => request('search')])->links() }}

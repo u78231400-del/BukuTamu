@@ -78,4 +78,11 @@ class AppointmentController extends Controller
         $appointment->update(['status' => 'ditolak']);
         return redirect('/buat-janji')->with('success', 'Janji berhasil ditolak!');
     }
+
+    public function destroy($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+        return redirect('/buat-janji')->with('success', 'Janji berhasil dihapus!');
+    }
 }

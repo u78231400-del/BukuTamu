@@ -33,4 +33,5 @@ Route::post('/buat-janji', [AppointmentController::class, 'store']);
 Route::middleware('auth')->group(function () {
     Route::post('/appointment/{id}/approve', [AppointmentController::class, 'approve'])->name('appointment.approve');
     Route::post('/appointment/{id}/reject', [AppointmentController::class, 'reject'])->name('appointment.reject');
+    Route::delete('/appointment/{id}', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
 });

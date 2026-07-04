@@ -189,6 +189,11 @@
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
                                         </form>
+                                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
+                                        </form>
                                     </div>
                                     @endauth
                                 </div>

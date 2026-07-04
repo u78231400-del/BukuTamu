@@ -43,13 +43,14 @@ function showToast(message, type = 'success') {
     }, 3000);
 }
 
-@if(session('success'))
-    showToast('{{ session("success") }}', 'success');
-@endif
-@if(session('warning'))
-    showToast('{{ session("warning") }}', 'warning');
-@endif
-@if(session('error'))
-    showToast('{{ session("error") }}', 'error');
+@php
+    $toastType = null;
+    $toastMessage = null;
+    if(session('error')) { $toastType = 'error'; $toastMessage = session('error'); }
+    elseif(session('warning')) { $toastType = 'warning'; $toastMessage = session('warning'); }
+    elseif(session('success')) { $toastType = 'success'; $toastMessage = session('success'); }
+@endphp
+@if($toastMessage)
+    showToast('{{ $toastMessage }}', '{{ $toastType }}');
 @endif
 </script>

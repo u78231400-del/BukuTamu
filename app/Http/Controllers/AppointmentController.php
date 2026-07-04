@@ -50,6 +50,16 @@ class AppointmentController extends Controller
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
+        $existing = Appointment::where('tanggal_janji', $request->tanggal_janji)
+                               ->where('jam_janji', $request->jam_janji)
+                               ->exists();
+
+        if ($existing) {
+            return redirect('/buat-janji')
+                ->withInput()
+                ->with('error', 'Janji pada tanggal dan jam tersebut sudah terisi!');
+        }
+
         Appointment::create($request->all());
 
         return redirect('/buat-janji')->with('success', 'Janji berhasil dibuat!');

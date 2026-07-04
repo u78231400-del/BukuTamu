@@ -78,7 +78,7 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
-                        <label>Tujuan Bertemu:</label>
+                        <label>Bertemu Dengan:</label>
                         <input type="text" name="tujuan" placeholder="Siapa yang ingin ditemui..." value="{{ old('tujuan') }}" required>
                         @error('tujuan')
                             <div class="text-danger small mb-2">{{ $message }}</div>

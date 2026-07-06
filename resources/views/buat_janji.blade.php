@@ -214,6 +214,14 @@
                                             {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }} - {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}
                                         </small>
                                     </div>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('appointment.edit', $apt->id) }}" class="btn btn-warning btn-sm py-0 px-2" title="Edit">✏️</a>
+                                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
+                                        </form>
+                                    </div>
                                     @auth
                                     <div class="btn-group btn-group-sm">
                                         <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
@@ -223,11 +231,6 @@
                                         <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
-                                        </form>
-                                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
                                         </form>
                                     </div>
                                     @endauth

@@ -18,12 +18,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [TamuController::class, 'dashboard'])->name('dashboard');
     Route::get('/bukutamu/export', [TamuController::class, 'export'])->name('buku-tamu.export');
-    Route::delete('/bukutamu/{id}', [TamuController::class, 'destroy'])->name('buku-tamu.destroy');
 });
 
-// Public edit routes (tanpa login)
+// Public routes tanpa login
 Route::get('/bukutamu/{id}/edit', [TamuController::class, 'edit'])->name('buku-tamu.edit');
 Route::put('/bukutamu/{id}', [TamuController::class, 'update'])->name('buku-tamu.update');
+Route::delete('/bukutamu/{id}', [TamuController::class, 'destroy'])->name('buku-tamu.destroy');
 
 // Public routes (tidak butuh login)
 Route::get('/bukutamu', [TamuController::class, 'index']);
@@ -31,6 +31,8 @@ Route::post('/bukutamu', [TamuController::class, 'store']);
 Route::get('/buat-janji', [AppointmentController::class, 'create']);
 Route::post('/buat-janji', [AppointmentController::class, 'store']);
 Route::get('/buat-janji/export', [AppointmentController::class, 'export']);
+Route::get('/appointment/{id}/edit', [AppointmentController::class, 'edit'])->name('appointment.edit');
+Route::put('/appointment/{id}', [AppointmentController::class, 'update'])->name('appointment.update');
 
 // Protected appointment routes
 Route::middleware('auth')->group(function () {

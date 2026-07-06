@@ -98,6 +98,30 @@ class AppointmentController extends Controller
         return redirect('/buat-janji')->with('success', 'Janji berhasil dihapus!');
     }
 
+    public function edit($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        return view('edit_appointment', compact('appointment'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required|min:2|max:100',
+            'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
+            'tujuan' => 'required|min:2|max:100',
+            'tanggal_janji' => 'required|date',
+            'jam_janji' => 'required',
+            'jumlah_orang' => 'required|integer|min:1|max:100',
+            'pesan' => 'nullable|max:1000',
+        ]);
+
+        $appointment = Appointment::findOrFail($id);
+        $appointment->update($request->all());
+
+        return redirect('/buat-janji')->with('success', 'Janji berhasil diperbarui!');
+    }
+
     public function export(Request $request)
     {
         $status = $request->status;

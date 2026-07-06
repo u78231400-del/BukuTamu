@@ -16,12 +16,17 @@ class AppointmentController extends Controller
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
         $appointments = $query->latest()->paginate(5)->appends($request->query());
         $totalAppointment = Appointment::count();
         $menunggu = Appointment::where('status', 'menunggu')->count();
         $disetujui = Appointment::where('status', 'disetujui')->count();
+        $ditolak = Appointment::where('status', 'ditolak')->count();
 
-        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui'));
+        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui', 'ditolak'));
     }
 
     public function store(Request $request)

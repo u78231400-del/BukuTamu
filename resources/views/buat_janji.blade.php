@@ -40,6 +40,8 @@
         .badge-menunggu { background: #f6c23e; }
         .badge-disetujui { background: #1cc88a; }
         .badge-ditolak { background: #e74a3b; }
+        .nav-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
+        .nav-tabs .nav-link.active { font-weight: 600; }
     </style>
 </head>
 <body>
@@ -137,15 +139,39 @@
                             <span class="badge bg-primary">{{ $appointments->total() }} janji</span>
                         </div>
                         <form action="/buat-janji" method="GET" class="mb-0">
+                            @if(request('status'))
+                                <input type="hidden" name="status" value="{{ request('status') }}">
+                            @endif
                             <div class="search-box">
                                 <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
                                 <button class="btn btn-primary" type="submit">Cari</button>
                                 @if(request('search'))
-                                    <a href="/buat-janji" class="btn btn-outline-secondary">Reset</a>
+                                    <a href="/buat-janji{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline-secondary">Reset</a>
                                 @endif
                             </div>
                         </form>
                     </div>
+
+                    <ul class="nav nav-tabs mb-3">
+                        <li class="nav-item">
+                            <a class="nav-link {{ !request('status') ? 'active' : '' }}" href="/buat-janji">Semua</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('status') == 'menunggu' ? 'active' : '' }}" href="/buat-janji?status=menunggu">
+                                Menunggu <span class="badge bg-warning text-dark ms-1">{{ $menunggu }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('status') == 'disetujui' ? 'active' : '' }}" href="/buat-janji?status=disetujui">
+                                Disetujui <span class="badge bg-success ms-1">{{ $disetujui }}</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('status') == 'ditolak' ? 'active' : '' }}" href="/buat-janji?status=ditolak">
+                                Ditolak <span class="badge bg-danger ms-1">{{ $ditolak }}</span>
+                            </a>
+                        </li>
+                    </ul>
 
                     @if(request('search') && $appointments->isEmpty())
                         <div class="alert alert-warning text-center">

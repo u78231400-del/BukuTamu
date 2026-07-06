@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Exports\AppointmentExport;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AppointmentController extends Controller
 {
@@ -94,5 +96,12 @@ class AppointmentController extends Controller
         $appointment = Appointment::findOrFail($id);
         $appointment->delete();
         return redirect('/buat-janji')->with('success', 'Janji berhasil dihapus!');
+    }
+
+    public function export(Request $request)
+    {
+        $status = $request->status;
+        $filename = 'janji_tamu_' . ($status ?? 'semua') . '_' . date('d_m_Y') . '.xlsx';
+        return Excel::download(new AppointmentExport($status), $filename);
     }
 }

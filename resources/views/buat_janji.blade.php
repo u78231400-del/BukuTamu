@@ -138,18 +138,23 @@
                             <h3 class="mb-0">Daftar Janji</h3>
                             <span class="badge bg-primary">{{ $appointments->total() }} janji</span>
                         </div>
-                        <form action="/buat-janji" method="GET" class="mb-0">
-                            @if(request('status'))
-                                <input type="hidden" name="status" value="{{ request('status') }}">
-                            @endif
-                            <div class="search-box">
-                                <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
-                                <button class="btn btn-primary" type="submit">Cari</button>
-                                @if(request('search'))
-                                    <a href="/buat-janji{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline-secondary">Reset</a>
+                        <div class="d-flex gap-2">
+                            <a href="/buat-janji/export{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-success btn-sm">
+                                Export Excel
+                            </a>
+                            <form action="/buat-janji" method="GET" class="mb-0">
+                                @if(request('status'))
+                                    <input type="hidden" name="status" value="{{ request('status') }}">
                                 @endif
-                            </div>
-                        </form>
+                                <div class="search-box">
+                                    <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
+                                    <button class="btn btn-primary" type="submit">Cari</button>
+                                    @if(request('search'))
+                                        <a href="/buat-janji{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline-secondary">Reset</a>
+                                    @endif
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     <ul class="nav nav-tabs mb-3">

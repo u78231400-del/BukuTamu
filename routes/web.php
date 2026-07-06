@@ -30,6 +30,7 @@ Route::get('/bukutamu', [TamuController::class, 'index']);
 Route::post('/bukutamu', [TamuController::class, 'store']);
 Route::get('/buat-janji', [AppointmentController::class, 'create']);
 Route::post('/buat-janji', [AppointmentController::class, 'store']);
+Route::get('/buat-janji/export', [AppointmentController::class, 'export']);
 
 // Protected appointment routes
 Route::middleware('auth')->group(function () {

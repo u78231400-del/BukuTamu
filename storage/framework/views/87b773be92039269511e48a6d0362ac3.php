@@ -266,6 +266,7 @@ unset($__errorArgs, $__bag); ?>
 
                                         </small>
                                     </div>
+                                    <?php if($apt->status === 'menunggu'): ?>
                                     <div class="btn-group btn-group-sm">
                                         <a href="<?php echo e(route('appointment.edit', $apt->id)); ?>" class="btn btn-warning btn-sm py-0 px-2" title="Edit">✏️</a>
                                         <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
@@ -274,7 +275,9 @@ unset($__errorArgs, $__bag); ?>
                                             <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
                                         </form>
                                     </div>
+                                    <?php endif; ?>
                                     <?php if(auth()->guard()->check()): ?>
+                                    <?php if($apt->status === 'menunggu'): ?>
                                     <div class="btn-group btn-group-sm">
                                         <form action="<?php echo e(route('appointment.approve', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
                                             <?php echo csrf_field(); ?>
@@ -285,6 +288,7 @@ unset($__errorArgs, $__bag); ?>
                                             <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
                                         </form>
                                     </div>
+                                    <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                                 

@@ -22,7 +22,10 @@ class AppointmentController extends Controller
             $query->where('status', $request->status);
         }
 
-        $appointments = $query->latest()->paginate(5)->appends($request->query());
+        $appointments = $query->orderByRaw("CASE WHEN status = 'menunggu' THEN 0 ELSE 1 END")
+                             ->orderBy('created_at', 'desc')
+                             ->paginate(5)
+                             ->appends($request->query());
         $totalAppointment = Appointment::count();
         $menunggu = Appointment::where('status', 'menunggu')->count();
         $disetujui = Appointment::where('status', 'disetujui')->count();
@@ -92,6 +95,9 @@ class AppointmentController extends Controller
     public function approve($id)
     {
         $appointment = Appointment::findOrFail($id);
+        if ($appointment->status !== 'menunggu') {
+            return redirect('/buat-janji')->with('error', 'Janji sudah tidak dapat disetujui!');
+        }
         $appointment->update(['status' => 'disetujui']);
         return redirect('/buat-janji')->with('success', 'Janji berhasil disetujui!');
     }
@@ -99,6 +105,9 @@ class AppointmentController extends Controller
     public function reject($id)
     {
         $appointment = Appointment::findOrFail($id);
+        if ($appointment->status !== 'menunggu') {
+            return redirect('/buat-janji')->with('error', 'Janji sudah tidak dapat ditolak!');
+        }
         $appointment->update(['status' => 'ditolak']);
         return redirect('/buat-janji')->with('success', 'Janji berhasil ditolak!');
     }

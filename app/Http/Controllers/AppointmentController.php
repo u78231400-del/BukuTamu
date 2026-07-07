@@ -62,6 +62,18 @@ class AppointmentController extends Controller
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
+        $tanggalJanji = Carbon::parse($request->tanggal_janji)->startOfDay();
+        $today = Carbon::today();
+
+        if ($tanggalJanji->equalTo($today)) {
+            $currentTime = Carbon::now()->format('H:i');
+            if ($request->jam_janji < $currentTime) {
+                return redirect('/buat-janji')
+                    ->withInput()
+                    ->with('error', 'Jam janji tidak boleh kurang dari jam sekarang!');
+            }
+        }
+
         $existing = Appointment::where('tanggal_janji', $request->tanggal_janji)
                                ->where('jam_janji', $request->jam_janji)
                                ->exists();

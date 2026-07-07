@@ -91,14 +91,14 @@
                         <div class="row">
                             <div class="col-6">
                                 <label>Tanggal Janji:</label>
-                                <input type="date" name="tanggal_janji" value="{{ old('tanggal_janji') }}" required>
+                                <input type="date" name="tanggal_janji" id="tanggal_janji" value="{{ old('tanggal_janji') }}" min="{{ date('Y-m-d') }}" required>
                                 @error('tanggal_janji')
                                     <div class="text-danger small mb-2">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-6">
                                 <label>Jam Janji:</label>
-                                <input type="time" name="jam_janji" value="{{ old('jam_janji') }}" required>
+                                <input type="time" name="jam_janji" id="jam_janji" value="{{ old('jam_janji') }}" required>
                                 @error('jam_janji')
                                     <div class="text-danger small mb-2">{{ $message }}</div>
                                 @enderror
@@ -276,5 +276,26 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @include('partials.toast')
+    <script>
+        const tanggalInput = document.getElementById('tanggal_janji');
+        const jamInput = document.getElementById('jam_janji');
+        const today = new Date().toISOString().split('T')[0];
+
+        tanggalInput.min = today;
+
+        function updateMinTime() {
+            if (tanggalInput.value === today) {
+                const now = new Date();
+                const currentHour = String(now.getHours()).padStart(2, '0');
+                const currentMinute = String(now.getMinutes()).padStart(2, '0');
+                jamInput.min = `${currentHour}:${currentMinute}`;
+            } else {
+                jamInput.min = '';
+            }
+        }
+
+        tanggalInput.addEventListener('change', updateMinTime);
+        updateMinTime();
+    </script>
 </body>
 </html>

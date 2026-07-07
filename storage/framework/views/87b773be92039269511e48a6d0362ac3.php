@@ -119,7 +119,7 @@ unset($__errorArgs, $__bag); ?>
                         <div class="row">
                             <div class="col-6">
                                 <label>Tanggal Janji:</label>
-                                <input type="date" name="tanggal_janji" value="<?php echo e(old('tanggal_janji')); ?>" required>
+                                <input type="date" name="tanggal_janji" id="tanggal_janji" value="<?php echo e(old('tanggal_janji')); ?>" min="<?php echo e(date('Y-m-d')); ?>" required>
                                 <?php $__errorArgs = ['tanggal_janji'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -133,7 +133,7 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                             <div class="col-6">
                                 <label>Jam Janji:</label>
-                                <input type="time" name="jam_janji" value="<?php echo e(old('jam_janji')); ?>" required>
+                                <input type="time" name="jam_janji" id="jam_janji" value="<?php echo e(old('jam_janji')); ?>" required>
                                 <?php $__errorArgs = ['jam_janji'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -330,6 +330,27 @@ unset($__errorArgs, $__bag); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <?php echo $__env->make('partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    <script>
+        const tanggalInput = document.getElementById('tanggal_janji');
+        const jamInput = document.getElementById('jam_janji');
+        const today = new Date().toISOString().split('T')[0];
+
+        tanggalInput.min = today;
+
+        function updateMinTime() {
+            if (tanggalInput.value === today) {
+                const now = new Date();
+                const currentHour = String(now.getHours()).padStart(2, '0');
+                const currentMinute = String(now.getMinutes()).padStart(2, '0');
+                jamInput.min = `${currentHour}:${currentMinute}`;
+            } else {
+                jamInput.min = '';
+            }
+        }
+
+        tanggalInput.addEventListener('change', updateMinTime);
+        updateMinTime();
+    </script>
 </body>
 </html>
 <?php /**PATH C:\laragon\www\bukutamu\resources\views/buat_janji.blade.php ENDPATH**/ ?>

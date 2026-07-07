@@ -69,11 +69,11 @@ class AppointmentController extends Controller
         $today = Carbon::today();
 
         if ($tanggalJanji->equalTo($today)) {
-            $currentTime = Carbon::now()->format('H:i');
-            if ($request->jam_janji < $currentTime) {
+            $minTime = Carbon::now()->addMinutes(30)->format('H:i');
+            if ($request->jam_janji < $minTime) {
                 return redirect('/buat-janji')
                     ->withInput()
-                    ->with('error', 'Jam janji tidak boleh kurang dari jam sekarang!');
+                    ->with('error', 'Jam janji minimal 30 menit dari sekarang!');
             }
         }
 
@@ -160,11 +160,11 @@ class AppointmentController extends Controller
         $today = Carbon::today();
 
         if ($tanggalJanji->equalTo($today)) {
-            $currentTime = Carbon::now()->format('H:i');
-            if ($request->jam_janji < $currentTime) {
+            $minTime = Carbon::now()->addMinutes(30)->format('H:i');
+            if ($request->jam_janji < $minTime) {
                 return redirect('/appointment/' . $id . '/edit')
                     ->withInput()
-                    ->with('error', 'Jam janji tidak boleh kurang dari jam sekarang!');
+                    ->with('error', 'Jam janji minimal 30 menit dari sekarang!');
             }
         }
 

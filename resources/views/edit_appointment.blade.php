@@ -90,6 +90,7 @@
             const today = new Date().toISOString().split('T')[0];
             if (tanggalInput.value === today) {
                 const now = new Date();
+                now.setMinutes(now.getMinutes() + 30);
                 const hours = String(now.getHours()).padStart(2, '0');
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 jamInput.min = hours + ':' + minutes;

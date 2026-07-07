@@ -86,7 +86,7 @@ unset($__errorArgs, $__bag); ?>
                 <div class="row">
                     <div class="col-6">
                         <label>Tanggal Janji:</label>
-                        <input type="date" name="tanggal_janji" value="<?php echo e(old('tanggal_janji', $appointment->tanggal_janji)); ?>" required>
+                        <input type="date" name="tanggal_janji" id="tanggal_janji" value="<?php echo e(old('tanggal_janji', $appointment->tanggal_janji)); ?>" min="<?php echo e(date('Y-m-d')); ?>" required>
                         <?php $__errorArgs = ['tanggal_janji'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -100,7 +100,7 @@ unset($__errorArgs, $__bag); ?>
                     </div>
                     <div class="col-6">
                         <label>Jam Janji:</label>
-                        <input type="time" name="jam_janji" value="<?php echo e(old('jam_janji', $appointment->jam_janji)); ?>" required>
+                        <input type="time" name="jam_janji" id="jam_janji" value="<?php echo e(old('jam_janji', $appointment->jam_janji)); ?>" required>
                         <?php $__errorArgs = ['jam_janji'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -131,6 +131,25 @@ unset($__errorArgs, $__bag); ?>
             </form>
         </div>
     </div>
+    <script>
+        const tanggalInput = document.getElementById('tanggal_janji');
+        const jamInput = document.getElementById('jam_janji');
+
+        function updateTimeMin() {
+            const today = new Date().toISOString().split('T')[0];
+            if (tanggalInput.value === today) {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                jamInput.min = hours + ':' + minutes;
+            } else {
+                jamInput.removeAttribute('min');
+            }
+        }
+
+        tanggalInput.addEventListener('change', updateTimeMin);
+        updateTimeMin();
+    </script>
 </body>
 </html>
 <?php /**PATH C:\laragon\www\bukutamu\resources\views/edit_appointment.blade.php ENDPATH**/ ?>

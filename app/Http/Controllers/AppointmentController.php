@@ -131,11 +131,53 @@ class AppointmentController extends Controller
             'nama' => 'required|min:2|max:100',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
-            'tanggal_janji' => 'required|date',
+            'tanggal_janji' => 'required|date|after_or_equal:today',
             'jam_janji' => 'required',
             'jumlah_orang' => 'required|integer|min:1|max:100',
             'pesan' => 'nullable|max:1000',
+        ], [
+            'nama.required' => 'Nama wajib diisi!',
+            'nama.min' => 'Nama minimal 2 karakter!',
+            'nama.max' => 'Nama maksimal 100 karakter!',
+            'nomor_hp.required' => 'Nomor HP wajib diisi!',
+            'nomor_hp.min' => 'Nomor HP minimal 10 digit!',
+            'nomor_hp.max' => 'Nomor HP maksimal 15 digit!',
+            'nomor_hp.regex' => 'Nomor HP hanya boleh angka!',
+            'tujuan.required' => 'Tujuan bertemu wajib diisi!',
+            'tujuan.min' => 'Tujuan bertemu minimal 2 karakter!',
+            'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
+            'tanggal_janji.required' => 'Tanggal janji wajib diisi!',
+            'tanggal_janji.after_or_equal' => 'Tanggal janji tidak boleh sebelum hari ini!',
+            'jam_janji.required' => 'Jam janji wajib diisi!',
+            'jumlah_orang.required' => 'Jumlah orang wajib diisi!',
+            'jumlah_orang.integer' => 'Jumlah orang harus angka!',
+            'jumlah_orang.min' => 'Jumlah orang minimal 1!',
+            'jumlah_orang.max' => 'Jumlah orang maksimal 100!',
+            'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
+
+        $tanggalJanji = Carbon::parse($request->tanggal_janji)->startOfDay();
+        $today = Carbon::today();
+
+        if ($tanggalJanji->equalTo($today)) {
+            $currentTime = Carbon::now()->format('H:i');
+            if ($request->jam_janji < $currentTime) {
+                return redirect('/appointment/' . $id . '/edit')
+                    ->withInput()
+                    ->with('error', 'Jam janji tidak boleh kurang dari jam sekarang!');
+            }
+        }
+
+        $existing = Appointment::where('tanggal_janji', $request->tanggal_janji)
+                               ->where('jam_janji', $request->jam_janji)
+                               ->where('id', '!=', $id)
+                               ->exists();
+
+        if ($existing) {
+            return redirect('/appointment/' . $id . '/edit')
+                ->withInput()
+                ->with('error', 'Janji pada tanggal dan jam tersebut sudah terisi!');
+        }
 
         $appointment = Appointment::findOrFail($id);
         $appointment->update($request->all());

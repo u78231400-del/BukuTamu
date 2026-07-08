@@ -110,6 +110,7 @@ class TamuController extends Controller
     {
         $request->validate([
             'nama' => 'required|min:2|max:100',
+            'jumlah_orang' => 'required|integer|min:1',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
             'pesan' => 'nullable|max:1000',
@@ -117,6 +118,9 @@ class TamuController extends Controller
             'nama.required' => 'Nama wajib diisi!',
             'nama.min' => 'Nama minimal 2 karakter!',
             'nama.max' => 'Nama maksimal 100 karakter!',
+            'jumlah_orang.required' => 'Jumlah orang wajib diisi!',
+            'jumlah_orang.integer' => 'Jumlah orang harus angka!',
+            'jumlah_orang.min' => 'Jumlah orang minimal 1!',
             'nomor_hp.required' => 'Nomor HP wajib diisi!',
             'nomor_hp.min' => 'Nomor HP minimal 10 digit!',
             'nomor_hp.max' => 'Nomor HP maksimal 15 digit!',
@@ -128,7 +132,7 @@ class TamuController extends Controller
         ]);
 
         $tamu = Tamu::findOrFail($id);
-        $tamu->update($request->only(['nama', 'nomor_hp', 'tujuan', 'pesan']));
+        $tamu->update($request->only(['nama', 'jumlah_orang', 'nomor_hp', 'tujuan', 'pesan']));
         return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
     }
 

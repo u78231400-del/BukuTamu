@@ -27,7 +27,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="/">Buku Tamu</a>
+            <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
             <div class="navbar-nav align-items-center">
                 <a class="nav-link" href="/bukutamu">Buku Tamu</a>
                 <a class="nav-link" href="/buat-janji">Buat Janji</a>

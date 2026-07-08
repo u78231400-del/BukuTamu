@@ -43,7 +43,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
         <div class="container">
-            <a class="navbar-brand" href="/bukutamu">Home</a>
+            <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
                 <a class="nav-link" href="/buat-janji">Buat Janji</a>

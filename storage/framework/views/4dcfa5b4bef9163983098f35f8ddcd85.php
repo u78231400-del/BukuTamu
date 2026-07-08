@@ -5,8 +5,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Poppins', sans-serif; max-width: 500px; margin: 50px auto; background: #f4f6f9; padding: 20px; }
-        .box { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; min-height: 100vh; }
+        .form-box { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); max-width: 500px; margin: 50px auto; }
         h1 { color: #333; text-align: center; }
         input, textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         label { margin-bottom: 0; display: block; }
@@ -17,7 +17,19 @@
     </style>
 </head>
 <body>
-    <div class="box">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
+                <a class="nav-link" href="/buat-janji">Buat Janji</a>
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="form-box">
         <a href="/bukutamu" class="btn-back">← Kembali</a>
         <h1>✏️ Edit Tamu</h1>
         
@@ -36,6 +48,9 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+
+            <label>Jumlah Orang:</label>
+            <input type="number" name="jumlah_orang" value="<?php echo e(old('jumlah_orang', $tamu->jumlah_orang)); ?>" min="1" required>
 
             <label>Nomor HP:</label>
             <input type="text" name="nomor_hp" value="<?php echo e(old('nomor_hp', $tamu->nomor_hp)); ?>" required>
@@ -78,6 +93,7 @@ unset($__errorArgs, $__bag); ?>
             
             <button type="submit" class="btn-update">Simpan Perubahan</button>
         </form>
+        </div>
     </div>
     <?php echo $__env->make('partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>

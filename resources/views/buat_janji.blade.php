@@ -222,11 +222,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
                                         </form>
-                                    </div>
-                                    @endif
-                                    @auth
-                                    @if($apt->status === 'menunggu')
-                                    <div class="btn-group btn-group-sm">
+                                        @auth
                                         <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
                                             @csrf
                                             <button type="submit" class="btn btn-success btn-sm py-0 px-2" title="Setujui">✓</button>
@@ -235,9 +231,9 @@
                                             @csrf
                                             <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
                                         </form>
+                                        @endauth
                                     </div>
                                     @endif
-                                    @endauth
                                 </div>
                                 
                                 @if($apt->pesan)

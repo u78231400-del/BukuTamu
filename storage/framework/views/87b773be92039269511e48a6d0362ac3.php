@@ -274,11 +274,7 @@ unset($__errorArgs, $__bag); ?>
                                             <?php echo method_field('DELETE'); ?>
                                             <button type="submit" class="btn btn-secondary btn-sm py-0 px-2" title="Hapus">🗑</button>
                                         </form>
-                                    </div>
-                                    <?php endif; ?>
-                                    <?php if(auth()->guard()->check()): ?>
-                                    <?php if($apt->status === 'menunggu'): ?>
-                                    <div class="btn-group btn-group-sm">
+                                        <?php if(auth()->guard()->check()): ?>
                                         <form action="<?php echo e(route('appointment.approve', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
                                             <?php echo csrf_field(); ?>
                                             <button type="submit" class="btn btn-success btn-sm py-0 px-2" title="Setujui">✓</button>
@@ -287,8 +283,8 @@ unset($__errorArgs, $__bag); ?>
                                             <?php echo csrf_field(); ?>
                                             <button type="submit" class="btn btn-danger btn-sm py-0 px-2" title="Tolak">✗</button>
                                         </form>
+                                        <?php endif; ?>
                                     </div>
-                                    <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                                 

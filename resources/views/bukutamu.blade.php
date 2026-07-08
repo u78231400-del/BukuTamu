@@ -158,10 +158,9 @@
                                         <br>
                                         <small class="text-muted">
                                             {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }}
+                                            | Diisi: {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
                                             @if($tamu->waktu_kedatangan)
-                                                 - {{ $tamu->waktu_kedatangan }}
-                                            @else
-                                                 - {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
+                                                 | Datang: {{ $tamu->waktu_kedatangan }}
                                             @endif
                                         </small>
                                         <br>

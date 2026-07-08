@@ -202,11 +202,10 @@ unset($__errorArgs, $__bag); ?>
                                         <small class="text-muted">
                                             <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?>
 
-                                            <?php if($tamu->waktu_kedatangan): ?>
-                                                 - <?php echo e($tamu->waktu_kedatangan); ?>
+                                            | Diisi: <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
 
-                                            <?php else: ?>
-                                                 - <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
+                                            <?php if($tamu->waktu_kedatangan): ?>
+                                                 | Datang: <?php echo e($tamu->waktu_kedatangan); ?>
 
                                             <?php endif; ?>
                                         </small>

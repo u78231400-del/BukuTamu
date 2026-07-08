@@ -85,6 +85,19 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 
+                        <label>Waktu Kedatangan:</label>
+                        <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>">
+                        <?php $__errorArgs = ['waktu_kedatangan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
                         <label>Nomor HP:</label>
                         <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="<?php echo e(old('nomor_hp')); ?>" required>
                         <?php $__errorArgs = ['nomor_hp'];
@@ -187,8 +200,15 @@ unset($__errorArgs, $__bag); ?>
                                         <small class="text-muted">Tujuan: <?php echo e($tamu->tujuan); ?></small>
                                         <br>
                                         <small class="text-muted">
-                                            <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?> - <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
+                                            <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?>
 
+                                            <?php if($tamu->waktu_kedatangan): ?>
+                                                 - <?php echo e($tamu->waktu_kedatangan); ?>
+
+                                            <?php else: ?>
+                                                 - <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
+
+                                            <?php endif; ?>
                                         </small>
                                         <br>
                                         <small class="text-muted">Jumlah: <?php echo e($tamu->jumlah_orang); ?> orang</small>

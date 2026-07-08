@@ -60,6 +60,7 @@ class TamuController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
+            'waktu_kedatangan' => 'nullable|date_format:H:i',
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
@@ -75,12 +76,14 @@ class TamuController extends Controller
             'tujuan.required' => 'Tujuan bertemu wajib diisi!',
             'tujuan.min' => 'Tujuan bertemu minimal 2 karakter!',
             'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
+            'waktu_kedatangan.date_format' => 'Format waktu harus HH:MM!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
         Tamu::create([
             'nama' => $request->nama,
             'jumlah_orang' => $request->jumlah_orang,
+            'waktu_kedatangan' => $request->waktu_kedatangan,
             'nomor_hp' => $request->nomor_hp,
             'tujuan' => $request->tujuan,
             'pesan' => $request->pesan,
@@ -113,6 +116,7 @@ class TamuController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
+            'waktu_kedatangan' => 'nullable|date_format:H:i',
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
@@ -128,11 +132,12 @@ class TamuController extends Controller
             'tujuan.required' => 'Tujuan bertemu wajib diisi!',
             'tujuan.min' => 'Tujuan bertemu minimal 2 karakter!',
             'tujuan.max' => 'Tujuan bertemu maksimal 100 karakter!',
+            'waktu_kedatangan.date_format' => 'Format waktu harus HH:MM!',
             'pesan.max' => 'Pesan maksimal 1000 karakter!',
         ]);
 
         $tamu = Tamu::findOrFail($id);
-        $tamu->update($request->only(['nama', 'jumlah_orang', 'nomor_hp', 'tujuan', 'pesan']));
+        $tamu->update($request->only(['nama', 'jumlah_orang', 'waktu_kedatangan', 'nomor_hp', 'tujuan', 'pesan']));
         return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
     }
 

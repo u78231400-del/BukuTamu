@@ -52,6 +52,9 @@ unset($__errorArgs, $__bag); ?>
             <label>Jumlah Orang:</label>
             <input type="number" name="jumlah_orang" value="<?php echo e(old('jumlah_orang', $tamu->jumlah_orang)); ?>" min="1" required>
 
+            <label>Waktu Kedatangan:</label>
+            <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan', $tamu->waktu_kedatangan)); ?>">
+
             <label>Nomor HP:</label>
             <input type="text" name="nomor_hp" value="<?php echo e(old('nomor_hp', $tamu->nomor_hp)); ?>" required>
             <?php $__errorArgs = ['nomor_hp'];

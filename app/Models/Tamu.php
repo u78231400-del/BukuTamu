@@ -14,6 +14,7 @@ class Tamu extends Model
         'keperluan',
         'tujuan',
         'jumlah_orang',
+        'waktu_kedatangan',
         'pesan',
     ];
 }

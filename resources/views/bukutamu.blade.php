@@ -71,6 +71,12 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
+                        <label>Waktu Kedatangan:</label>
+                        <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan') }}">
+                        @error('waktu_kedatangan')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                        @enderror
+
                         <label>Nomor HP:</label>
                         <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
                         @error('nomor_hp')
@@ -151,7 +157,12 @@
                                         <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>
                                         <br>
                                         <small class="text-muted">
-                                            {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }} - {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
+                                            {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }}
+                                            @if($tamu->waktu_kedatangan)
+                                                 - {{ $tamu->waktu_kedatangan }}
+                                            @else
+                                                 - {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
+                                            @endif
                                         </small>
                                         <br>
                                         <small class="text-muted">Jumlah: {{ $tamu->jumlah_orang }} orang</small>

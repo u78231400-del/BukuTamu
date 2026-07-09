@@ -3,6 +3,7 @@
 <head>
     <title>Buku Tamu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; background: #f4f6f9; min-height: 100vh; }
@@ -86,7 +87,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
 
                         <label>Waktu Kedatangan:</label>
-                        <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>">
+                        <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>" step="3600">
                         <?php $__errorArgs = ['waktu_kedatangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -200,12 +201,12 @@ unset($__errorArgs, $__bag); ?>
                                         <small class="text-muted">Tujuan: <?php echo e($tamu->tujuan); ?></small>
                                         <br>
                                         <small class="text-muted">
-                                            <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?>
+                                            <i class="fa-regular fa-calendar"></i> <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?>
 
-                                            | Diisi: <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
+                                            | <i class="fa-regular fa-clock"></i> Diisi: <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
 
                                             <?php if($tamu->waktu_kedatangan): ?>
-                                                 | Datang: <?php echo e($tamu->waktu_kedatangan); ?>
+                                                 | <i class="fa-solid fa-right-to-bracket"></i> Datang: <?php echo e(\Carbon\Carbon::parse($tamu->waktu_kedatangan)->format('H:i')); ?>
 
                                             <?php endif; ?>
                                         </small>

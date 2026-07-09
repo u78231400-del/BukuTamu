@@ -46,7 +46,7 @@
             <input type="number" name="jumlah_orang" value="{{ old('jumlah_orang', $tamu->jumlah_orang) }}" min="1" required>
 
             <label>Waktu Kedatangan:</label>
-            <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan', $tamu->waktu_kedatangan) }}">
+            <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan', $tamu->waktu_kedatangan) }}" step="3600">
 
             <label>Nomor HP:</label>
             <input type="text" name="nomor_hp" value="{{ old('nomor_hp', $tamu->nomor_hp) }}" required>

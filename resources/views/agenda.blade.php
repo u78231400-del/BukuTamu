@@ -45,6 +45,13 @@
         .time-slot.completed .time-label { color: #999; }
         .badge-selesai { background: #6c757d; color: white; }
         .empty-day { color: #ccc; font-style: italic; }
+        .history-section { margin-top: 20px; }
+        .history-month { margin-bottom: 15px; }
+        .history-month-title { font-weight: 600; color: #4e73df; margin-bottom: 8px; font-size: 14px; }
+        .history-item { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 10px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .history-item:hover { background: #f8f9fa; }
+        .history-date { font-weight: 600; color: #333; font-size: 13px; }
+        .history-info { color: #666; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -194,6 +201,34 @@
                 @if($appointments->total() > 0)
                 <div class="d-flex justify-content-center mt-3">
                     {{ $appointments->appends(['date' => $selectedDate])->links() }}
+                </div>
+                @endif
+
+                @if($historyByMonth->isNotEmpty())
+                <div class="history-section">
+                    <hr>
+                    <h5 class="mb-3"><i class="fas fa-history"></i> Riwayat Janji Terlaksana</h5>
+                    @foreach($historyByMonth as $monthName => $appointments)
+                        <div class="history-month">
+                            <div class="history-month-title">{{ $monthName }}</div>
+                            @foreach($appointments as $apt)
+                                <div class="history-item">
+                                    <div>
+                                        <div class="history-date">
+                                            <i class="far fa-calendar"></i>
+                                            {{ \Carbon\Carbon::parse($apt->tanggal_janji)->translatedFormat('l, d F Y') }}
+                                        </div>
+                                        <div class="history-info">
+                                            <i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }} |
+                                            <i class="far fa-user"></i> {{ $apt->nama }} |
+                                            <i class="fas fa-bullseye"></i> {{ $apt->tujuan }}
+                                        </div>
+                                    </div>
+                                    <span class="badge badge-selesai">Selesai</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endforeach
                 </div>
                 @endif
             </div>

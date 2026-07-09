@@ -34,12 +34,12 @@ class AppointmentController extends Controller
         $currentYear = $request->year ?? date('Y');
         $selectedDate = $request->date ?? date('Y-m-d');
 
-        $appointments = Appointment::where('status', 'disetujui')
+        $appointments = Appointment::whereIn('status', ['disetujui', 'selesai'])
             ->where('tanggal_janji', $selectedDate)
             ->orderBy('jam_janji', 'asc')
             ->paginate(9);
 
-        $datesWithAppointments = Appointment::where('status', 'disetujui')
+        $datesWithAppointments = Appointment::whereIn('status', ['disetujui', 'selesai'])
             ->whereMonth('tanggal_janji', $currentMonth)
             ->whereYear('tanggal_janji', $currentYear)
             ->pluck('tanggal_janji')
@@ -48,6 +48,14 @@ class AppointmentController extends Controller
             })
             ->flip()
             ->toArray();
+
+        $historyByMonth = Appointment::where('status', 'selesai')
+            ->where('tanggal_janji', '<', $selectedDate)
+            ->orderBy('tanggal_janji', 'desc')
+            ->get()
+            ->groupBy(function($item) {
+                return Carbon::parse($item->tanggal_janji)->format('F Y');
+            });
 
         $currentMonthName = Carbon::create($currentYear, $currentMonth, 1)->translatedFormat('F');
         $selectedDateFormatted = Carbon::parse($selectedDate)->translatedFormat('l, d F Y');
@@ -61,7 +69,8 @@ class AppointmentController extends Controller
             'currentMonthName',
             'selectedDate',
             'selectedDateFormatted',
-            'today'
+            'today',
+            'historyByMonth'
         ));
     }
 

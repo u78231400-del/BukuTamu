@@ -10,6 +10,24 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AppointmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->autoCompleteAppointments();
+    }
+
+    protected function autoCompleteAppointments()
+    {
+        Appointment::where('status', 'disetujui')
+            ->where(function($query) {
+                $query->where('tanggal_janji', '<', now()->toDateString())
+                    ->orWhere(function($q) {
+                        $q->where('tanggal_janji', now()->toDateString())
+                          ->where('jam_janji', '<', now()->format('H:i'));
+                    });
+            })
+            ->update(['status' => 'selesai']);
+    }
+
     public function agenda(Request $request)
     {
         $currentMonth = $request->month ?? date('n');
@@ -67,8 +85,9 @@ class AppointmentController extends Controller
         $menunggu = Appointment::where('status', 'menunggu')->count();
         $disetujui = Appointment::where('status', 'disetujui')->count();
         $ditolak = Appointment::where('status', 'ditolak')->count();
+        $selesai = Appointment::where('status', 'selesai')->count();
 
-        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui', 'ditolak'));
+        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui', 'ditolak', 'selesai'));
     }
 
     public function store(Request $request)

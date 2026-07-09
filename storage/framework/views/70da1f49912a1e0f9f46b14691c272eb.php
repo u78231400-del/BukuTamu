@@ -39,6 +39,11 @@
         .calendar-mini .day.has-events::after { content: ''; position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background: #e74a3b; border-radius: 50%; }
         .calendar-mini .day.today.has-events::after { background: white; }
         .calendar-mini .day.selected.has-events::after { background: white; }
+        .calendar-mini .day.past { opacity: 0.5; background: #e9ecef; color: #999; }
+        .calendar-mini .day.past:hover { background: #dee2e6; }
+        .time-slot.completed { opacity: 0.7; background: #f8f9fa; }
+        .time-slot.completed .time-label { color: #999; }
+        .badge-selesai { background: #6c757d; color: white; }
         .empty-day { color: #ccc; font-style: italic; }
     </style>
 </head>
@@ -110,10 +115,12 @@
                             <?php
                                 $date = sprintf('%s-%02d-%02d', $currentYear, $currentMonth, $day);
                                 $isToday = $date === $today;
+                                $isPast = $date < $today;
                                 $isSelected = $date === $selectedDate;
                                 $hasEvents = isset($datesWithAppointments[$date]);
                                 $classes = 'day';
                                 if ($isToday) $classes .= ' today';
+                                if ($isPast && !$isToday) $classes .= ' past';
                                 if ($isSelected) $classes .= ' selected';
                                 if ($hasEvents) $classes .= ' has-events';
                             ?>
@@ -147,14 +154,23 @@
                     <?php else: ?>
                         <div class="row g-3">
                             <?php $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $apt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
+                                    $jamJanji = \Carbon\Carbon::parse($apt->jam_janji)->format('H:i');
+                                    $tanggalJanji = \Carbon\Carbon::parse($apt->tanggal_janji)->format('Y-m-d');
+                                    $isPast = $tanggalJanji < $today || ($tanggalJanji == $today && $jamJanji < now()->format('H:i'));
+                                ?>
                                 <div class="col-md-6 col-lg-4">
-                                    <div class="time-slot has-appointment">
+                                    <div class="time-slot has-appointment <?php echo e($isPast ? 'completed' : ''); ?>">
                                         <div class="d-flex justify-content-between align-items-start mb-2">
                                             <div class="time-label">
-                                                <i class="far fa-clock"></i> <?php echo e(\Carbon\Carbon::parse($apt->jam_janji)->format('H:i')); ?>
+                                                <i class="far fa-clock"></i> <?php echo e($jamJanji); ?>
 
                                             </div>
-                                            <span class="badge badge-disetujui"><?php echo e(ucfirst($apt->status)); ?></span>
+                                            <?php if($isPast): ?>
+                                                <span class="badge badge-selesai">Selesai</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-disetujui">Akan Datang</span>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="guest-name">
                                             <i class="far fa-user"></i> <?php echo e($apt->nama); ?>

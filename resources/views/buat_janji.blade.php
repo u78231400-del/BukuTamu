@@ -40,6 +40,8 @@
         .badge-menunggu { background: #f6c23e; }
         .badge-disetujui { background: #1cc88a; }
         .badge-ditolak { background: #e74a3b; }
+        .badge-selesai { background: #6c757d; }
+        .appointment-card.completed { opacity: 0.7; background: #f8f9fa; }
         .nav-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
         .nav-tabs .nav-link.active { font-weight: 600; }
     </style>
@@ -132,6 +134,10 @@
                             <div class="stat-number">{{ $disetujui }}</div>
                             <div class="stat-label">Disetujui</div>
                         </div>
+                        <div class="stat-card-sm" style="background: linear-gradient(135deg, #6c757d, #495057);">
+                            <div class="stat-number">{{ $selesai }}</div>
+                            <div class="stat-label">Selesai</div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -177,6 +183,11 @@
                                 Ditolak <span class="badge bg-danger ms-1">{{ $ditolak }}</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request('status') == 'selesai' ? 'active' : '' }}" href="/buat-janji?status=selesai">
+                                Selesai <span class="badge bg-secondary ms-1">{{ $selesai }}</span>
+                            </a>
+                        </li>
                     </ul>
 
                     @if(request('search') && $appointments->isEmpty())
@@ -188,13 +199,17 @@
 
                     <div class="timeline">
                     @forelse($appointments as $apt)
+                        @php
+                            $isCompleted = $apt->status === 'selesai';
+                        @endphp
                         <div class="timeline-item">
                             <div class="timeline-dot" style="background: 
                                 @if($apt->status == 'disetujui') #1cc88a
                                 @elseif($apt->status == 'ditolak') #e74a3b
+                                @elseif($apt->status == 'selesai') #6c757d
                                 @else #f6c23e @endif;">
                             </div>
-                            <div class="appointment-card" style="margin-bottom: 12px;">
+                            <div class="appointment-card {{ $isCompleted ? 'completed' : '' }}" style="margin-bottom: 12px;">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <div>
                                         <div class="d-flex align-items-center gap-2">

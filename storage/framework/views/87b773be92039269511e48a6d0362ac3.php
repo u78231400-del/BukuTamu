@@ -40,6 +40,8 @@
         .badge-menunggu { background: #f6c23e; }
         .badge-disetujui { background: #1cc88a; }
         .badge-ditolak { background: #e74a3b; }
+        .badge-selesai { background: #6c757d; }
+        .appointment-card.completed { opacity: 0.7; background: #f8f9fa; }
         .nav-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
         .nav-tabs .nav-link.active { font-weight: 600; }
     </style>
@@ -181,6 +183,10 @@ unset($__errorArgs, $__bag); ?>
                             <div class="stat-number"><?php echo e($disetujui); ?></div>
                             <div class="stat-label">Disetujui</div>
                         </div>
+                        <div class="stat-card-sm" style="background: linear-gradient(135deg, #6c757d, #495057);">
+                            <div class="stat-number"><?php echo e($selesai); ?></div>
+                            <div class="stat-label">Selesai</div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-2">
@@ -226,6 +232,11 @@ unset($__errorArgs, $__bag); ?>
                                 Ditolak <span class="badge bg-danger ms-1"><?php echo e($ditolak); ?></span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link <?php echo e(request('status') == 'selesai' ? 'active' : ''); ?>" href="/buat-janji?status=selesai">
+                                Selesai <span class="badge bg-secondary ms-1"><?php echo e($selesai); ?></span>
+                            </a>
+                        </li>
                     </ul>
 
                     <?php if(request('search') && $appointments->isEmpty()): ?>
@@ -237,13 +248,17 @@ unset($__errorArgs, $__bag); ?>
 
                     <div class="timeline">
                     <?php $__empty_1 = true; $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $apt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                        <?php
+                            $isCompleted = $apt->status === 'selesai';
+                        ?>
                         <div class="timeline-item">
                             <div class="timeline-dot" style="background: 
                                 <?php if($apt->status == 'disetujui'): ?> #1cc88a
                                 <?php elseif($apt->status == 'ditolak'): ?> #e74a3b
+                                <?php elseif($apt->status == 'selesai'): ?> #6c757d
                                 <?php else: ?> #f6c23e <?php endif; ?>;">
                             </div>
-                            <div class="appointment-card" style="margin-bottom: 12px;">
+                            <div class="appointment-card <?php echo e($isCompleted ? 'completed' : ''); ?>" style="margin-bottom: 12px;">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <div>
                                         <div class="d-flex align-items-center gap-2">

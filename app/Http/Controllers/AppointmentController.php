@@ -10,6 +10,43 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AppointmentController extends Controller
 {
+    public function agenda(Request $request)
+    {
+        $currentMonth = $request->month ?? date('n');
+        $currentYear = $request->year ?? date('Y');
+        $selectedDate = $request->date ?? date('Y-m-d');
+
+        $appointments = Appointment::where('status', 'disetujui')
+            ->where('tanggal_janji', $selectedDate)
+            ->orderBy('jam_janji', 'asc')
+            ->paginate(9);
+
+        $datesWithAppointments = Appointment::where('status', 'disetujui')
+            ->whereMonth('tanggal_janji', $currentMonth)
+            ->whereYear('tanggal_janji', $currentYear)
+            ->pluck('tanggal_janji')
+            ->map(function($date) {
+                return Carbon::parse($date)->format('Y-m-d');
+            })
+            ->flip()
+            ->toArray();
+
+        $currentMonthName = Carbon::create($currentYear, $currentMonth, 1)->translatedFormat('F');
+        $selectedDateFormatted = Carbon::parse($selectedDate)->translatedFormat('l, d F Y');
+        $today = Carbon::today()->format('Y-m-d');
+
+        return view('agenda', compact(
+            'appointments',
+            'datesWithAppointments',
+            'currentMonth',
+            'currentYear',
+            'currentMonthName',
+            'selectedDate',
+            'selectedDateFormatted',
+            'today'
+        ));
+    }
+
     public function create(Request $request)
     {
         $query = Appointment::query();

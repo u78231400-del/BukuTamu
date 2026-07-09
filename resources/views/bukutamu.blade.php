@@ -49,6 +49,7 @@
                 <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
                 <a class="nav-link" href="/buat-janji">Buat Janji</a>
                 <a class="nav-link" href="/dashboard">Dashboard</a>
+                <a class="nav-link" href="/agenda">Agenda</a>
             </div>
         </div>
     </nav>

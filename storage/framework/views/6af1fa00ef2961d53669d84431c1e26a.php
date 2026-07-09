@@ -31,7 +31,8 @@
             <div class="navbar-nav align-items-center">
                 <a class="nav-link" href="/bukutamu">Buku Tamu</a>
                 <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                <a class="nav-link active" href="/dashboard">Dashboard</a>
+                <a class="nav-link" href="/dashboard">Dashboard</a>
+                <a class="nav-link" href="/agenda">Agenda</a>
                 <div class="nav-item dropdown ms-3">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                         <?php echo e(Auth::user()->name); ?>

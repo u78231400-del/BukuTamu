@@ -146,9 +146,6 @@
                             <span class="badge bg-primary">{{ $appointments->total() }} janji</span>
                         </div>
                         <div class="d-flex gap-2">
-                            <a href="/buat-janji/export{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-success btn-sm">
-                                Export Excel
-                            </a>
                             <form action="/buat-janji" method="GET" class="mb-0">
                                 @if(request('status'))
                                     <input type="hidden" name="status" value="{{ request('status') }}">

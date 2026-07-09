@@ -195,9 +195,6 @@ unset($__errorArgs, $__bag); ?>
                             <span class="badge bg-primary"><?php echo e($appointments->total()); ?> janji</span>
                         </div>
                         <div class="d-flex gap-2">
-                            <a href="/buat-janji/export<?php echo e(request('status') ? '?status=' . request('status') : ''); ?>" class="btn btn-success btn-sm">
-                                Export Excel
-                            </a>
                             <form action="/buat-janji" method="GET" class="mb-0">
                                 <?php if(request('status')): ?>
                                     <input type="hidden" name="status" value="<?php echo e(request('status')); ?>">

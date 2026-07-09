@@ -265,6 +265,17 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 
+    <script>
+        document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
+            var waktuInput = document.querySelector('input[name="waktu_kedatangan"]');
+            if (!waktuInput.value) {
+                var now = new Date();
+                var h = String(now.getHours()).padStart(2, '0');
+                var m = String(now.getMinutes()).padStart(2, '0');
+                waktuInput.value = h + ':' + m;
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <?php echo $__env->make('partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 </body>

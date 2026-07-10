@@ -84,6 +84,8 @@ class AppointmentController extends Controller
 
         if ($request->has('status') && $request->status) {
             $query->where('status', $request->status);
+        } else {
+            $query->whereNotIn('status', ['selesai']);
         }
 
         $appointments = $query->orderByRaw("CASE WHEN status = 'menunggu' THEN 0 ELSE 1 END")

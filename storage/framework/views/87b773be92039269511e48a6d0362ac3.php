@@ -278,7 +278,7 @@ unset($__errorArgs, $__bag); ?>
 
                                         </small>
                                     </div>
-                                    <?php if($apt->status === 'menunggu'): ?>
+                                    <?php if($apt->status === 'menunggu' || $apt->status === 'ditolak'): ?>
                                     <div class="btn-group btn-group-sm">
                                         <a href="<?php echo e(route('appointment.edit', $apt->id)); ?>" class="btn btn-warning btn-sm py-0 px-2" title="Edit">✏️</a>
                                         <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">

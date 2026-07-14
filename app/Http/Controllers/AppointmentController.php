@@ -154,7 +154,15 @@ class AppointmentController extends Controller
                 ->with('error', 'Janji pada tanggal dan jam tersebut sudah terisi!');
         }
 
-        Appointment::create($request->all());
+        Appointment::create([
+            'nama' => ucwords($request->nama),
+            'nomor_hp' => $request->nomor_hp,
+            'tujuan' => ucwords($request->tujuan),
+            'tanggal_janji' => $request->tanggal_janji,
+            'jam_janji' => $request->jam_janji,
+            'jumlah_orang' => $request->jumlah_orang,
+            'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
+        ]);
 
         return redirect('/buat-janji')->with('success', 'Janji berhasil dibuat!');
     }
@@ -247,7 +255,15 @@ class AppointmentController extends Controller
         }
 
         $appointment = Appointment::findOrFail($id);
-        $appointment->update($request->all());
+        $appointment->update([
+            'nama' => ucwords($request->nama),
+            'nomor_hp' => $request->nomor_hp,
+            'tujuan' => ucwords($request->tujuan),
+            'tanggal_janji' => $request->tanggal_janji,
+            'jam_janji' => $request->jam_janji,
+            'jumlah_orang' => $request->jumlah_orang,
+            'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
+        ]);
 
         return redirect('/buat-janji')->with('success', 'Janji berhasil diperbarui!');
     }

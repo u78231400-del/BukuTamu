@@ -81,12 +81,12 @@ class TamuController extends Controller
         ]);
 
         Tamu::create([
-            'nama' => $request->nama,
+            'nama' => ucwords($request->nama),
             'jumlah_orang' => $request->jumlah_orang,
             'waktu_kedatangan' => $request->waktu_kedatangan,
             'nomor_hp' => $request->nomor_hp,
-            'tujuan' => $request->tujuan,
-            'pesan' => $request->pesan,
+            'tujuan' => ucwords($request->tujuan),
+            'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
         ]);
 
         return redirect('/bukutamu')->with('success', 'Pesan berhasil terkirim!');
@@ -137,7 +137,14 @@ class TamuController extends Controller
         ]);
 
         $tamu = Tamu::findOrFail($id);
-        $tamu->update($request->only(['nama', 'jumlah_orang', 'waktu_kedatangan', 'nomor_hp', 'tujuan', 'pesan']));
+        $tamu->update([
+            'nama' => ucwords($request->nama),
+            'jumlah_orang' => $request->jumlah_orang,
+            'waktu_kedatangan' => $request->waktu_kedatangan,
+            'nomor_hp' => $request->nomor_hp,
+            'tujuan' => ucwords($request->tujuan),
+            'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
+        ]);
         return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
     }
 

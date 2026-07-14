@@ -152,7 +152,11 @@
                                             <b>{{ $tamu->nama }}</b>
                                         </div>
                                         <small class="text-muted">
-                                            {{ $tamu->nomor_hp }}
+                                            @auth
+                                                {{ $tamu->nomor_hp }}
+                                            @else
+                                                {{ substr($tamu->nomor_hp, 0, 4) }}{{ str_repeat('*', strlen($tamu->nomor_hp) - 7) }}{{ substr($tamu->nomor_hp, -3) }}
+                                            @endauth
                                         </small>
                                         <br>
                                         <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>

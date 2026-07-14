@@ -265,8 +265,13 @@ unset($__errorArgs, $__bag); ?>
                                             </span>
                                         </div>
                                         <small class="text-muted">
-                                            <?php echo e($apt->nomor_hp); ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                                <?php echo e($apt->nomor_hp); ?>
 
+                                            <?php else: ?>
+                                                <?php echo e(substr($apt->nomor_hp, 0, 4)); ?><?php echo e(str_repeat('*', strlen($apt->nomor_hp) - 7)); ?><?php echo e(substr($apt->nomor_hp, -3)); ?>
+
+                                            <?php endif; ?>
                                         </small>
                                         <br>
                                         <small class="text-muted">Tujuan: <?php echo e($apt->tujuan); ?></small>

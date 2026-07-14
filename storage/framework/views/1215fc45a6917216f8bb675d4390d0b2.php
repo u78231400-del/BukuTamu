@@ -194,8 +194,13 @@ unset($__errorArgs, $__bag); ?>
                                             <b><?php echo e($tamu->nama); ?></b>
                                         </div>
                                         <small class="text-muted">
-                                            <?php echo e($tamu->nomor_hp); ?>
+                                            <?php if(auth()->guard()->check()): ?>
+                                                <?php echo e($tamu->nomor_hp); ?>
 
+                                            <?php else: ?>
+                                                <?php echo e(substr($tamu->nomor_hp, 0, 4)); ?><?php echo e(str_repeat('*', strlen($tamu->nomor_hp) - 7)); ?><?php echo e(substr($tamu->nomor_hp, -3)); ?>
+
+                                            <?php endif; ?>
                                         </small>
                                         <br>
                                         <small class="text-muted">Tujuan: <?php echo e($tamu->tujuan); ?></small>

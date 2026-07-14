@@ -215,7 +215,11 @@
                                             </span>
                                         </div>
                                         <small class="text-muted">
-                                            {{ $apt->nomor_hp }}
+                                            @auth
+                                                {{ $apt->nomor_hp }}
+                                            @else
+                                                {{ substr($apt->nomor_hp, 0, 4) }}{{ str_repeat('*', strlen($apt->nomor_hp) - 7) }}{{ substr($apt->nomor_hp, -3) }}
+                                            @endauth
                                         </small>
                                         <br>
                                         <small class="text-muted">Tujuan: {{ $apt->tujuan }}</small>

@@ -50,6 +50,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-login">Login</button>
+                <a href="/bukutamu" class="btn btn-outline-secondary mt-2 w-100">Kembali</a>
             </form>
         </div>
     </div>

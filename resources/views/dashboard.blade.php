@@ -23,6 +23,8 @@
         .badge-menunggu { background: #f6c23e; color: #000; }
         .badge-disetujui { background: #1cc88a; }
         .badge-ditolak { background: #e74a3b; }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

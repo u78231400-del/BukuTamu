@@ -14,6 +14,8 @@
         .btn-update:hover { background: #41b632; }
         .btn-back { display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 15px; }
         .btn-back:hover { background: #5a6268; color: white; }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

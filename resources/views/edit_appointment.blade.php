@@ -14,6 +14,8 @@
         .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
         .btn-submit:hover { background: #41b632; }
         .btn-back { background: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

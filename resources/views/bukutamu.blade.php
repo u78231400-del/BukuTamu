@@ -39,6 +39,8 @@
         .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
         .appointment-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
         .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

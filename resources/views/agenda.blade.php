@@ -52,6 +52,8 @@
         .history-item:hover { background: #f8f9fa; }
         .history-date { font-weight: 600; color: #333; font-size: 13px; }
         .history-info { color: #666; font-size: 12px; }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

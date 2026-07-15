@@ -44,6 +44,8 @@
         .appointment-card.completed { opacity: 0.7; background: #f8f9fa; }
         .nav-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
         .nav-tabs .nav-link.active { font-weight: 600; }
+        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
+        .navbar-collapse .nav-link { padding: 8px 12px; }
     </style>
 </head>
 <body>

@@ -41,16 +41,36 @@
         .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
         .navbar-collapse .nav-link { padding: 8px 12px; }
+        .navbar-mobile-menu { display: none; position: absolute; right: 0; top: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000; overflow: hidden; }
+        .navbar-mobile-menu.show { display: block; }
+        .navbar-mobile-menu .nav-link { color: #333 !important; padding: 12px 16px; border-bottom: 1px solid #eee; display: block; }
+        .navbar-mobile-menu .nav-link:last-child { border-bottom: none; }
+        .navbar-mobile-menu .nav-link:hover { background: #f8f9fa; }
+        .navbar-mobile-menu .nav-link.active { background: #e7f1ff; color: #0d6efd !important; }
+        @media (max-width: 991px) {
+            .navbar .container { position: relative; }
+            .navbar .navbar-collapse { display: none !important; }
+        }
+        @media (min-width: 992px) {
+            .navbar-mobile-menu { display: none !important; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
         <div class="container">
             <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="d-flex align-items-center gap-2">
+                <div class="navbar-mobile-menu" id="mobileMenu">
+                    <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
+                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                </div>
+                <button class="navbar-toggler" type="button" onclick="toggleMobileMenu()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
                 <div class="navbar-nav ms-auto">
                     <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
                     <a class="nav-link" href="/buat-janji">Buat Janji</a>
@@ -59,6 +79,10 @@
             </div>
         </div>
     </nav>
+    <script>
+        function toggleMobileMenu() { var menu = document.getElementById('mobileMenu'); menu.classList.toggle('show'); }
+        document.addEventListener('click', function(e) { var menu = document.getElementById('mobileMenu'); if (!e.target.closest('.d-flex')) menu.classList.remove('show'); });
+    </script>
 
     <div class="container">
         <div class="row g-4">

@@ -29,23 +29,28 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
             <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
-            <div class="navbar-nav align-items-center">
-                <a class="nav-link" href="/bukutamu">Buku Tamu</a>
-                <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                <a class="nav-link" href="/dashboard">Dashboard</a>
-                <a class="nav-link" href="/agenda">Agenda</a>
-                <div class="nav-item dropdown ms-3">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                        {{ Auth::user()->name }}
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <form id="logout-form" method="POST" action="/logout">
-                                @csrf
-                            </form>
-                            <button type="button" class="dropdown-item" onclick="confirmLogout()">Logout</button>
-                        </li>
-                    </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link" href="/bukutamu">Buku Tamu</a>
+                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
+                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/agenda">Agenda</a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form id="logout-form" method="POST" action="/logout">
+                                    @csrf
+                                </form>
+                                <button type="button" class="dropdown-item" onclick="confirmLogout()">Logout</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

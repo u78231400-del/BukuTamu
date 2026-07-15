@@ -12,7 +12,7 @@
         .list-box { max-height: calc(100vh - 120px); overflow-y: auto; }
         h3 { color: #333; }
         textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        input[type="text"], input[type="email"], input[type="number"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        input[type="text"], input[type="email"], input[type="number"], input[type="time"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         label { margin-bottom: 0; display: block; }
         .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
         .btn-submit:hover { background: #41b632; }

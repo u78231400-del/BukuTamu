@@ -197,6 +197,9 @@
                         <button class="btn btn-sm btn-outline-secondary" onclick="showAll()">
                             <i class="fas fa-list"></i> Tampilkan Semua
                         </button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+                            <i class="fas fa-print"></i> Cetak Agenda
+                        </button>
                     </div>
 
                     <hr>

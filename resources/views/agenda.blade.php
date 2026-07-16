@@ -133,7 +133,7 @@
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <i class="fas fa-calendar text-primary"></i>
                             <select name="year" id="yearSelect" class="form-select form-select-sm select-month" onchange="document.getElementById('monthForm').submit()">
-                                @for($y = date('Y') - 2; $y <= date('Y') + 1; $y++)
+                                @for($y = date('Y') - 2; $y <= 2050; $y++)
                                     <option value="{{ $y }}" {{ $y == $currentYear ? 'selected' : '' }}>
                                         {{ $y }}
                                     </option>

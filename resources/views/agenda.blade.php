@@ -213,8 +213,10 @@
                                         <div class="guest-name">
                                             <i class="far fa-user"></i> {{ $apt->nama }}
                                         </div>
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone"></i> {{ $apt->nomor_hp }}
+                                        </small>
                                         <div class="guest-info">
-                                            <i class="fas fa-phone"></i> {{ $apt->nomor_hp }}<br>
                                             <i class="fas fa-bullseye"></i> {{ $apt->tujuan }}<br>
                                             <i class="fas fa-users"></i> {{ $apt->jumlah_orang }} orang
                                         </div>

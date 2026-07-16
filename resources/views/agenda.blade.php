@@ -237,6 +237,7 @@
                                                 <th>Tujuan</th>
                                                 <th width="80">Jumlah</th>
                                                 <th width="100">Status</th>
+                                                <th width="80">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -270,6 +271,17 @@
                                                             <span class="badge badge-selesai">Selesai</span>
                                                         @else
                                                             <span class="badge badge-akan-datang">Akan Datang</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(!$isPast || $apt->status === 'disetujui')
+                                                            <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="opacity: 0.3;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.3'">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </form>
                                                         @endif
                                                     </td>
                                                 </tr>

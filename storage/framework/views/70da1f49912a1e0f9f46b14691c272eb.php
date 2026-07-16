@@ -61,10 +61,22 @@
         @media (min-width: 992px) {
             .navbar-mobile-menu { display: none !important; }
         }
+        @media print {
+            .navbar, .col-lg-3, .no-print { display: none !important; }
+            .print-header { display: block !important; }
+            .col-lg-9 { width: 100%; max-width: 100%; flex: 0 0 100%; }
+            .card { box-shadow: none; border: none; }
+            .card-body { padding: 0; }
+            .date-section { break-inside: avoid; }
+            .table { font-size: 11px; }
+            .table th, .table td { padding: 6px 8px; }
+            .badge-menunggu, .badge-ditolak { display: none; }
+            body { background: white; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3 no-print">
         <div class="container">
             <a class="navbar-brand" href="/">Buku Tamu</a>
             <div class="d-flex align-items-center gap-2">
@@ -98,7 +110,7 @@
             <div class="col-12">
                 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <h2 class="page-title mb-0">Agenda Janji</h2>
-                    <div class="legend">
+                    <div class="legend no-print">
                         <div class="legend-item filter-all active" onclick="filterStatus('all', this)">
                             <div class="legend-dot" style="background: #888;"></div>
                             <span>Semua</span>
@@ -183,7 +195,7 @@
 
             <div class="col-lg-9">
                 <div class="bg-white p-4 rounded-3 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 no-print">
                         <div class="d-flex align-items-center gap-3">
                             <h4 class="mb-0">
                                 <i class="fas fa-calendar-month text-primary"></i>
@@ -194,12 +206,19 @@
                                 <?php echo e($appointmentsByDate->flatten()->count()); ?> Janji
                             </span>
                         </div>
-                        <button class="btn btn-sm btn-outline-secondary" onclick="showAll()">
-                            <i class="fas fa-list"></i> Tampilkan Semua
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
-                            <i class="fas fa-print"></i> Cetak Agenda
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
+                                <i class="fas fa-print"></i> Cetak Agenda
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="showAll()">
+                                <i class="fas fa-list"></i> Tampilkan Semua
+                            </button>
+                        </div>
+                    </div>
+                    <div class="print-header" style="display: none;">
+                        <h3 class="text-center mb-1">Agenda Janji</h3>
+                        <h5 class="text-center text-muted mb-0"><?php echo e($currentMonthName); ?> <?php echo e($currentYear); ?></h5>
+                        <hr>
                     </div>
 
                     <hr>
@@ -225,10 +244,10 @@
                                             <?php echo e($dateObj->translatedFormat('l, d F Y')); ?>
 
                                             <?php if($isToday): ?>
-                                                <span class="badge bg-primary ms-2">Hari Ini</span>
+                                                <span class="badge bg-primary ms-2 no-print">Hari Ini</span>
                                             <?php endif; ?>
                                             <?php if($isPast): ?>
-                                                <span class="badge bg-secondary ms-2">Lampau</span>
+                                                <span class="badge bg-secondary ms-2 no-print">Lampau</span>
                                             <?php endif; ?>
                                         </h5>
                                         <span class="date-section-count"><?php echo e($appointments->count()); ?> janji</span>

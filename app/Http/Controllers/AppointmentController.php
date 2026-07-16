@@ -32,45 +32,36 @@ class AppointmentController extends Controller
     {
         $currentMonth = $request->month ?? date('n');
         $currentYear = $request->year ?? date('Y');
-        $selectedDate = $request->date ?? date('Y-m-d');
 
-        $appointments = Appointment::whereIn('status', ['disetujui', 'selesai'])
-            ->where('tanggal_janji', $selectedDate)
-            ->orderBy('jam_janji', 'asc')
-            ->paginate(9);
-
-        $datesWithAppointments = Appointment::whereIn('status', ['disetujui', 'selesai'])
+        $allAppointments = Appointment::whereIn('status', ['disetujui', 'selesai'])
             ->whereMonth('tanggal_janji', $currentMonth)
             ->whereYear('tanggal_janji', $currentYear)
-            ->pluck('tanggal_janji')
-            ->map(function($date) {
-                return Carbon::parse($date)->format('Y-m-d');
-            })
-            ->flip()
-            ->toArray();
+            ->orderBy('tanggal_janji', 'asc')
+            ->orderBy('jam_janji', 'asc')
+            ->get();
 
-        $historyByMonth = Appointment::where('status', 'selesai')
-            ->where('tanggal_janji', '<', $selectedDate)
-            ->orderBy('tanggal_janji', 'desc')
-            ->get()
-            ->groupBy(function($item) {
-                return Carbon::parse($item->tanggal_janji)->format('F Y');
-            });
+        $appointmentsByDate = $allAppointments->groupBy(function($item) {
+            return Carbon::parse($item->tanggal_janji)->format('Y-m-d');
+        });
+
+        $datesWithAppointments = $appointmentsByDate->keys()->flip()->map(fn() => true)->toArray();
 
         $currentMonthName = Carbon::create($currentYear, $currentMonth, 1)->translatedFormat('F');
-        $selectedDateFormatted = Carbon::parse($selectedDate)->translatedFormat('l, d F Y');
         $today = Carbon::today()->format('Y-m-d');
+        $availableMonths = Appointment::whereIn('status', ['disetujui', 'selesai'])
+            ->selectRaw('DISTINCT YEAR(tanggal_janji) as year, MONTH(tanggal_janji) as month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->get();
 
         return view('agenda', compact(
-            'appointments',
+            'appointmentsByDate',
             'datesWithAppointments',
             'currentMonth',
             'currentYear',
             'currentMonthName',
-            'selectedDate',
-            'selectedDateFormatted',
             'today',
-            'historyByMonth'
+            'availableMonths'
         ));
     }
 

@@ -123,21 +123,23 @@
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <i class="fas fa-calendar-alt text-primary"></i>
                             <select name="month" id="monthSelect" class="form-select form-select-sm select-month" onchange="document.getElementById('monthForm').submit()">
-                                @for($m = 1; $m <= 12; $m++)
-                                    <option value="{{ $m }}" {{ $m == $currentMonth ? 'selected' : '' }}>
-                                        {{ Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F') }}
+                                <?php for($m = 1; $m <= 12; $m++): ?>
+                                    <option value="<?php echo e($m); ?>" <?php echo e($m == $currentMonth ? 'selected' : ''); ?>>
+                                        <?php echo e(Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F')); ?>
+
                                     </option>
-                                @endfor
+                                <?php endfor; ?>
                             </select>
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-3">
                             <i class="fas fa-calendar text-primary"></i>
                             <select name="year" id="yearSelect" class="form-select form-select-sm select-month" onchange="document.getElementById('monthForm').submit()">
-                                @for($y = date('Y') - 2; $y <= date('Y') + 1; $y++)
-                                    <option value="{{ $y }}" {{ $y == $currentYear ? 'selected' : '' }}>
-                                        {{ $y }}
+                                <?php for($y = date('Y') - 2; $y <= date('Y') + 1; $y++): ?>
+                                    <option value="<?php echo e($y); ?>" <?php echo e($y == $currentYear ? 'selected' : ''); ?>>
+                                        <?php echo e($y); ?>
+
                                     </option>
-                                @endfor
+                                <?php endfor; ?>
                             </select>
                         </div>
                     </form>
@@ -150,19 +152,19 @@
                         <div class="day-header">Kam</div>
                         <div class="day-header">Jum</div>
                         <div class="day-header">Sab</div>
-                        @php
+                        <?php
                             $firstDay = \Carbon\Carbon::create($currentYear, $currentMonth, 1);
                             $daysInMonth = $firstDay->daysInMonth;
                             $startDayOfWeek = $firstDay->dayOfWeek;
                             $today = date('Y-m-d');
-                        @endphp
+                        ?>
 
-                        @for($i = 0; $i < $startDayOfWeek; $i++)
+                        <?php for($i = 0; $i < $startDayOfWeek; $i++): ?>
                             <div class="day"></div>
-                        @endfor
+                        <?php endfor; ?>
 
-                        @for($day = 1; $day <= $daysInMonth; $day++)
-                            @php
+                        <?php for($day = 1; $day <= $daysInMonth; $day++): ?>
+                            <?php
                                 $date = sprintf('%s-%02d-%02d', $currentYear, $currentMonth, $day);
                                 $isToday = $date === $today;
                                 $isPast = $date < $today;
@@ -172,9 +174,9 @@
                                 if ($isToday) $classes .= ' today';
                                 if ($isPast && !$isToday) $classes .= ' past';
                                 if ($hasEvents) $classes .= ' has-events';
-                            @endphp
-                            <div class="{{ $classes }}" onclick="filterByDate('{{ $date }}')">{{ $day }}</div>
-                        @endfor
+                            ?>
+                            <div class="<?php echo e($classes); ?>" onclick="filterByDate('<?php echo e($date); ?>')"><?php echo e($day); ?></div>
+                        <?php endfor; ?>
                     </div>
                 </div>
             </div>
@@ -185,10 +187,11 @@
                         <div class="d-flex align-items-center gap-3">
                             <h4 class="mb-0">
                                 <i class="fas fa-calendar-month text-primary"></i>
-                                {{ $currentMonthName }} {{ $currentYear }}
+                                <?php echo e($currentMonthName); ?> <?php echo e($currentYear); ?>
+
                             </h4>
                             <span class="badge bg-primary">
-                                {{ $appointmentsByDate->flatten()->count() }} Janji
+                                <?php echo e($appointmentsByDate->flatten()->count()); ?> Janji
                             </span>
                         </div>
                         <button class="btn btn-sm btn-outline-secondary" onclick="showAll()">
@@ -198,36 +201,37 @@
 
                     <hr>
 
-                    @if($appointmentsByDate->isEmpty())
+                    <?php if($appointmentsByDate->isEmpty()): ?>
                         <div class="no-data">
                             <i class="fas fa-calendar-times fa-3x mb-3 text-muted"></i>
                             <h5>Tidak ada janji</h5>
                             <p>Tidak ada janji yang disetujui untuk bulan ini.</p>
                         </div>
-                    @else
+                    <?php else: ?>
                         <div id="appointmentsList">
-                            @foreach($appointmentsByDate as $date => $appointments)
-                                @php
+                            <?php $__currentLoopData = $appointmentsByDate; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $date => $appointments): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <?php
                                     $dateObj = \Carbon\Carbon::parse($date);
                                     $isToday = $date === $today;
                                     $isPast = $date < $today;
-                                @endphp
-                                <div class="date-section mb-3" data-date="{{ $date }}">
+                                ?>
+                                <div class="date-section mb-3" data-date="<?php echo e($date); ?>">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="date-section-title">
                                             <i class="far fa-calendar"></i>
-                                            {{ $dateObj->translatedFormat('l, d F Y') }}
-                                            @if($isToday)
+                                            <?php echo e($dateObj->translatedFormat('l, d F Y')); ?>
+
+                                            <?php if($isToday): ?>
                                                 <span class="badge bg-primary ms-2">Hari Ini</span>
-                                            @endif
-                                            @if($isPast)
+                                            <?php endif; ?>
+                                            <?php if($isPast): ?>
                                                 <span class="badge bg-secondary ms-2">Lampau</span>
-                                            @endif
+                                            <?php endif; ?>
                                         </h5>
-                                        <span class="date-section-count">{{ $appointments->count() }} janji</span>
+                                        <span class="date-section-count"><?php echo e($appointments->count()); ?> janji</span>
                                     </div>
                                 </div>
-                                <div class="table-responsive mb-4" id="table-{{ str_replace('-', '', $date) }}">
+                                <div class="table-responsive mb-4" id="table-<?php echo e(str_replace('-', '', $date)); ?>">
                                     <table class="table table-hover align-middle">
                                         <thead>
                                             <tr>
@@ -240,46 +244,49 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($appointments as $apt)
-                                                @php
+                                            <?php $__currentLoopData = $appointments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $apt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php
                                                     $jamJanji = \Carbon\Carbon::parse($apt->jam_janji)->format('H:i');
                                                     $isPast = $date < $today || ($date == $today && $jamJanji < now()->format('H:i'));
                                                     $rowStatus = $isPast ? 'selesai' : 'akan-datang';
-                                                @endphp
-                                                <tr data-status="{{ $rowStatus }}">
+                                                ?>
+                                                <tr data-status="<?php echo e($rowStatus); ?>">
                                                     <td>
-                                                        <span class="fw-bold text-primary">{{ $jamJanji }}</span>
+                                                        <span class="fw-bold text-primary"><?php echo e($jamJanji); ?></span>
                                                     </td>
                                                     <td>
-                                                        <div class="fw-semibold">{{ $apt->nama }}</div>
-                                                        @if($apt->pesan)
-                                                            <small class="guest-note">{{ Str::limit($apt->pesan, 50) }}</small>
-                                                        @endif
+                                                        <div class="fw-semibold"><?php echo e($apt->nama); ?></div>
+                                                        <?php if($apt->pesan): ?>
+                                                            <small class="guest-note"><?php echo e(Str::limit($apt->pesan, 50)); ?></small>
+                                                        <?php endif; ?>
                                                     </td>
                                                     <td>
-                                                        <i class="fas fa-phone text-muted"></i> {{ $apt->nomor_hp }}
+                                                        <i class="fas fa-phone text-muted"></i> <?php echo e($apt->nomor_hp); ?>
+
                                                     </td>
                                                     <td>
-                                                        <i class="fas fa-bullseye text-muted"></i> {{ $apt->tujuan }}
+                                                        <i class="fas fa-bullseye text-muted"></i> <?php echo e($apt->tujuan); ?>
+
                                                     </td>
                                                     <td>
-                                                        <i class="fas fa-users text-muted"></i> {{ $apt->jumlah_orang }}
+                                                        <i class="fas fa-users text-muted"></i> <?php echo e($apt->jumlah_orang); ?>
+
                                                     </td>
                                                     <td>
-                                                        @if($isPast)
+                                                        <?php if($isPast): ?>
                                                             <span class="badge badge-selesai">Selesai</span>
-                                                        @else
+                                                        <?php else: ?>
                                                             <span class="badge badge-akan-datang">Akan Datang</span>
-                                                        @endif
+                                                        <?php endif; ?>
                                                     </td>
                                                 </tr>
-                                            @endforeach
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                         </tbody>
                                     </table>
                                 </div>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -329,3 +336,4 @@
     </script>
 </body>
 </html>
+<?php /**PATH C:\laragon\www\bukutamu\resources\views/agenda.blade.php ENDPATH**/ ?>

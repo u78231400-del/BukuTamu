@@ -246,6 +246,7 @@
                                             </span>
                                         </div>
                                         <small class="text-muted">
+                                            <i class="fas fa-phone"></i>
                                             @auth
                                                 {{ $apt->nomor_hp }}
                                             @else

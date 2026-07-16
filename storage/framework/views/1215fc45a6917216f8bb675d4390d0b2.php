@@ -104,6 +104,19 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 
+                        <label>Nomor HP:</label>
+                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="<?php echo e(old('nomor_hp')); ?>" required>
+                        <?php $__errorArgs = ['nomor_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
+                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
                         <label>Jumlah Orang:</label>
                         <input type="number" name="jumlah_orang" placeholder="Jumlah orang..." value="<?php echo e(old('jumlah_orang', 1)); ?>" min="1" required>
                         <?php $__errorArgs = ['jumlah_orang'];
@@ -120,19 +133,6 @@ unset($__errorArgs, $__bag); ?>
                         <label>Waktu Kedatangan:</label>
                         <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>" step="3600">
                         <?php $__errorArgs = ['waktu_kedatangan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Nomor HP:</label>
-                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="<?php echo e(old('nomor_hp')); ?>" required>
-                        <?php $__errorArgs = ['nomor_hp'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -225,6 +225,7 @@ unset($__errorArgs, $__bag); ?>
                                             <b><?php echo e($tamu->nama); ?></b>
                                         </div>
                                         <small class="text-muted">
+                                            <i class="fas fa-phone"></i>
                                             <?php if(auth()->guard()->check()): ?>
                                                 <?php echo e($tamu->nomor_hp); ?>
 

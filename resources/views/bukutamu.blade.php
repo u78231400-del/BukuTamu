@@ -97,6 +97,12 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
+                        <label>Nomor HP:</label>
+                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
+                        @error('nomor_hp')
+                            <div class="text-danger small mb-2">{{ $message }}</div>
+                        @enderror
+
                         <label>Jumlah Orang:</label>
                         <input type="number" name="jumlah_orang" placeholder="Jumlah orang..." value="{{ old('jumlah_orang', 1) }}" min="1" required>
                         @error('jumlah_orang')
@@ -106,12 +112,6 @@
                         <label>Waktu Kedatangan:</label>
                         <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan') }}" step="3600">
                         @error('waktu_kedatangan')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Nomor HP:</label>
-                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
-                        @error('nomor_hp')
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
@@ -183,6 +183,7 @@
                                             <b>{{ $tamu->nama }}</b>
                                         </div>
                                         <small class="text-muted">
+                                            <i class="fas fa-phone"></i>
                                             @auth
                                                 {{ $tamu->nomor_hp }}
                                             @else

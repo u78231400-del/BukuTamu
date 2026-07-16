@@ -296,6 +296,7 @@ unset($__errorArgs, $__bag); ?>
                                             </span>
                                         </div>
                                         <small class="text-muted">
+                                            <i class="fas fa-phone"></i>
                                             <?php if(auth()->guard()->check()): ?>
                                                 <?php echo e($apt->nomor_hp); ?>
 

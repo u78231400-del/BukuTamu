@@ -130,7 +130,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
 
-                        <label>Waktu Kedatangan:</label>
+                        <label>Waktu Kedatangan (Opsional):</label>
                         <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>" step="3600">
                         <?php $__errorArgs = ['waktu_kedatangan'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');

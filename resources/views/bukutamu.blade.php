@@ -109,7 +109,7 @@
                             <div class="text-danger small mb-2">{{ $message }}</div>
                         @enderror
 
-                        <label>Waktu Kedatangan:</label>
+                        <label>Waktu Kedatangan (Opsional):</label>
                         <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan') }}" step="3600">
                         @error('waktu_kedatangan')
                             <div class="text-danger small mb-2">{{ $message }}</div>

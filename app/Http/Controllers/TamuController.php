@@ -60,7 +60,16 @@ class TamuController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
-            'waktu_kedatangan' => 'nullable|date_format:H:i',
+            'waktu_kedatangan' => [
+                'nullable',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $now = Carbon::now()->format('H:i');
+                    if ($value > $now) {
+                        $fail('Waktu kedatangan tidak boleh lebih dari jam sekarang!');
+                    }
+                },
+            ],
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',
@@ -116,7 +125,16 @@ class TamuController extends Controller
             'jumlah_orang' => 'required|integer|min:1',
             'nomor_hp' => 'required|min:10|max:15|regex:/^[0-9]+$/',
             'tujuan' => 'required|min:2|max:100',
-            'waktu_kedatangan' => 'nullable|date_format:H:i',
+            'waktu_kedatangan' => [
+                'nullable',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $now = Carbon::now()->format('H:i');
+                    if ($value > $now) {
+                        $fail('Waktu kedatangan tidak boleh lebih dari jam sekarang!');
+                    }
+                },
+            ],
             'pesan' => 'nullable|max:1000',
         ], [
             'nama.required' => 'Nama wajib diisi!',

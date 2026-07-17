@@ -64,7 +64,7 @@
         <a href="/bukutamu" class="btn-back">← Kembali</a>
         <h1>✏️ Edit Tamu</h1>
         
-        <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST">
+        <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST" novalidate>
             @csrf
             @method('PUT')
             <label>Nama/Instansi:</label>

@@ -89,7 +89,7 @@
             <div class="col-lg-5">
                 <div class="form-box scrollbar-thin">
                     <h3>📝 Isi Buku Tamu</h3>
-                    <form action="/bukutamu" method="POST">
+                    <form action="/bukutamu" method="POST" novalidate>
                         <?php echo csrf_field(); ?>
                         <label>Nama/Instansi:</label>
                         <input type="text" name="nama" placeholder="Nama atau instansi..." value="<?php echo e(old('nama')); ?>" required>
@@ -303,14 +303,18 @@ unset($__errorArgs, $__bag); ?>
     </div>
 
     <script>
-        document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             var waktuInput = document.querySelector('input[name="waktu_kedatangan"]');
-            if (!waktuInput.value) {
-                var now = new Date();
-                var h = String(now.getHours()).padStart(2, '0');
-                var m = String(now.getMinutes()).padStart(2, '0');
-                waktuInput.value = h + ':' + m;
-            }
+            var now = new Date();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            waktuInput.max = h + ':' + m;
+
+            document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
+                if (!waktuInput.value) {
+                    waktuInput.value = h + ':' + m;
+                }
+            });
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', 'Dashboard - NurseCall'); ?>
+<?php $__env->startSection('title', 'Dashboard - RS Medika'); ?>
 <?php $__env->startSection('page-title', 'Dashboard'); ?>
 <?php $__env->startSection('breadcrumb'); ?>
     <a href="/dashboard"><i class="fas fa-home me-2"></i>Home</a>
@@ -21,7 +21,16 @@
     .recent-info { flex: 1; margin-left: 0.75rem; min-width: 0; }
     .recent-name { font-weight: 500; color: var(--gray-900); font-size: 0.875rem; }
     .recent-time { font-size: 0.75rem; color: var(--gray-400); }
-    @media (max-width: 1200px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } .charts-grid, .charts-row2, .bottom-grid { grid-template-columns: 1fr; } }
+    .welcome-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-lg); padding: 1.75rem 2rem; color: white; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+    .welcome-header::before { content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+    .welcome-header::after { content: ''; position: absolute; bottom: -30%; right: 10%; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+    .welcome-content { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; }
+    .welcome-text h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .welcome-text p { font-size: 0.875rem; opacity: 0.9; }
+    .welcome-icon { font-size: 3.5rem; opacity: 0.3; }
+    .welcome-date { font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem; }
+    @media (max-width: 1200px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } .charts-grid, .charts-row2, .bottom-grid { grid-template-columns: 1fr; } .welcome-header { padding: 1.25rem; } .welcome-text h2 { font-size: 1.25rem; } .welcome-icon { font-size: 2.5rem; } }
+    @media (max-width: 640px) { .welcome-content { flex-direction: column; align-items: flex-start; gap: 1rem; } .welcome-icon { display: none; } }
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -33,19 +42,36 @@
     </div>
     <?php endif; ?>
 
+    <div class="welcome-header animate-fade-in">
+        <div class="welcome-content">
+            <div class="welcome-text">
+                <h2>Selamat Datang Kembali, Admin</h2>
+                <p>Kelola data kunjungan pasien dan jadwal kunjungan dengan mudah.</p>
+                <div class="welcome-date">
+                    <i class="fas fa-calendar-alt me-1"></i>
+                    <?php echo e(\Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y')); ?>
+
+                </div>
+            </div>
+            <div class="welcome-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard-grid mb-4">
         <div class="stat-card">
             <div class="stat-icon primary"><i class="fas fa-users"></i></div>
             <div class="stat-info">
                 <div class="stat-value"><?php echo e($totalTamu); ?></div>
-                <div class="stat-label">Total Tamu</div>
+                <div class="stat-label">Total Kunjungan</div>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon success"><i class="fas fa-calendar-check"></i></div>
             <div class="stat-info">
                 <div class="stat-value"><?php echo e($tamuHariIni); ?></div>
-                <div class="stat-label">Hari Ini</div>
+                <div class="stat-label">Kunjungan Hari Ini</div>
             </div>
         </div>
         <div class="stat-card">
@@ -67,7 +93,7 @@
     <div class="charts-grid mb-4">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-pie me-2 text-primary"></i>Status Janji Tamu</h3>
+                <h3 class="card-title"><i class="fas fa-chart-pie me-2 text-primary"></i>Status Jadwal Kunjungan</h3>
             </div>
             <div class="card-body" style="display:flex;align-items:center;justify-content:center;">
                 <canvas id="chartJanji" style="max-width:280px;max-height:280px;"></canvas>
@@ -75,7 +101,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-area me-2 text-success"></i>Tren Tamu 7 Hari Terakhir</h3>
+                <h3 class="card-title"><i class="fas fa-chart-area me-2 text-success"></i>Tren Kunjungan 7 Hari Terakhir</h3>
             </div>
             <div class="card-body">
                 <canvas id="chart7hari"></canvas>
@@ -102,7 +128,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-tasks me-2 text-warning"></i>Statistik Janji</h3>
+                <h3 class="card-title"><i class="fas fa-tasks me-2 text-warning"></i>Statistik Jadwal Kunjungan</h3>
             </div>
             <div class="card-body">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
@@ -138,7 +164,7 @@
                         <thead>
                             <tr>
                                 <th>Bulan</th>
-                                <th style="text-align:right;">Jumlah Tamu</th>
+                                <th style="text-align:right;">Jumlah Kunjungan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -161,7 +187,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-user-clock me-2 text-danger"></i>Tamu Terbaru</h3>
+                <h3 class="card-title"><i class="fas fa-user-clock me-2 text-danger"></i>Kunjungan Terbaru</h3>
             </div>
             <div class="card-body p-0">
                 <ul class="recent-list" style="padding:0 1rem;">
@@ -222,7 +248,7 @@
         data: {
             labels: <?php echo json_encode($labels7hari, 15, 512) ?>,
             datasets: [{
-                label: 'Jumlah Tamu',
+                label: 'Jumlah Kunjungan',
                 data: <?php echo json_encode($hariTerakhir, 15, 512) ?>,
                 borderColor: '#10b981',
                 backgroundColor: grad7,
@@ -255,7 +281,7 @@
         data: {
             labels: <?php echo json_encode($labelsBulan, 15, 512) ?>,
             datasets: [{
-                label: 'Jumlah Tamu',
+                label: 'Jumlah Kunjungan',
                 data: <?php echo json_encode($dataPerBulan, 15, 512) ?>,
                 backgroundColor: 'rgba(79, 70, 229, 0.8)',
                 borderColor: '#4f46e5',

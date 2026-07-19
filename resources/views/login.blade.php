@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NurseCall - Sistem Buku Tamu & Penjadwalan Janji</title>
+    <title>RS Medika - Sistem Manajemen Kunjungan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -70,8 +70,8 @@
     <div class="login-left">
         <div class="login-card">
             <div class="brand">
-                <div class="brand-icon"><i class="fas fa-bell"></i></div>
-                <span class="brand-text">NurseCall</span>
+                <div class="brand-icon"><i class="fas fa-hospital"></i></div>
+                <span class="brand-text">RS Medika</span>
             </div>
 
             <h1 class="login-title">Selamat Datang</h1>
@@ -115,17 +115,17 @@
 
     <div class="login-right">
         <div class="showcase-content">
-            <div class="showcase-icon"><i class="fas fa-bell"></i></div>
-            <h2 class="showcase-title">Sistem Buku Tamu<br>& Penjadwalan Janji</h2>
-            <p class="showcase-desc">Kelola kunjungan tamu dan jadwal janji dengan mudah, efisien, dan profesional.</p>
+            <div class="showcase-icon"><i class="fas fa-hospital"></i></div>
+            <h2 class="showcase-title">Sistem Manajemen Kunjungan RS Medika</h2>
+            <p class="showcase-desc">Kelola kunjungan pasien dan jadwal kunjungan dengan mudah, efisien, dan profesional.</p>
             <div class="showcase-features">
                 <div class="showcase-feature">
                     <i class="fas fa-check"></i>
-                    <span>Registrasi tamu otomatis</span>
+                    <span>Registrasi kunjungan otomatis</span>
                 </div>
                 <div class="showcase-feature">
                     <i class="fas fa-check"></i>
-                    <span>Manajemen jadwal janji</span>
+                    <span>Manajemen jadwal kunjungan</span>
                 </div>
                 <div class="showcase-feature">
                     <i class="fas fa-check"></i>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="showcase-feature">
                     <i class="fas fa-check"></i>
-                    <span>Export data ke Excel</span>
+                    <span>Export rekap data kunjungan</span>
                 </div>
             </div>
         </div>

@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
+use App\Models\Appointment;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         Carbon::setLocale('id');
+
+        View::composer('layouts.app', function ($view) {
+            $pendingCount = 0;
+            if (auth()->check()) {
+                $pendingCount = Appointment::where('status', 'menunggu')->count();
+            }
+            $view->with('pendingCount', $pendingCount);
+        });
     }
 }

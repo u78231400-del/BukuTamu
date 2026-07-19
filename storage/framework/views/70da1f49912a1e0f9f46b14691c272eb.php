@@ -1,9 +1,9 @@
-<?php $__env->startSection('title', 'Agenda - NurseCall'); ?>
-<?php $__env->startSection('page-title', 'Agenda'); ?>
+<?php $__env->startSection('title', 'Agenda Kunjungan - RS Medika'); ?>
+<?php $__env->startSection('page-title', 'Agenda Kunjungan'); ?>
 <?php $__env->startSection('breadcrumb'); ?>
     <a href="/"><i class="fas fa-home me-2"></i>Home</a>
     <i class="fas fa-chevron-right text-xs"></i>
-    <span>Agenda</span>
+    <span>Agenda Kunjungan</span>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('styles'); ?>
@@ -127,7 +127,7 @@
         <div class="agenda-header no-print">
             <div class="agenda-title">
                 <h3><i class="fas fa-calendar me-2 text-success"></i><?php echo e($currentMonthName); ?> <?php echo e($currentYear); ?></h3>
-                <span class="badge badge-primary"><?php echo e($appointmentsByDate->flatten()->count()); ?> Janji</span>
+                <span class="badge badge-primary"><?php echo e($appointmentsByDate->flatten()->count()); ?> Jadwal</span>
             </div>
             <div class="flex gap-2">
                 <button class="btn btn-sm btn-outline" onclick="window.print()">
@@ -140,7 +140,7 @@
         </div>
 
         <div class="print-header hidden">
-            <h3 class="text-center mb-1">Agenda Janji</h3>
+            <h3 class="text-center mb-1">Agenda Kunjungan</h3>
             <h5 class="text-center text-muted mb-0"><?php echo e($currentMonthName); ?> <?php echo e($currentYear); ?></h5>
             <hr>
         </div>
@@ -148,8 +148,8 @@
         <?php if($appointmentsByDate->isEmpty()): ?>
             <div class="agenda-empty" style="padding:4rem 1rem;">
                 <i class="fas fa-calendar-times" style="font-size:3rem;margin-bottom:1rem;display:block;color:var(--gray-300);"></i>
-                <h4 style="font-size:1.1rem;font-weight:600;color:var(--gray-700);">Tidak ada janji</h4>
-                <p class="text-muted" style="margin:0.5rem 0 0;">Tidak ada janji yang disetujui untuk bulan ini.</p>
+                <h4 style="font-size:1.1rem;font-weight:600;color:var(--gray-700);">Tidak ada jadwal kunjungan</h4>
+                <p class="text-muted" style="margin:0.5rem 0 0;">Tidak ada jadwal kunjungan yang disetujui untuk bulan ini.</p>
             </div>
         <?php else: ?>
             <div id="appointmentsList">
@@ -172,7 +172,7 @@
                                     <span class="badge badge-gray no-print">Lampau</span>
                                 <?php endif; ?>
                             </div>
-                            <span class="date-block-count"><?php echo e($appointments->count()); ?> janji</span>
+                            <span class="date-block-count"><?php echo e($appointments->count()); ?> kunjungan</span>
                         </div>
                         <div class="table-wrapper">
                             <table class="apt-table">
@@ -220,7 +220,7 @@
                                             </td>
                                             <td data-label="Aksi">
                                                 <?php if(auth()->guard()->check()): ?>
-                                                <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                                                 <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus jadwal ini?')">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
                                                     <button type="submit" class="btn btn-icon btn-sm btn-outline" title="Hapus" style="color:var(--danger);opacity:0.5;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">

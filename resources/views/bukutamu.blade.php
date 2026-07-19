@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Buku Tamu - NurseCall')
-@section('page-title', 'Buku Tamu')
+@section('title', 'Kunjungan Pasien - RS Medika')
+@section('page-title', 'Kunjungan Pasien')
 @section('breadcrumb')
     <a href="/"><i class="fas fa-home me-2"></i>Home</a>
     <i class="fas fa-chevron-right text-xs"></i>
-    <span>Buku Tamu</span>
+    <span>Kunjungan Pasien</span>
 @endsection
 
 @push('styles')
@@ -57,7 +57,7 @@
         <div class="form-header">
             <div class="form-icon"><i class="fas fa-user-plus"></i></div>
             <div class="form-header-text">
-                <h3>Registrasi Tamu</h3>
+                <h3>Registrasi Kunjungan</h3>
                 <p>Isi data diri dan tujuan kunjungan</p>
             </div>
         </div>
@@ -123,8 +123,8 @@
     <div class="card">
         <div class="guest-list-header">
             <div class="guest-list-title">
-                <h3>Daftar Tamu</h3>
-                <span class="badge badge-primary">{{ $tamus->total() }} tamu</span>
+                <h3>Daftar Kunjungan</h3>
+                <span class="badge badge-primary">{{ $tamus->total() }} kunjungan</span>
             </div>
             <form action="/bukutamu" method="GET" class="search-wrap">
                 <input type="text" name="search" class="form-control" placeholder="Cari nama atau instansi..." value="{{ request('search') }}">
@@ -140,7 +140,7 @@
                 <div class="guest-empty" style="padding:3rem;">
                     <i class="fas fa-search"></i>
                     <h4>Tidak ditemukan</h4>
-                    <p class="text-muted">Tamu dengan nama "{{ request('search') }}" tidak ada.</p>
+                    <p class="text-muted">Kunjungan dengan nama "{{ request('search') }}" tidak ada.</p>
                 </div>
             @endif
 
@@ -158,7 +158,7 @@
                             @endauth
                         </span>
                         <span><i class="fas fa-bullseye"></i> {{ $tamu->tujuan }}</span>
-                        <span><i class="fas fa-users"></i> {{ $tamu->jumlah_orang }} orang</span>
+                        <span><i class="fas fa-users"></i> {{ $tamu->jumlah_orang }} org</span>
                         <span><i class="fas fa-calendar"></i> {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }}</span>
                         @if($tamu->waktu_kedatangan)
                         <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($tamu->waktu_kedatangan)->format('H:i') }}</span>
@@ -181,7 +181,7 @@
                     <form action="{{ route('buku-tamu.destroy', $tamu->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data tamu ini?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);">
+                        <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);" onclick="return confirm('Hapus data kunjungan ini?')">
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
@@ -206,8 +206,8 @@
             @empty
             <div class="guest-empty">
                 <i class="fas fa-user-slash"></i>
-                <h4>Belum ada tamu</h4>
-                <p class="text-muted">Tamu pertama akan muncul di sini.</p>
+                <h4>Belum ada kunjungan</h4>
+                <p class="text-muted">Kunjungan pertama akan muncul di sini.</p>
             </div>
             @endforelse
         </div>

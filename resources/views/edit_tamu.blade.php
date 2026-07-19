@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Tamu - NurseCall')
-@section('page-title', 'Edit Tamu')
+@section('title', 'Edit Kunjungan - RS Medika')
+@section('page-title', 'Edit Kunjungan')
 @section('breadcrumb')
     <a href="/"><i class="fas fa-home me-2"></i>Home</a>
     <i class="fas fa-chevron-right text-xs"></i>
-    <a href="/">Buku Tamu</a>
+    <a href="/">Kunjungan Pasien</a>
     <i class="fas fa-chevron-right text-xs"></i>
     <span>Edit</span>
 @endsection
@@ -36,8 +36,8 @@
             <div class="form-header">
                 <div class="form-icon"><i class="fas fa-user-edit"></i></div>
                 <div class="form-header-text">
-                    <h3>Edit Data Tamu</h3>
-                    <p>Perbarui informasi tamu</p>
+                    <h3>Edit Data Kunjungan</h3>
+                    <p>Perbarui informasi kunjungan</p>
                 </div>
             </div>
             <div class="form-body">

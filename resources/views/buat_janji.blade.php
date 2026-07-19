@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Buat Janji - NurseCall')
-@section('page-title', 'Buat Janji')
+@section('title', 'Jadwal Kunjungan - RS Medika')
+@section('page-title', 'Jadwal Kunjungan')
 @section('breadcrumb')
     <a href="/"><i class="fas fa-home me-2"></i>Home</a>
     <i class="fas fa-chevron-right text-xs"></i>
-    <span>Buat Janji</span>
+    <span>Jadwal Kunjungan</span>
 @endsection
 
 @push('styles')
@@ -68,7 +68,7 @@
         <div class="form-header">
             <div class="form-icon"><i class="fas fa-calendar-plus"></i></div>
             <div class="form-header-text">
-                <h3>Form Buat Janji</h3>
+                <h3>Form Jadwal Kunjungan</h3>
                 <p>Ajukan jadwal kunjungan Anda</p>
             </div>
         </div>
@@ -135,7 +135,7 @@
                 @enderror
 
                 <button type="submit" class="btn btn-success w-full" style="padding: 0.625rem;">
-                    <i class="fas fa-calendar-check me-2"></i>Buat Janji
+                    <i class="fas fa-calendar-check me-2"></i>Ajukan Kunjungan
                 </button>
             </form>
         </div>
@@ -144,8 +144,8 @@
     <div class="card">
         <div class="apt-list-header">
             <div class="apt-list-title">
-                <h3>Daftar Janji</h3>
-                <span class="badge badge-primary">{{ $appointments->total() }} janji</span>
+                <h3>Daftar Jadwal Kunjungan</h3>
+                <span class="badge badge-primary">{{ $appointments->total() }} jadwal</span>
             </div>
             <form action="/buat-janji" method="GET" class="search-wrap">
                 @if(request('status'))
@@ -180,7 +180,7 @@
                 <div class="apt-empty" style="padding:3rem;">
                     <i class="fas fa-search"></i>
                     <h4>Tidak ditemukan</h4>
-                    <p class="text-muted">Janji dengan nama "{{ request('search') }}" tidak ada.</p>
+                    <p class="text-muted">Jadwal dengan nama "{{ request('search') }}" tidak ada.</p>
                 </div>
             @endif
 
@@ -205,7 +205,7 @@
                             @endauth
                         </span>
                         <span><i class="fas fa-bullseye"></i> {{ $apt->tujuan }}</span>
-                        <span><i class="fas fa-users"></i> {{ $apt->jumlah_orang }} orang</span>
+                        <span><i class="fas fa-users"></i> {{ $apt->jumlah_orang }} org</span>
                         <span><i class="fas fa-calendar"></i> {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }}</span>
                         <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}</span>
                     </div>
@@ -224,20 +224,20 @@
                             <i class="fas fa-pen"></i>
                         </a>
                         @auth
-                        <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
+                        <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui kunjungan ini?')">
                             @csrf
                             <button type="submit" class="btn btn-icon" title="Setujui" style="background:var(--success);color:white;">
                                 <i class="fas fa-check"></i>
                             </button>
                         </form>
-                        <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
+                        <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak kunjungan ini?')">
                             @csrf
                             <button type="submit" class="btn btn-icon" title="Tolak" style="background:var(--danger);color:white;">
                                 <i class="fas fa-times"></i>
                             </button>
                         </form>
                         @endauth
-                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus jadwal ini?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);">
@@ -265,8 +265,8 @@
             @empty
             <div class="apt-empty">
                 <i class="fas fa-calendar-times"></i>
-                <h4>Belum ada janji</h4>
-                <p class="text-muted">Janji pertama akan muncul di sini.</p>
+                <h4>Belum ada jadwal kunjungan</h4>
+                <p class="text-muted">Jadwal kunjungan pertama akan muncul di sini.</p>
             </div>
             @endforelse
         </div>

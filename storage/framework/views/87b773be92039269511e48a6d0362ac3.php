@@ -1,9 +1,9 @@
-<?php $__env->startSection('title', 'Buat Janji - NurseCall'); ?>
-<?php $__env->startSection('page-title', 'Buat Janji'); ?>
+<?php $__env->startSection('title', 'Jadwal Kunjungan - RS Medika'); ?>
+<?php $__env->startSection('page-title', 'Jadwal Kunjungan'); ?>
 <?php $__env->startSection('breadcrumb'); ?>
     <a href="/"><i class="fas fa-home me-2"></i>Home</a>
     <i class="fas fa-chevron-right text-xs"></i>
-    <span>Buat Janji</span>
+    <span>Jadwal Kunjungan</span>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('styles'); ?>
@@ -66,7 +66,7 @@
         <div class="form-header">
             <div class="form-icon"><i class="fas fa-calendar-plus"></i></div>
             <div class="form-header-text">
-                <h3>Form Buat Janji</h3>
+                <h3>Form Jadwal Kunjungan</h3>
                 <p>Ajukan jadwal kunjungan Anda</p>
             </div>
         </div>
@@ -182,7 +182,7 @@ endif;
 unset($__errorArgs, $__bag); ?>
 
                 <button type="submit" class="btn btn-success w-full" style="padding: 0.625rem;">
-                    <i class="fas fa-calendar-check me-2"></i>Buat Janji
+                    <i class="fas fa-calendar-check me-2"></i>Ajukan Kunjungan
                 </button>
             </form>
         </div>
@@ -191,8 +191,8 @@ unset($__errorArgs, $__bag); ?>
     <div class="card">
         <div class="apt-list-header">
             <div class="apt-list-title">
-                <h3>Daftar Janji</h3>
-                <span class="badge badge-primary"><?php echo e($appointments->total()); ?> janji</span>
+                <h3>Daftar Jadwal Kunjungan</h3>
+                <span class="badge badge-primary"><?php echo e($appointments->total()); ?> jadwal</span>
             </div>
             <form action="/buat-janji" method="GET" class="search-wrap">
                 <?php if(request('status')): ?>
@@ -227,7 +227,7 @@ unset($__errorArgs, $__bag); ?>
                 <div class="apt-empty" style="padding:3rem;">
                     <i class="fas fa-search"></i>
                     <h4>Tidak ditemukan</h4>
-                    <p class="text-muted">Janji dengan nama "<?php echo e(request('search')); ?>" tidak ada.</p>
+                    <p class="text-muted">Jadwal dengan nama "<?php echo e(request('search')); ?>" tidak ada.</p>
                 </div>
             <?php endif; ?>
 
@@ -256,7 +256,7 @@ unset($__errorArgs, $__bag); ?>
                             <?php endif; ?>
                         </span>
                         <span><i class="fas fa-bullseye"></i> <?php echo e($apt->tujuan); ?></span>
-                        <span><i class="fas fa-users"></i> <?php echo e($apt->jumlah_orang); ?> orang</span>
+                        <span><i class="fas fa-users"></i> <?php echo e($apt->jumlah_orang); ?> org</span>
                         <span><i class="fas fa-calendar"></i> <?php echo e(\Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y')); ?></span>
                         <span><i class="fas fa-clock"></i> <?php echo e(\Carbon\Carbon::parse($apt->jam_janji)->format('H:i')); ?></span>
                     </div>
@@ -276,20 +276,20 @@ unset($__errorArgs, $__bag); ?>
                             <i class="fas fa-pen"></i>
                         </a>
                         <?php if(auth()->guard()->check()): ?>
-                        <form action="<?php echo e(route('appointment.approve', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
+                        <form action="<?php echo e(route('appointment.approve', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Setujui kunjungan ini?')">
                             <?php echo csrf_field(); ?>
                             <button type="submit" class="btn btn-icon" title="Setujui" style="background:var(--success);color:white;">
                                 <i class="fas fa-check"></i>
                             </button>
                         </form>
-                        <form action="<?php echo e(route('appointment.reject', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
+                        <form action="<?php echo e(route('appointment.reject', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Tolak kunjungan ini?')">
                             <?php echo csrf_field(); ?>
                             <button type="submit" class="btn btn-icon" title="Tolak" style="background:var(--danger);color:white;">
                                 <i class="fas fa-times"></i>
                             </button>
                         </form>
                         <?php endif; ?>
-                        <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                        <form action="<?php echo e(route('appointment.destroy', $apt->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus jadwal ini?')">
                             <?php echo csrf_field(); ?>
                             <?php echo method_field('DELETE'); ?>
                             <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);">
@@ -317,8 +317,8 @@ unset($__errorArgs, $__bag); ?>
             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <div class="apt-empty">
                 <i class="fas fa-calendar-times"></i>
-                <h4>Belum ada janji</h4>
-                <p class="text-muted">Janji pertama akan muncul di sini.</p>
+                <h4>Belum ada jadwal kunjungan</h4>
+                <p class="text-muted">Jadwal kunjungan pertama akan muncul di sini.</p>
             </div>
             <?php endif; ?>
         </div>

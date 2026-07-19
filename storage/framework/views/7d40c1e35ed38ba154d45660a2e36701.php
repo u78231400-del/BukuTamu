@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title><?php echo $__env->yieldContent('title', 'NurseCall'); ?></title>
+    <title><?php echo $__env->yieldContent('title', 'RS Medika'); ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -84,10 +84,45 @@
         .page-title { font-size: 1.1rem; font-weight: 600; color: var(--gray-900); }
         .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--gray-500); }
         .breadcrumb a:hover { color: var(--primary); }
-        .header-right { display: flex; align-items: center; gap: 0.75rem; }
+        .header-right { display: flex; align-items: center; gap: 0.75rem; position: relative; }
         .header-btn { width: 38px; height: 38px; border-radius: var(--radius); border: 1px solid var(--gray-200); background: var(--bg-card); color: var(--gray-600); display: flex; align-items: center; justify-content: center; transition: var(--transition); position: relative; }
         .header-btn:hover { border-color: var(--primary); color: var(--primary); background: #eef2ff; }
         .notif-badge { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; background: var(--danger); color: white; font-size: 0.65rem; font-weight: 600; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); }
+
+        /* Navbar Brand */
+        .navbar-brand { display: flex; align-items: center; gap: 0.75rem; }
+        .navbar-logo { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3); }
+        .navbar-title { display: flex; flex-direction: column; line-height: 1.2; }
+        .hospital-name { font-size: 0.95rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.01em; }
+        .dashboard-label { font-size: 0.7rem; color: var(--primary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* Notification Dropdown */
+        .notif-btn { position: relative; }
+        .notif-dropdown { position: absolute; top: calc(100% + 8px); right: 0; width: 320px; background: var(--bg-card); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 200; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition); }
+        .notif-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .notif-header { padding: 0.875rem 1rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; font-weight: 600; color: var(--gray-900); font-size: 0.875rem; }
+        .notif-count { font-size: 0.7rem; font-weight: 500; background: var(--danger); color: white; padding: 2px 8px; border-radius: 9999px; }
+        .notif-body { max-height: 280px; overflow-y: auto; }
+        .notif-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.875rem 1rem; transition: var(--transition); }
+        .notif-item:hover { background: var(--gray-50); }
+        .notif-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .notif-icon.warning { background: #fef3c7; color: var(--warning); }
+        .notif-content { flex: 1; min-width: 0; }
+        .notif-text { font-size: 0.8rem; color: var(--gray-700); font-weight: 500; }
+        .notif-time { font-size: 0.7rem; color: var(--gray-400); margin-top: 2px; }
+        .notif-empty { padding: 2rem; text-align: center; color: var(--gray-400); font-size: 0.8rem; }
+        .notif-empty i { display: block; font-size: 1.5rem; margin-bottom: 0.5rem; }
+
+        /* Profile Section */
+        .profile-section { display: flex; align-items: center; gap: 0.625rem; padding: 0.375rem 0.75rem 0.375rem 0.375rem; border-radius: var(--radius-lg); cursor: pointer; transition: var(--transition); border: 1px solid transparent; }
+        .profile-section:hover { background: var(--gray-50); border-color: var(--gray-200); }
+        .profile-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gray-200); }
+        .profile-info { display: flex; flex-direction: column; line-height: 1.2; }
+        .profile-name { font-size: 0.8rem; font-weight: 600; color: var(--gray-900); }
+        .profile-role { font-size: 0.65rem; color: var(--gray-500); }
+        .profile-arrow { font-size: 0.65rem; color: var(--gray-400); margin-left: 0.25rem; }
+        .profile-dropdown { position: absolute; top: calc(100% + 8px); right: 0; background: var(--bg-card); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); min-width: 180px; z-index: 200; opacity: 0; visibility: hidden; transform: translateY(-8px); transition: var(--transition); }
+        .profile-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .content { padding: 1.5rem; }
 
         /* Cards */
@@ -278,9 +313,9 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
             <div class="sidebar-brand-icon">
-                <i class="fas fa-bell"></i>
+                <i class="fas fa-hospital"></i>
             </div>
-            <span class="sidebar-brand-text">NurseCall</span>
+            <span class="sidebar-brand-text">RS Medika</span>
         </div>
 
         <nav class="sidebar-nav">
@@ -295,14 +330,14 @@
                 </div>
                 <div class="nav-item">
                     <a href="/" class="nav-link <?php echo e(request()->is('/') || request()->is('bukutamu') ? 'active' : ''); ?>">
-                        <i class="fas fa-book"></i>
-                        <span>Buku Tamu</span>
+                        <i class="fas fa-hospital-user"></i>
+                        <span>Kunjungan Pasien</span>
                     </a>
                 </div>
                 <div class="nav-item">
                     <a href="/buat-janji" class="nav-link <?php echo e(request()->is('buat-janji') ? 'active' : ''); ?>">
                         <i class="fas fa-calendar-plus"></i>
-                        <span>Buat Janji</span>
+                        <span>Jadwal Kunjungan</span>
                     </a>
                 </div>
                 <div class="nav-item">
@@ -330,7 +365,7 @@
                 <div class="user-avatar"><?php echo e(strtoupper(substr(Auth::user()->name, 0, 1))); ?></div>
                 <div class="user-info">
                     <div class="user-name"><?php echo e(Auth::user()->name); ?></div>
-                    <div class="user-role">Administrator</div>
+                    <div class="user-role">Admin RS</div>
                 </div>
                 <button class="btn btn-ghost btn-icon sm" onclick="confirmLogout()" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>
@@ -346,31 +381,64 @@
                 <button class="mobile-toggle" onclick="toggleSidebar()">
                     <i class="fas fa-bars"></i>
                 </button>
-                <div>
-                    <h1 class="page-title"><?php echo $__env->yieldContent('page-title', 'Dashboard'); ?></h1>
-                    <?php if (! empty(trim($__env->yieldContent('breadcrumb')))): ?>
-                    <div class="breadcrumb"><?php echo $__env->yieldContent('breadcrumb'); ?></div>
-                    <?php endif; ?>
+                <div class="navbar-brand">
+                    <div class="navbar-logo">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="navbar-title">
+                        <span class="hospital-name">Rumah Sakit Medika</span>
+                        <span class="dashboard-label">Dashboard Admin</span>
+                    </div>
                 </div>
             </div>
             <div class="header-right">
                 <?php if(auth()->guard()->check()): ?>
-                <a href="/dashboard" class="header-btn" title="Refresh">
-                    <i class="fas fa-sync-alt"></i>
-                </a>
-                <div class="dropdown">
-                    <button class="header-btn" onclick="toggleDropdown(this)" title="Menu">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/dashboard">
-                            <i class="fas fa-chart-pie"></i> Dashboard
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" onclick="confirmLogout()">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
+                <button class="header-btn notif-btn" onclick="toggleNotifDropdown(this)" title="Notifikasi">
+                    <i class="fas fa-bell"></i>
+                    <?php if($pendingCount > 0): ?>
+                    <span class="notif-badge"><?php echo e($pendingCount > 9 ? '9+' : $pendingCount); ?></span>
+                    <?php endif; ?>
+                </button>
+                <div class="notif-dropdown" id="notifDropdown">
+                    <div class="notif-header">
+                        <span>Notifikasi</span>
+                        <?php if($pendingCount > 0): ?>
+                        <span class="notif-count"><?php echo e($pendingCount); ?> baru</span>
+                        <?php endif; ?>
                     </div>
+                    <div class="notif-body">
+                        <?php if($pendingCount > 0): ?>
+                        <a href="/bukutamu?status=menunggu" class="notif-item">
+                            <div class="notif-icon warning"><i class="fas fa-clock"></i></div>
+                            <div class="notif-content">
+                                <div class="notif-text"><?php echo e($pendingCount); ?> janji menunggu persetujuan</div>
+                                <div class="notif-time">Segera ditinjau</div>
+                            </div>
+                        </a>
+                        <?php else: ?>
+                        <div class="notif-empty">
+                            <i class="fas fa-bell-slash"></i>
+                            <span>Tidak ada notifikasi</span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <div class="profile-section" onclick="toggleProfileDropdown(this)">
+                    <img src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(Auth::user()->name)); ?>&background=4f46e5&color=fff&size=64&font-size=0.35" alt="Profile" class="profile-img">
+                    <div class="profile-info">
+                        <span class="profile-name"><?php echo e(Auth::user()->name); ?></span>
+                        <span class="profile-role">Admin RS</span>
+                    </div>
+                    <i class="fas fa-chevron-down profile-arrow"></i>
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a class="dropdown-item" href="#">
+                        <i class="fas fa-user"></i> Profil Saya
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="confirmLogout()">
+                        <i class="fas fa-sign-out-alt"></i> Keluar
+                    </a>
                 </div>
                 <?php endif; ?>
             </div>
@@ -399,9 +467,25 @@
             menu.classList.toggle('show');
         }
 
+        function toggleNotifDropdown(btn) {
+            const dropdown = document.getElementById('notifDropdown');
+            const profileDropdown = document.getElementById('profileDropdown');
+            profileDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
+        function toggleProfileDropdown(btn) {
+            const dropdown = document.getElementById('profileDropdown');
+            const notifDropdown = document.getElementById('notifDropdown');
+            notifDropdown.classList.remove('show');
+            dropdown.classList.toggle('show');
+        }
+
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.dropdown')) {
+            if (!e.target.closest('.dropdown') && !e.target.closest('.notif-btn') && !e.target.closest('.notif-dropdown') && !e.target.closest('.profile-section') && !e.target.closest('.profile-dropdown')) {
                 document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+                document.getElementById('notifDropdown')?.classList.remove('show');
+                document.getElementById('profileDropdown')?.classList.remove('show');
             }
         });
 

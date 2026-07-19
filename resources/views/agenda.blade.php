@@ -1,365 +1,272 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Agenda Janji</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; min-height: 100vh; }
-        .page-title { color: #333; font-weight: 600; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
-        .card-header { background: white; border-bottom: 1px solid #eee; padding: 15px 20px; }
-        .date-display { font-size: 18px; font-weight: 600; color: #4e73df; }
-        .btn-nav { background: white; border: 1px solid #ddd; color: #333; padding: 8px 15px; border-radius: 8px; transition: all 0.2s; }
-        .btn-nav:hover { background: #4e73df; color: white; border-color: #4e73df; }
-        .calendar-mini { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-        .calendar-mini .day-header { font-size: 11px; color: #999; text-align: center; font-weight: 600; padding: 6px; }
-        .calendar-mini .day { text-align: center; padding: 8px; border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.2s; }
-        .calendar-mini .day:hover { background: #e9ecef; }
-        .calendar-mini .day.today { background: #4e73df; color: white; font-weight: 600; }
-        .calendar-mini .day.has-events { position: relative; }
-        .calendar-mini .day.has-events::after { content: ''; position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: #1cc88a; border-radius: 50%; }
-        .calendar-mini .day.today.has-events::after { background: white; }
-        .calendar-mini .day.past { opacity: 0.5; background: #f8f9fa; color: #999; }
-        .calendar-mini .day.selected { background: #1cc88a; color: white; font-weight: 600; }
-        .calendar-mini .day.selected.has-events::after { background: white; }
-        .table { font-size: 0.9rem; }
-        .table thead th { background: #f8f9fa; border-bottom: 2px solid #dee2e6; font-weight: 600; color: #555; padding: 8px 0; }
-        .guest-note { color: #555555; }
-        .table tbody tr:hover { background: #f8f9fa; }
-        .badge-disetujui { background: #1cc88a; }
-        .badge-selesai { background: #6c757d; color: white; }
-        .badge-akan-datang { background: #4e73df; color: white; }
-        .badge-menunggu { background: #f6c23e; color: #000; }
-        .badge-ditolak { background: #e74a3b; }
-        .legend { display: flex; gap: 20px; font-size: 13px; }
-        .legend-item { display: flex; align-items: center; gap: 6px; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s; }
-        .legend-item:hover { background: rgba(0,0,0,0.05); }
-        .legend-item.active { opacity: 1; }
-        .legend-item:not(.active) { opacity: 0.5; }
-        .legend-item.filter-all { opacity: 0.5; }
-        .legend-item.filter-all.active { opacity: 1; }
-        .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
-        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
-        .navbar-collapse .nav-link { padding: 8px 12px; }
-        .navbar-mobile-menu { display: none; position: absolute; right: 0; top: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000; overflow: hidden; }
-        .navbar-mobile-menu.show { display: block; }
-        .navbar-mobile-menu .nav-link { color: #333 !important; padding: 12px 16px; border-bottom: 1px solid #eee; display: block; }
-        .navbar-mobile-menu .nav-link:last-child { border-bottom: none; }
-        .navbar-mobile-menu .nav-link:hover { background: #f8f9fa; }
-        .navbar-mobile-menu .nav-link.active { background: #e7f1ff; color: #0d6efd !important; }
-        .no-data { text-align: center; padding: 40px 20px; color: #999; }
-        .date-section { background: #f8f9fa; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; border-left: 4px solid #4e73df; }
-        .date-section-title { font-weight: 600; color: #4e73df; margin: 0; font-size: 14px; }
-        .date-section-count { font-size: 12px; color: #888; }
-        .select-month { min-width: 180px; }
-        @media (max-width: 991px) {
-            .navbar .container { position: relative; }
-            .navbar .navbar-collapse { display: none !important; }
-        }
-        @media (min-width: 992px) {
-            .navbar-mobile-menu { display: none !important; }
-        }
-        @media print {
-            .navbar, .col-lg-3, .no-print { display: none !important; }
-            .print-header { display: block !important; }
-            .col-lg-9 { width: 100%; max-width: 100%; flex: 0 0 100%; }
-            .card { box-shadow: none; border: none; }
-            .card-body { padding: 0; }
-            .date-section { break-inside: avoid; }
-            .table { font-size: 11px; }
-            .table th, .table td { padding: 6px 8px; }
-            .badge-menunggu, .badge-ditolak { display: none; }
-            body { background: white; }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3 no-print">
-        <div class="container">
-            <a class="navbar-brand" href="/">Buku Tamu</a>
-            <div class="d-flex align-items-center gap-2">
-                <div class="navbar-mobile-menu" id="mobileMenu">
-                    <a class="nav-link" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                    <a class="nav-link active" href="/agenda">Agenda</a>
-                </div>
-                <button class="navbar-toggler" type="button" onclick="toggleMobileMenu()">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                    <a class="nav-link active" href="/agenda">Agenda</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        function toggleMobileMenu() { var menu = document.getElementById('mobileMenu'); menu.classList.toggle('show'); }
-        document.addEventListener('click', function(e) { var menu = document.getElementById('mobileMenu'); if (!e.target.closest('.d-flex')) menu.classList.remove('show'); });
-    </script>
+@extends('layouts.app')
 
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <h2 class="page-title mb-0">Agenda Janji</h2>
-                    <div class="legend no-print">
-                        <div class="legend-item filter-all active" onclick="filterStatus('all', this)">
-                            <div class="legend-dot" style="background: #888;"></div>
-                            <span>Semua</span>
-                        </div>
-                        <div class="legend-item" onclick="filterStatus('akan-datang', this)">
-                            <div class="legend-dot" style="background: #4e73df;"></div>
-                            <span>Akan Datang</span>
-                        </div>
-                        <div class="legend-item" onclick="filterStatus('selesai', this)">
-                            <div class="legend-dot" style="background: #6c757d;"></div>
-                            <span>Selesai</span>
-                        </div>
-                    </div>
-                </div>
+@section('title', 'Agenda - NurseCall')
+@section('page-title', 'Agenda')
+@section('breadcrumb')
+    <a href="/"><i class="fas fa-home me-2"></i>Home</a>
+    <i class="fas fa-chevron-right text-xs"></i>
+    <span>Agenda</span>
+@endsection
+
+@push('styles')
+<style>
+    .agenda-layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; }
+    .calendar-card { position: sticky; top: calc(var(--header-height) + 1.5rem); }
+    .calendar-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .calendar-header h3 { font-size: 0.95rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 1rem 1.25rem; }
+    .calendar-day-header { font-size: 0.65rem; font-weight: 600; color: var(--gray-400); text-align: center; padding: 6px 0; text-transform: uppercase; }
+    .calendar-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: var(--radius); font-size: 0.8rem; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: var(--transition); position: relative; }
+    .calendar-day:hover { background: var(--gray-100); }
+    .calendar-day.today { background: var(--primary); color: white; font-weight: 600; }
+    .calendar-day.has-event::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--success); }
+    .calendar-day.today.has-event::after { background: white; }
+    .calendar-day.empty { cursor: default; }
+    .calendar-day.empty:hover { background: transparent; }
+    .month-selector { display: flex; gap: 0.5rem; padding: 0 1.25rem 1rem; }
+    .month-selector select { flex: 1; height: 34px; padding: 0.25rem 0.5rem; font-size: 0.8rem; border: 1px solid var(--gray-200); border-radius: var(--radius); background: var(--bg-card); color: var(--gray-700); cursor: pointer; }
+    .legend-wrap { display: flex; gap: 1rem; padding: 0.75rem 1.25rem; border-top: 1px solid var(--gray-200); }
+    .legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.75rem; color: var(--gray-500); cursor: pointer; padding: 4px 8px; border-radius: var(--radius); transition: var(--transition); }
+    .legend-item:hover { background: var(--gray-100); }
+    .legend-item.active { background: var(--gray-100); color: var(--gray-900); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .agenda-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .agenda-title { display: flex; align-items: center; gap: 0.75rem; }
+    .agenda-title h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .date-block { padding: 1.25rem; border-bottom: 1px solid var(--gray-100); }
+    .date-block-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .date-block-title { font-size: 0.9rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; }
+    .date-block-count { font-size: 0.75rem; color: var(--gray-500); }
+    .apt-table { width: 100%; }
+    .apt-table thead th { padding: 0.5rem 0.75rem; text-align: left; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); background: var(--gray-50); }
+    .apt-table tbody td { padding: 0.75rem; border-bottom: 1px solid var(--gray-100); font-size: 0.875rem; vertical-align: middle; }
+    .apt-table tbody tr:hover { background: var(--gray-50); }
+    .time-badge { font-weight: 700; color: var(--primary); font-size: 0.875rem; white-space: nowrap; }
+    .apt-name { font-weight: 600; color: var(--gray-900); }
+    .apt-note { font-size: 0.75rem; color: var(--gray-400); margin-top: 2px; }
+    .apt-meta { display: flex; gap: 1rem; font-size: 0.75rem; color: var(--gray-500); }
+    .apt-meta span { display: flex; align-items: center; gap: 4px; }
+    .empty-state { text-align: center; padding: 4rem 1rem; }
+    .agenda-empty { text-align: center; padding: 4rem 1rem; color: var(--gray-400); }
+    @media (max-width: 1024px) { .agenda-layout { grid-template-columns: 1fr; } .calendar-card { position: static; } }
+    @media (max-width: 640px) { .apt-table thead { display: none; } .apt-table tbody td { display: block; padding: 0.25rem 0.75rem; } .apt-table tbody td:first-child { padding-top: 0.75rem; } .apt-table tbody td:last-child { padding-bottom: 0.75rem; } .apt-table tbody td::before { content: attr(data-label); font-weight: 600; color: var(--gray-500); font-size: 0.7rem; text-transform: uppercase; display: block; margin-bottom: 2px; } }
+    @media print { .sidebar, .header, .mobile-toggle, .no-print, .calendar-card { display: none !important; } .agenda-layout { grid-template-columns: 1fr; } .main-wrapper { margin-left: 0 !important; } .card { box-shadow: none !important; border: 1px solid #ddd !important; } }
+</style>
+@endpush
+
+@section('content')
+<div class="agenda-layout">
+    <div class="card calendar-card no-print">
+        <div class="calendar-header">
+            <h3><i class="fas fa-calendar-alt me-2 text-primary"></i>Kalender</h3>
+        </div>
+        <form action="/agenda" method="GET">
+            <input type="hidden" name="status" value="{{ request('status') }}">
+            <div class="month-selector">
+                <select name="month" onchange="this.form.submit()">
+                    @for($m = 1; $m <= 12; $m++)
+                        <option value="{{ $m }}" {{ $m == $currentMonth ? 'selected' : '' }}>
+                            {{ Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F') }}
+                        </option>
+                    @endfor
+                </select>
+                <select name="year" onchange="this.form.submit()">
+                    @for($y = date('Y') - 1; $y <= date('Y') + 1; $y++)
+                        <option value="{{ $y }}" {{ $y == $currentYear ? 'selected' : '' }}>{{ $y }}</option>
+                    @endfor
+                </select>
             </div>
+        </form>
+
+        <div class="calendar-grid">
+            <div class="calendar-day-header">Min</div>
+            <div class="calendar-day-header">Sen</div>
+            <div class="calendar-day-header">Sel</div>
+            <div class="calendar-day-header">Rab</div>
+            <div class="calendar-day-header">Kam</div>
+            <div class="calendar-day-header">Jum</div>
+            <div class="calendar-day-header">Sab</div>
+            @php
+                $firstDay = \Carbon\Carbon::create($currentYear, $currentMonth, 1);
+                $daysInMonth = $firstDay->daysInMonth;
+                $startDayOfWeek = $firstDay->dayOfWeek;
+                $today = date('Y-m-d');
+            @endphp
+            @for($i = 0; $i < $startDayOfWeek; $i++)
+                <div class="calendar-day empty"></div>
+            @endfor
+            @for($day = 1; $day <= $daysInMonth; $day++)
+                @php
+                    $date = sprintf('%s-%02d-%02d', $currentYear, $currentMonth, $day);
+                    $isToday = $date === $today;
+                    $hasEvents = isset($datesWithAppointments[$date]);
+                    $classes = 'calendar-day';
+                    if ($isToday) $classes .= ' today';
+                    if ($hasEvents) $classes .= ' has-event';
+                @endphp
+                <div class="{{ $classes }}" onclick="filterByDate('{{ $date }}')">{{ $day }}</div>
+            @endfor
         </div>
 
-        <div class="row g-3">
-            <div class="col-lg-3">
-                <div class="bg-white p-3 rounded-3 shadow-sm">
-                    <form action="/agenda" method="GET" id="monthForm">
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <i class="fas fa-calendar-alt text-primary"></i>
-                            <select name="month" id="monthSelect" class="form-select form-select-sm select-month" onchange="document.getElementById('monthForm').submit()">
-                                @for($m = 1; $m <= 12; $m++)
-                                    <option value="{{ $m }}" {{ $m == $currentMonth ? 'selected' : '' }}>
-                                        {{ Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F') }}
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <i class="fas fa-calendar text-primary"></i>
-                            <select name="year" id="yearSelect" class="form-select form-select-sm select-month" onchange="document.getElementById('monthForm').submit()">
-                                @for($y = date('Y') - 2; $y <= 2050; $y++)
-                                    <option value="{{ $y }}" {{ $y == $currentYear ? 'selected' : '' }}>
-                                        {{ $y }}
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
-                    </form>
-
-                    <div class="calendar-mini" id="calendarMini">
-                        <div class="day-header">Min</div>
-                        <div class="day-header">Sen</div>
-                        <div class="day-header">Sel</div>
-                        <div class="day-header">Rab</div>
-                        <div class="day-header">Kam</div>
-                        <div class="day-header">Jum</div>
-                        <div class="day-header">Sab</div>
-                        @php
-                            $firstDay = \Carbon\Carbon::create($currentYear, $currentMonth, 1);
-                            $daysInMonth = $firstDay->daysInMonth;
-                            $startDayOfWeek = $firstDay->dayOfWeek;
-                            $today = date('Y-m-d');
-                        @endphp
-
-                        @for($i = 0; $i < $startDayOfWeek; $i++)
-                            <div class="day"></div>
-                        @endfor
-
-                        @for($day = 1; $day <= $daysInMonth; $day++)
-                            @php
-                                $date = sprintf('%s-%02d-%02d', $currentYear, $currentMonth, $day);
-                                $isToday = $date === $today;
-                                $isPast = $date < $today;
-                                $hasEvents = isset($datesWithAppointments[$date]);
-                                if (!$hasEvents) continue;
-                                $classes = 'day';
-                                if ($isToday) $classes .= ' today';
-                                if ($isPast && !$isToday) $classes .= ' past';
-                                if ($hasEvents) $classes .= ' has-events';
-                            @endphp
-                            <div class="{{ $classes }}" onclick="filterByDate('{{ $date }}')">{{ $day }}</div>
-                        @endfor
-                    </div>
-                </div>
+        <div class="legend-wrap">
+            <div class="legend-item active" onclick="filterStatus('all', this)">
+                <div class="legend-dot" style="background:#888;"></div>
+                <span>Semua</span>
             </div>
-
-            <div class="col-lg-9">
-                <div class="bg-white p-4 rounded-3 shadow-sm">
-                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 no-print">
-                        <div class="d-flex align-items-center gap-3">
-                            <h4 class="mb-0">
-                                <i class="fas fa-calendar-month text-primary"></i>
-                                {{ $currentMonthName }} {{ $currentYear }}
-                            </h4>
-                            <span class="badge bg-primary">
-                                {{ $appointmentsByDate->flatten()->count() }} Janji
-                            </span>
-                        </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-sm btn-outline-primary" onclick="window.print()">
-                                <i class="fas fa-print"></i> Cetak Agenda
-                            </button>
-                            <button class="btn btn-sm btn-outline-secondary" onclick="showAll()">
-                                <i class="fas fa-list"></i> Tampilkan Semua
-                            </button>
-                        </div>
-                    </div>
-                    <div class="print-header" style="display: none;">
-                        <h3 class="text-center mb-1">Agenda Janji</h3>
-                        <h5 class="text-center text-muted mb-0">{{ $currentMonthName }} {{ $currentYear }}</h5>
-                        <hr>
-                    </div>
-
-                    <hr>
-
-                    @if($appointmentsByDate->isEmpty())
-                        <div class="no-data">
-                            <i class="fas fa-calendar-times fa-3x mb-3 text-muted"></i>
-                            <h5>Tidak ada janji</h5>
-                            <p>Tidak ada janji yang disetujui untuk bulan ini.</p>
-                        </div>
-                    @else
-                        <div id="appointmentsList">
-                            @foreach($appointmentsByDate as $date => $appointments)
-                                @php
-                                    $dateObj = \Carbon\Carbon::parse($date);
-                                    $isToday = $date === $today;
-                                    $isPast = $date < $today;
-                                @endphp
-                                <div class="date-section mb-3" data-date="{{ $date }}">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h5 class="date-section-title">
-                                            <i class="far fa-calendar"></i>
-                                            {{ $dateObj->translatedFormat('l, d F Y') }}
-                                            @if($isToday)
-                                                <span class="badge bg-primary ms-2 no-print">Hari Ini</span>
-                                            @endif
-                                            @if($isPast)
-                                                <span class="badge bg-secondary ms-2 no-print">Lampau</span>
-                                            @endif
-                                        </h5>
-                                        <span class="date-section-count">{{ $appointments->count() }} janji</span>
-                                    </div>
-                                </div>
-                                <div class="table-responsive mb-4" id="table-{{ str_replace('-', '', $date) }}">
-                                    <table class="table table-hover align-middle">
-                                        <thead>
-                                            <tr>
-                                                <th width="80">Jam</th>
-                                                <th>Nama</th>
-                                                <th>No. HP</th>
-                                                <th>Tujuan</th>
-                                                <th width="80">Jumlah</th>
-                                                <th width="100">Status</th>
-                                                <th width="80">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($appointments as $apt)
-                                                @php
-                                                    $jamJanji = \Carbon\Carbon::parse($apt->jam_janji)->format('H:i');
-                                                    $isPast = $date < $today || ($date == $today && $jamJanji < now()->format('H:i'));
-                                                    $rowStatus = $isPast ? 'selesai' : 'akan-datang';
-                                                @endphp
-                                                <tr data-status="{{ $rowStatus }}">
-                                                    <td>
-                                                        <span class="fw-bold text-primary">{{ $jamJanji }}</span>
-                                                    </td>
-                                                    <td>
-                                                        <div class="fw-semibold">{{ $apt->nama }}</div>
-                                                        @if($apt->pesan)
-                                                            <small class="guest-note">{{ Str::limit($apt->pesan, 50) }}</small>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <i class="fas fa-phone text-muted"></i> {{ $apt->nomor_hp }}
-                                                    </td>
-                                                    <td>
-                                                        <i class="fas fa-bullseye text-muted"></i> {{ $apt->tujuan }}
-                                                    </td>
-                                                    <td>
-                                                        <i class="fas fa-users text-muted"></i> {{ $apt->jumlah_orang }}
-                                                    </td>
-                                                    <td>
-                                                        @if($isPast)
-                                                            <span class="badge badge-selesai">Selesai</span>
-                                                        @else
-                                                            <span class="badge badge-akan-datang">Akan Datang</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if(!$isPast || $apt->status === 'disetujui')
-                                                            <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="opacity: 0.3;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.3'">
-                                                                    <i class="fas fa-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
+            <div class="legend-item" onclick="filterStatus('akan-datang', this)">
+                <div class="legend-dot" style="background:var(--primary);"></div>
+                <span>Akan Datang</span>
+            </div>
+            <div class="legend-item" onclick="filterStatus('selesai', this)">
+                <div class="legend-dot" style="background:var(--gray-400);"></div>
+                <span>Selesai</span>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="card">
+        <div class="agenda-header no-print">
+            <div class="agenda-title">
+                <h3><i class="fas fa-calendar me-2 text-success"></i>{{ $currentMonthName }} {{ $currentYear }}</h3>
+                <span class="badge badge-primary">{{ $appointmentsByDate->flatten()->count() }} Janji</span>
+            </div>
+            <div class="flex gap-2">
+                <button class="btn btn-sm btn-outline" onclick="window.print()">
+                    <i class="fas fa-print"></i> Cetak
+                </button>
+                <button class="btn btn-sm btn-outline" onclick="showAll()">
+                    <i class="fas fa-list"></i> Tampilkan Semua
+                </button>
+            </div>
+        </div>
 
-    <script>
-        let currentStatusFilter = 'all';
+        <div class="print-header hidden">
+            <h3 class="text-center mb-1">Agenda Janji</h3>
+            <h5 class="text-center text-muted mb-0">{{ $currentMonthName }} {{ $currentYear }}</h5>
+            <hr>
+        </div>
 
-        function filterStatus(status, el) {
-            currentStatusFilter = status;
-            document.querySelectorAll('.legend-item').forEach(item => {
-                item.classList.remove('active');
-                if (status === 'all') {
-                    item.classList.remove('active');
-                    if (item.classList.contains('filter-all')) {
-                        item.classList.add('active');
-                    }
-                }
-            });
-            el.classList.add('active');
+        @if($appointmentsByDate->isEmpty())
+            <div class="agenda-empty" style="padding:4rem 1rem;">
+                <i class="fas fa-calendar-times" style="font-size:3rem;margin-bottom:1rem;display:block;color:var(--gray-300);"></i>
+                <h4 style="font-size:1.1rem;font-weight:600;color:var(--gray-700);">Tidak ada janji</h4>
+                <p class="text-muted" style="margin:0.5rem 0 0;">Tidak ada janji yang disetujui untuk bulan ini.</p>
+            </div>
+        @else
+            <div id="appointmentsList">
+                @foreach($appointmentsByDate as $date => $appointments)
+                    @php
+                        $dateObj = \Carbon\Carbon::parse($date);
+                        $isToday = $date === $today;
+                        $isPast = $date < $today;
+                    @endphp
+                    <div class="date-block" data-date="{{ $date }}">
+                        <div class="date-block-header">
+                            <div class="date-block-title">
+                                <i class="fas fa-calendar-day"></i>
+                                {{ $dateObj->translatedFormat('l, d F Y') }}
+                                @if($isToday)
+                                    <span class="badge badge-primary no-print">Hari Ini</span>
+                                @endif
+                                @if($isPast)
+                                    <span class="badge badge-gray no-print">Lampau</span>
+                                @endif
+                            </div>
+                            <span class="date-block-count">{{ $appointments->count() }} janji</span>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="apt-table">
+                                <thead>
+                                    <tr>
+                                        <th width="60">Jam</th>
+                                        <th>Nama</th>
+                                        <th>No. HP</th>
+                                        <th>Tujuan</th>
+                                        <th width="60">Jml</th>
+                                        <th width="100">Status</th>
+                                        <th width="50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($appointments as $apt)
+                                        @php
+                                            $jamJanji = \Carbon\Carbon::parse($apt->jam_janji)->format('H:i');
+                                            $isPastRow = $date < $today || ($date == $today && $jamJanji < now()->format('H:i'));
+                                            $rowStatus = $isPastRow ? 'selesai' : 'akan-datang';
+                                        @endphp
+                                        <tr data-status="{{ $rowStatus }}">
+                                            <td data-label="Jam"><span class="time-badge">{{ $jamJanji }}</span></td>
+                                            <td data-label="Nama">
+                                                <div class="apt-name">{{ $apt->nama }}</div>
+                                                @if($apt->pesan)
+                                                    <div class="apt-note">{{ Str::limit($apt->pesan, 50) }}</div>
+                                                @endif
+                                            </td>
+                                            <td data-label="HP">
+                                                <span class="text-muted"><i class="fas fa-phone me-1" style="font-size:0.75rem;"></i>{{ $apt->nomor_hp }}</span>
+                                            </td>
+                                            <td data-label="Tujuan">
+                                                <span class="text-muted"><i class="fas fa-bullseye me-1" style="font-size:0.75rem;"></i>{{ $apt->tujuan }}</span>
+                                            </td>
+                                            <td data-label="Jumlah">
+                                                <span class="badge badge-gray"><i class="fas fa-users me-1" style="font-size:0.65rem;"></i>{{ $apt->jumlah_orang }}</span>
+                                            </td>
+                                            <td data-label="Status">
+                                                @if($isPastRow)
+                                                    <span class="badge badge-gray">Selesai</span>
+                                                @else
+                                                    <span class="badge badge-info">Akan Datang</span>
+                                                @endif
+                                            </td>
+                                            <td data-label="Aksi">
+                                                @auth
+                                                <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-icon btn-sm btn-outline" title="Hapus" style="color:var(--danger);opacity:0.5;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+                                                        <i class="fas fa-trash" style="font-size:0.75rem;"></i>
+                                                    </button>
+                                                </form>
+                                                @endauth
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+</div>
+@endsection
 
-            document.querySelectorAll('tr[data-status]').forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let currentStatusFilter = 'all';
 
-        function filterByDate(date) {
-            document.querySelectorAll('.date-section').forEach(el => {
-                el.style.display = el.dataset.date === date ? 'block' : 'none';
-            });
-            document.querySelectorAll('.table-responsive').forEach(el => {
-                el.style.display = el.id === 'table-' + date.replace(/-/g, '') ? 'block' : 'none';
-            });
-        }
+    function filterStatus(status, el) {
+        currentStatusFilter = status;
+        document.querySelectorAll('.legend-item').forEach(item => item.classList.remove('active'));
+        el.classList.add('active');
+        document.querySelectorAll('tr[data-status]').forEach(row => {
+            row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+        });
+    }
 
-        function showAll() {
-            document.querySelectorAll('.date-section').forEach(el => el.style.display = 'block');
-            document.querySelectorAll('.table-responsive').forEach(el => el.style.display = 'block');
-            filterStatus('all', document.querySelector('.filter-all'));
-        }
-    </script>
-</body>
-</html>
+    function filterByDate(date) {
+        document.querySelectorAll('.date-block').forEach(el => {
+            el.style.display = el.dataset.date === date ? 'block' : 'none';
+        });
+    }
+
+    function showAll() {
+        document.querySelectorAll('.date-block').forEach(el => el.style.display = 'block');
+        document.querySelectorAll('.legend-item').forEach(item => item.classList.remove('active'));
+        document.querySelector('.legend-item').classList.add('active');
+        document.querySelectorAll('tr[data-status]').forEach(row => row.style.display = '');
+    }
+</script>
+@endpush

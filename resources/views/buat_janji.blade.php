@@ -1,349 +1,301 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Buat Janji Tamu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; min-height: 100vh; }
-        .form-box, .list-box { background: rgba(255, 255, 255, 0.98); padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        .form-box { height: fit-content; position: sticky; top: 20px; }
-        .list-box { max-height: calc(100vh - 120px); overflow-y: auto; }
-        h3 { color: #333; }
-        input[type="text"], input[type="email"], input[type="number"], input[type="date"], input[type="time"], textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        input:focus, textarea:focus { outline: none; border-color: #4e73df; box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.1); }
-        label { margin-bottom: 0; display: block; }
-        .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-        .btn-submit:hover { background: #41b632; }
-        .card-total { background: linear-gradient(135deg, #4e73df, #224abe); }
-        .card-menunggu { background: linear-gradient(135deg, #f6c23e, #dda20a); }
-        .card-disetujui { background: linear-gradient(135deg, #1cc88a, #13855c); }
-        .card-ditolak { background: linear-gradient(135deg, #e74a3b, #be3c30); }
-        .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
-        .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
-        .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
-        .stat-card-sm .stat-label { font-size: 10px; opacity: 0.9; }
-        .appointment-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
-        .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-        .search-box { display: flex; align-items: center; gap: 0; }
-        .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
-        .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
-        .filter-btns { display: flex; gap: 4px; flex-wrap: wrap; }
-        .filter-btns .btn { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
-        .filter-btns .btn.active { background: #4e73df; color: white; border-color: #4e73df; }
-        .timeline { position: relative; padding-left: 20px; }
-        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #dee2e6; }
-        .timeline-item { position: relative; margin-bottom: 0; }
-        .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
-        .badge-menunggu { background: #f6c23e; }
-        .badge-disetujui { background: #1cc88a; }
-        .badge-ditolak { background: #e74a3b; }
-        .badge-selesai { background: #6c757d; }
-        .appointment-card.completed { opacity: 0.7; background: #f8f9fa; }
-        .nav-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
-        .nav-tabs .nav-link.active { font-weight: 600; }
-        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
-        .navbar-collapse .nav-link { padding: 8px 12px; }
-        .navbar-mobile-menu { display: none; position: absolute; right: 0; top: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000; overflow: hidden; }
-        .navbar-mobile-menu.show { display: block; }
-        .navbar-mobile-menu .nav-link { color: #333 !important; padding: 12px 16px; border-bottom: 1px solid #eee; display: block; }
-        .navbar-mobile-menu .nav-link:last-child { border-bottom: none; }
-        .navbar-mobile-menu .nav-link:hover { background: #f8f9fa; }
-        .navbar-mobile-menu .nav-link.active { background: #e7f1ff; color: #0d6efd !important; }
-        @media (max-width: 991px) {
-            .navbar .container { position: relative; }
-            .navbar .navbar-collapse { display: none !important; }
-        }
-        @media (min-width: 992px) {
-            .navbar-mobile-menu { display: none !important; }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
-        <div class="container">
-            <a class="navbar-brand" href="/">Buku Tamu</a>
-            <div class="d-flex align-items-center gap-2">
-                <div class="navbar-mobile-menu" id="mobileMenu">
-                    <a class="nav-link" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link active" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </div>
-                <button class="navbar-toggler" type="button" onclick="toggleMobileMenu()">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link active" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </div>
+@extends('layouts.app')
+
+@section('title', 'Buat Janji - NurseCall')
+@section('page-title', 'Buat Janji')
+@section('breadcrumb')
+    <a href="/"><i class="fas fa-home me-2"></i>Home</a>
+    <i class="fas fa-chevron-right text-xs"></i>
+    <span>Buat Janji</span>
+@endsection
+
+@push('styles')
+<style>
+    .two-col { display: grid; grid-template-columns: 420px 1fr; gap: 1.5rem; align-items: start; }
+    .form-card { position: sticky; top: calc(var(--header-height) + 1.5rem); }
+    .form-header { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .form-icon { width: 40px; height: 40px; background: #fef3c7; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--warning); font-size: 1.1rem; }
+    .form-header-text h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .form-header-text p { font-size: 0.75rem; color: var(--gray-500); margin: 0; }
+    .form-body { padding: 1.25rem; }
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap .form-control { padding-left: 2.5rem; }
+    .input-icon-wrap i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.9rem; pointer-events: none; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .apt-list-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .apt-list-title { display: flex; align-items: center; gap: 0.75rem; }
+    .apt-list-title h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .search-wrap { display: flex; align-items: center; gap: 0; }
+    .search-wrap .form-control { border-radius: var(--radius) 0 0 var(--radius); height: 36px; padding: 0.375rem 0.75rem; font-size: 0.875rem; }
+    .search-wrap .btn { border-radius: 0 var(--radius) var(--radius) 0; height: 36px; padding: 0 0.875rem; }
+    .apt-list-body { padding: 0; }
+    .apt-item { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-100); transition: var(--transition); }
+    .apt-item:hover { background: var(--gray-50); }
+    .apt-item:last-child { border-bottom: none; }
+    .apt-item.completed { opacity: 0.6; }
+    .apt-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 1rem; flex-shrink: 0; }
+    .apt-avatar.menunggu { background: var(--warning); }
+    .apt-avatar.disetujui { background: var(--success); }
+    .apt-avatar.ditolak { background: var(--danger); }
+    .apt-avatar.selesai { background: var(--gray-400); }
+    .apt-content { flex: 1; min-width: 0; }
+    .apt-name { font-weight: 600; color: var(--gray-900); font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; }
+    .apt-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin-top: 4px; font-size: 0.75rem; color: var(--gray-500); }
+    .apt-meta span { display: flex; align-items: center; gap: 4px; }
+    .apt-actions { display: flex; align-items: center; gap: 0.375rem; flex-shrink: 0; flex-wrap: wrap; }
+    .apt-message { margin-top: 0.5rem; padding: 0.625rem; background: var(--gray-50); border-radius: var(--radius); font-size: 0.8rem; color: var(--gray-600); line-height: 1.5; }
+    .apt-message a { color: var(--primary); }
+    .apt-empty { text-align: center; padding: 4rem 1rem; color: var(--gray-400); }
+    .apt-empty i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .pagination-wrap { padding: 1rem 1.25rem; border-top: 1px solid var(--gray-200); }
+    .filter-tabs { display: flex; gap: 0.25rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-200); overflow-x: auto; }
+    .filter-tab { padding: 0.5rem 1rem; border-radius: var(--radius); font-size: 0.8rem; font-weight: 500; color: var(--gray-500); border: none; background: transparent; cursor: pointer; transition: var(--transition); white-space: nowrap; }
+    .filter-tab:hover { background: var(--gray-100); color: var(--gray-700); }
+    .filter-tab.active { background: var(--primary); color: white; }
+    .filter-tab .tab-count { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; margin-left: 4px; padding: 0 6px; }
+    .filter-tab.active .tab-count { background: rgba(255,255,255,0.25); }
+    .filter-tab .tab-count.waiting { background: var(--warning); color: #fff; }
+    .filter-tab .tab-count.approve { background: var(--success); color: #fff; }
+    .filter-tab .tab-count.reject { background: var(--danger); color: #fff; }
+    .filter-tab .tab-count.done { background: var(--gray-400); color: #fff; }
+    @media (max-width: 1024px) { .two-col { grid-template-columns: 1fr; } .form-card { position: static; } .form-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .apt-list-header { flex-direction: column; align-items: flex-start; } .search-wrap { width: 100%; } .search-wrap .form-control { flex: 1; } }
+</style>
+@endpush
+
+@section('content')
+<div class="two-col">
+    <div class="card form-card">
+        <div class="form-header">
+            <div class="form-icon"><i class="fas fa-calendar-plus"></i></div>
+            <div class="form-header-text">
+                <h3>Form Buat Janji</h3>
+                <p>Ajukan jadwal kunjungan Anda</p>
             </div>
         </div>
-    </nav>
-    <script>
-        function toggleMobileMenu() { var menu = document.getElementById('mobileMenu'); menu.classList.toggle('show'); }
-        document.addEventListener('click', function(e) { var menu = document.getElementById('mobileMenu'); if (!e.target.closest('.d-flex')) menu.classList.remove('show'); });
-    </script>
-
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-5">
-                <div class="form-box scrollbar-thin">
-                    <h3>Form Buat Janji</h3>
-
-                    <form action="/buat-janji" method="POST">
-                        @csrf
-                        <label>Nama/Instansi:</label>
-                        <input type="text" name="nama" placeholder="Nama atau instansi..." value="{{ old('nama') }}" required>
-                        @error('nama')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Nomor HP:</label>
-                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
-                        @error('nomor_hp')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Bertemu Dengan:</label>
-                        <input type="text" name="tujuan" placeholder="Siapa yang ingin ditemui..." value="{{ old('tujuan') }}" required>
-                        @error('tujuan')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <label>Jumlah Orang:</label>
-                        <input type="number" name="jumlah_orang" min="1" max="100" value="{{ old('jumlah_orang', 1) }}" required>
-                        @error('jumlah_orang')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-
-                        <div class="row">
-                            <div class="col-6">
-                                <label>Tanggal Janji:</label>
-                                <input type="date" name="tanggal_janji" id="tanggal_janji" value="{{ old('tanggal_janji') }}" min="{{ date('Y-m-d') }}" required>
-                                @error('tanggal_janji')
-                                    <div class="text-danger small mb-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-6">
-                                <label>Jam Janji:</label>
-                                <input type="time" name="jam_janji" id="jam_janji" value="{{ old('jam_janji') }}" required>
-                                @error('jam_janji')
-                                    <div class="text-danger small mb-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <label>Pesan/Keterangan:</label>
-                        <textarea name="pesan" rows="4" placeholder="Tulis pesan atau keterangan...">{{ old('pesan') }}</textarea>
-                        @error('pesan')
-                            <div class="text-danger small mb-2">{{ $message }}</div>
-                        @enderror
-                        
-                        <button type="submit" class="btn-submit">Buat Janji</button>
-                    </form>
+        <div class="form-body">
+            <form action="/buat-janji" method="POST">
+                @csrf
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="nama" class="form-control" placeholder="Nama / Instansi" value="{{ old('nama') }}" required>
                 </div>
-            </div>
+                @error('nama')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
 
-            <div class="col-lg-7">
-                <div class="list-box scrollbar-thin">
-                    <div class="stat-cards-horizontal">
-                        <div class="stat-card-sm card-total">
-                            <div class="stat-number">{{ $totalAppointment }}</div>
-                            <div class="stat-label">Total Janji</div>
-                        </div>
-                        <div class="stat-card-sm card-menunggu">
-                            <div class="stat-number">{{ $menunggu }}</div>
-                            <div class="stat-label">Menunggu</div>
-                        </div>
-                        <div class="stat-card-sm card-disetujui">
-                            <div class="stat-number">{{ $disetujui }}</div>
-                            <div class="stat-label">Disetujui</div>
-                        </div>
-                        <div class="stat-card-sm" style="background: linear-gradient(135deg, #6c757d, #495057);">
-                            <div class="stat-number">{{ $selesai }}</div>
-                            <div class="stat-label">Selesai</div>
-                        </div>
-                    </div>
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" name="nomor_hp" class="form-control" placeholder="Nomor HP (08xxxxxxxxxx)" value="{{ old('nomor_hp') }}" required>
+                </div>
+                @error('nomor_hp')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
 
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <h3 class="mb-0">Daftar Janji</h3>
-                            <span class="badge bg-primary">{{ $appointments->total() }} janji</span>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <form action="/buat-janji" method="GET" class="mb-0">
-                                @if(request('status'))
-                                    <input type="hidden" name="status" value="{{ request('status') }}">
-                                @endif
-                                <div class="search-box">
-                                    <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
-                                    <button class="btn btn-primary" type="submit">Cari</button>
-                                    @if(request('search'))
-                                        <a href="/buat-janji{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline-secondary">Reset</a>
-                                    @endif
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-bullseye"></i>
+                    <input type="text" name="tujuan" class="form-control" placeholder="Bertemu dengan / Tujuan" value="{{ old('tujuan') }}" required>
+                </div>
+                @error('tujuan')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
 
-                    <ul class="nav nav-tabs mb-3">
-                        <li class="nav-item">
-                            <a class="nav-link {{ !request('status') ? 'active' : '' }}" href="/buat-janji">Semua</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request('status') == 'menunggu' ? 'active' : '' }}" href="/buat-janji?status=menunggu">
-                                Menunggu <span class="badge bg-warning text-dark ms-1">{{ $menunggu }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request('status') == 'disetujui' ? 'active' : '' }}" href="/buat-janji?status=disetujui">
-                                Disetujui <span class="badge bg-success ms-1">{{ $disetujui }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request('status') == 'ditolak' ? 'active' : '' }}" href="/buat-janji?status=ditolak">
-                                Ditolak <span class="badge bg-danger ms-1">{{ $ditolak }}</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request('status') == 'selesai' ? 'active' : '' }}" href="/buat-janji?status=selesai">
-                                Selesai <span class="badge bg-secondary ms-1">{{ $selesai }}</span>
-                            </a>
-                        </li>
-                    </ul>
-
-                    @if(request('search') && $appointments->isEmpty())
-                        <div class="alert alert-warning text-center">
-                            <strong>Data tidak ditemukan</strong><br>
-                            Janji dengan nama "{{ request('search') }}" tidak ada di daftar.
-                        </div>
-                    @endif
-
-                    <div class="timeline">
-                    @forelse($appointments as $apt)
-                        @php
-                            $isCompleted = $apt->status === 'selesai';
-                        @endphp
-                        <div class="timeline-item">
-                            <div class="timeline-dot" style="background: 
-                                @if($apt->status == 'disetujui') #1cc88a
-                                @elseif($apt->status == 'ditolak') #e74a3b
-                                @elseif($apt->status == 'selesai') #6c757d
-                                @else #f6c23e @endif;">
-                            </div>
-                            <div class="appointment-card {{ $isCompleted ? 'completed' : '' }}" style="margin-bottom: 12px;">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <b>{{ $apt->nama }}</b>
-                                            <span class="badge badge-{{ $apt->status }}">
-                                                {{ ucfirst($apt->status) }}
-                                            </span>
-                                        </div>
-                                        <small class="text-muted">
-                                            <i class="fas fa-phone"></i>
-                                            @auth
-                                                {{ $apt->nomor_hp }}
-                                            @else
-                                                {{ substr($apt->nomor_hp, 0, 4) }}{{ str_repeat('*', strlen($apt->nomor_hp) - 7) }}{{ substr($apt->nomor_hp, -3) }}
-                                            @endauth
-                                        </small>
-                                        <br>
-                                        <small class="text-muted">Tujuan: {{ $apt->tujuan }}</small>
-                                        <br>
-                                        <small class="text-muted">Jumlah: {{ $apt->jumlah_orang }} orang</small>
-                                        <br>
-                                        <small class="text-muted">
-                                            {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }} - {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}
-                                        </small>
-                                    </div>
-                                    @if($apt->status === 'menunggu' || $apt->status === 'ditolak')
-                                    <div class="btn-group">
-                                        <a href="{{ route('appointment.edit', $apt->id) }}" class="btn btn-warning btn-sm" title="Edit" style="padding: 6px 14px; font-size: 13px;">Edit</a>
-                                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="padding: 6px 14px; font-size: 13px;">Hapus</button>
-                                        </form>
-                                        @auth
-                                        <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
-                                            @csrf
-                                            <button type="submit" class="btn btn-success btn-sm" style="padding: 6px 14px; font-size: 13px;">Setujui</button>
-                                        </form>
-                                        <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
-                                            @csrf
-                                            <button type="submit" class="btn btn-secondary btn-sm" style="padding: 6px 14px; font-size: 13px;">Tolak</button>
-                                        </form>
-                                        @endauth
-                                    </div>
-                                    @endif
-                                </div>
-                                
-                                @if($apt->pesan)
-                                <p class="mb-0">
-                                    {{ Str::limit($apt->pesan, 120) }}
-                                    @if(strlen($apt->pesan) > 120)
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $apt->id }}">Baca selengkapnya...</a>
-                                    @endif
-                                </p>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="detailModal{{ $apt->id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $apt->id }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="detailModalLabel{{ $apt->id }}">Detail Pesan: {{ $apt->nama }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" style="white-space: pre-wrap;">{{ $apt->pesan }}</div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="text-center text-muted py-5">Belum ada janji yang dibuat.</p>
-                    @endforelse
-                    </div>
-
-                    <div class="d-flex justify-content-center mt-3">
-                        {{ $appointments->appends(['search' => request('search')])->links() }}
+                <div class="form-grid mb-3">
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-users"></i>
+                        <input type="number" name="jumlah_orang" class="form-control" placeholder="Jumlah orang" value="{{ old('jumlah_orang', 1) }}" min="1" max="100" required>
                     </div>
                 </div>
-            </div>
+                @error('jumlah_orang')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
+
+                <div class="form-grid mb-3">
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-calendar"></i>
+                        <input type="date" name="tanggal_janji" id="tanggal_janji" class="form-control" value="{{ old('tanggal_janji') }}" required>
+                    </div>
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-clock"></i>
+                        <input type="time" name="jam_janji" id="jam_janji" class="form-control" value="{{ old('jam_janji') }}" required>
+                    </div>
+                </div>
+                @error('tanggal_janji')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
+                @error('jam_janji')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Pesan / Keterangan</label>
+                    <textarea name="pesan" class="form-control" rows="3" placeholder="Tulis pesan atau keterangan...">{{ old('pesan') }}</textarea>
+                </div>
+                @error('pesan')
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
+                @enderror
+
+                <button type="submit" class="btn btn-success w-full" style="padding: 0.625rem;">
+                    <i class="fas fa-calendar-check me-2"></i>Buat Janji
+                </button>
+            </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    @include('partials.toast')
-    <script>
-        const tanggalInput = document.getElementById('tanggal_janji');
-        const jamInput = document.getElementById('jam_janji');
+    <div class="card">
+        <div class="apt-list-header">
+            <div class="apt-list-title">
+                <h3>Daftar Janji</h3>
+                <span class="badge badge-primary">{{ $appointments->total() }} janji</span>
+            </div>
+            <form action="/buat-janji" method="GET" class="search-wrap">
+                @if(request('status'))
+                    <input type="hidden" name="status" value="{{ request('status') }}">
+                @endif
+                <input type="text" name="search" class="form-control" placeholder="Cari nama..." value="{{ request('search') }}">
+                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                @if(request('search'))
+                    <a href="/buat-janji{{ request('status') ? '?status=' . request('status') : '' }}" class="btn btn-outline"><i class="fas fa-times"></i></a>
+                @endif
+            </form>
+        </div>
+
+        <div class="filter-tabs">
+            <a class="filter-tab {{ !request('status') ? 'active' : '' }}" href="/buat-janji">Semua</a>
+            <a class="filter-tab {{ request('status') == 'menunggu' ? 'active' : '' }}" href="/buat-janji?status=menunggu">
+                Menunggu <span class="tab-count waiting">{{ $menunggu }}</span>
+            </a>
+            <a class="filter-tab {{ request('status') == 'disetujui' ? 'active' : '' }}" href="/buat-janji?status=disetujui">
+                Disetujui <span class="tab-count approve">{{ $disetujui }}</span>
+            </a>
+            <a class="filter-tab {{ request('status') == 'ditolak' ? 'active' : '' }}" href="/buat-janji?status=ditolak">
+                Ditolak <span class="tab-count reject">{{ $ditolak }}</span>
+            </a>
+            <a class="filter-tab {{ request('status') == 'selesai' ? 'active' : '' }}" href="/buat-janji?status=selesai">
+                Selesai <span class="tab-count done">{{ $selesai }}</span>
+            </a>
+        </div>
+
+        <div class="apt-list-body">
+            @if(request('search') && $appointments->isEmpty())
+                <div class="apt-empty" style="padding:3rem;">
+                    <i class="fas fa-search"></i>
+                    <h4>Tidak ditemukan</h4>
+                    <p class="text-muted">Janji dengan nama "{{ request('search') }}" tidak ada.</p>
+                </div>
+            @endif
+
+            @forelse($appointments as $apt)
+            <div class="apt-item {{ $apt->status === 'selesai' ? 'completed' : '' }}">
+                <div class="apt-avatar {{ $apt->status }}">
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <div class="apt-content">
+                    <div class="apt-name">
+                        {{ $apt->nama }}
+                        <span class="badge badge-{{ $apt->status === 'disetujui' ? 'success' : ($apt->status === 'ditolak' ? 'danger' : ($apt->status === 'selesai' ? 'gray' : 'warning')) }}">
+                            {{ ucfirst($apt->status) }}
+                        </span>
+                    </div>
+                    <div class="apt-meta">
+                        <span><i class="fas fa-phone"></i>
+                            @auth
+                                {{ $apt->nomor_hp }}
+                            @else
+                                {{ substr($apt->nomor_hp, 0, 4) }}{{ str_repeat('*', max(0, strlen($apt->nomor_hp) - 7)) }}{{ substr($apt->nomor_hp, -3) }}
+                            @endauth
+                        </span>
+                        <span><i class="fas fa-bullseye"></i> {{ $apt->tujuan }}</span>
+                        <span><i class="fas fa-users"></i> {{ $apt->jumlah_orang }} orang</span>
+                        <span><i class="fas fa-calendar"></i> {{ \Carbon\Carbon::parse($apt->tanggal_janji)->format('d M Y') }}</span>
+                        <span><i class="fas fa-clock"></i> {{ \Carbon\Carbon::parse($apt->jam_janji)->format('H:i') }}</span>
+                    </div>
+                    @if($apt->pesan)
+                    <div class="apt-message">
+                        {{ Str::limit($apt->pesan, 150) }}
+                        @if(strlen($apt->pesan) > 150)
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $apt->id }}"> Baca selengkapnya...</a>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+                <div class="apt-actions">
+                    @if($apt->status === 'menunggu' || $apt->status === 'ditolak')
+                        <a href="{{ route('appointment.edit', $apt->id) }}" class="btn btn-icon btn-outline" title="Edit">
+                            <i class="fas fa-pen"></i>
+                        </a>
+                        @auth
+                        <form action="{{ route('appointment.approve', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Setujui janji ini?')">
+                            @csrf
+                            <button type="submit" class="btn btn-icon" title="Setujui" style="background:var(--success);color:white;">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </form>
+                        <form action="{{ route('appointment.reject', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Tolak janji ini?')">
+                            @csrf
+                            <button type="submit" class="btn btn-icon" title="Tolak" style="background:var(--danger);color:white;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </form>
+                        @endauth
+                        <form action="{{ route('appointment.destroy', $apt->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus janji ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endif
+                </div>
+            </div>
+
+            <div class="modal fade" id="detailModal{{ $apt->id }}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pesan dari {{ $apt->nama }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="white-space:pre-wrap;font-size:0.9rem;color:var(--gray-700);">{{ $apt->pesan }}</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="apt-empty">
+                <i class="fas fa-calendar-times"></i>
+                <h4>Belum ada janji</h4>
+                <p class="text-muted">Janji pertama akan muncul di sini.</p>
+            </div>
+            @endforelse
+        </div>
+
+        @if($appointments->hasPages())
+        <div class="pagination-wrap">
+            {{ $appointments->appends(['search' => request('search'), 'status' => request('status')])->links() }}
+        </div>
+        @endif
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const tanggalInput = document.getElementById('tanggal_janji');
+    const jamInput = document.getElementById('jam_janji');
+    if (tanggalInput && jamInput) {
         const today = new Date().toISOString().split('T')[0];
-
         tanggalInput.min = today;
-
         function updateMinTime() {
             if (tanggalInput.value === today) {
                 const now = new Date();
-                const currentHour = String(now.getHours()).padStart(2, '0');
-                const currentMinute = String(now.getMinutes()).padStart(2, '0');
-                jamInput.min = `${currentHour}:${currentMinute}`;
-            } else {
-                jamInput.min = '';
-            }
+                jamInput.min = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+            } else { jamInput.min = ''; }
         }
-
         tanggalInput.addEventListener('change', updateMinTime);
         updateMinTime();
-    </script>
-</body>
-</html>
+    }
+</script>
+@endpush

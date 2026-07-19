@@ -1,324 +1,285 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Buku Tamu</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; min-height: 100vh; }
-        .form-box, .list-box { background: rgba(255, 255, 255, 0.98); padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
-        .form-box { height: fit-content; position: sticky; top: 20px; }
-        .list-box { max-height: calc(100vh - 120px); overflow-y: auto; }
-        h3 { color: #333; }
-        textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        input[type="text"], input[type="email"], input[type="number"], input[type="time"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        label { margin-bottom: 0; display: block; }
-        .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
-        .btn-submit:hover { background: #41b632; }
-        .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
-        .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
-        .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
-        .stat-card-sm .stat-label { font-size: 10px; opacity: 0.9; }
-        .card-total { background: linear-gradient(135deg, #4e73df, #224abe); }
-        .card-today { background: linear-gradient(135deg, #1cc88a, #13855c); }
-        .card-month { background: linear-gradient(135deg, #f6c23e, #dda20a); }
-        .guest-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
-        .guest-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
-        .search-box { display: flex; align-items: center; gap: 0; }
-        .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
-        .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
-        .filter-btns { display: flex; gap: 4px; flex-wrap: wrap; }
-        .filter-btns .btn { font-size: 11px; padding: 3px 8px; border-radius: 4px; }
-        .filter-btns .btn.active { background: #4e73df; color: white; border-color: #4e73df; }
-        .timeline { position: relative; padding-left: 20px; }
-        .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #dee2e6; }
-        .timeline-item { position: relative; margin-bottom: 0; }
-        .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
-        .appointment-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
-        .appointment-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .navbar-collapse { background: #0d6efd; margin-top: 10px; padding: 10px; border-radius: 8px; }
-        .navbar-collapse .nav-link { padding: 8px 12px; }
-        .navbar-mobile-menu { display: none; position: absolute; right: 0; top: 100%; background: #fff; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); min-width: 180px; z-index: 1000; overflow: hidden; }
-        .navbar-mobile-menu.show { display: block; }
-        .navbar-mobile-menu .nav-link { color: #333 !important; padding: 12px 16px; border-bottom: 1px solid #eee; display: block; }
-        .navbar-mobile-menu .nav-link:last-child { border-bottom: none; }
-        .navbar-mobile-menu .nav-link:hover { background: #f8f9fa; }
-        .navbar-mobile-menu .nav-link.active { background: #e7f1ff; color: #0d6efd !important; }
-        @media (max-width: 991px) {
-            .navbar .container { position: relative; }
-            .navbar .navbar-collapse { display: none !important; }
-        }
-        @media (min-width: 992px) {
-            .navbar-mobile-menu { display: none !important; }
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
-        <div class="container">
-            <a class="navbar-brand" href="/bukutamu">Buku Tamu</a>
-            <div class="d-flex align-items-center gap-2">
-                <div class="navbar-mobile-menu" id="mobileMenu">
-                    <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </div>
-                <button class="navbar-toggler" type="button" onclick="toggleMobileMenu()">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link active" href="/bukutamu">Buku Tamu</a>
-                    <a class="nav-link" href="/buat-janji">Buat Janji</a>
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
-                </div>
+<?php $__env->startSection('title', 'Buku Tamu - NurseCall'); ?>
+<?php $__env->startSection('page-title', 'Buku Tamu'); ?>
+<?php $__env->startSection('breadcrumb'); ?>
+    <a href="/"><i class="fas fa-home me-2"></i>Home</a>
+    <i class="fas fa-chevron-right text-xs"></i>
+    <span>Buku Tamu</span>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('styles'); ?>
+<style>
+    .two-col { display: grid; grid-template-columns: 420px 1fr; gap: 1.5rem; align-items: start; }
+    .form-card { position: sticky; top: calc(var(--header-height) + 1.5rem); }
+    .form-header { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .form-icon { width: 40px; height: 40px; background: #eef2ff; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; }
+    .form-header-text h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .form-header-text p { font-size: 0.75rem; color: var(--gray-500); margin: 0; }
+    .form-body { padding: 1.25rem; }
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap .form-control { padding-left: 2.5rem; }
+    .input-icon-wrap i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.9rem; pointer-events: none; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .guest-list-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
+    .guest-list-title { display: flex; align-items: center; gap: 0.75rem; }
+    .guest-list-title h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .search-wrap { display: flex; align-items: center; gap: 0; }
+    .search-wrap .form-control { border-radius: var(--radius) 0 0 var(--radius); height: 36px; padding: 0.375rem 0.75rem; font-size: 0.875rem; }
+    .search-wrap .btn { border-radius: 0 var(--radius) var(--radius) 0; height: 36px; padding: 0 0.875rem; }
+    .guest-list-body { padding: 0; }
+    .guest-item { display: flex; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--gray-100); transition: var(--transition); position: relative; }
+    .guest-item:hover { background: var(--gray-50); }
+    .guest-item:last-child { border-bottom: none; }
+    .guest-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem; flex-shrink: 0; }
+    .guest-avatar.green { background: var(--success); }
+    .guest-avatar.orange { background: var(--warning); }
+    .guest-avatar.red { background: var(--danger); }
+    .guest-content { flex: 1; min-width: 0; }
+    .guest-name { font-weight: 600; color: var(--gray-900); font-size: 0.9rem; }
+    .guest-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; margin-top: 4px; font-size: 0.75rem; color: var(--gray-500); }
+    .guest-meta span { display: flex; align-items: center; gap: 4px; }
+    .guest-actions { display: flex; align-items: center; gap: 0.375rem; flex-shrink: 0; }
+    .guest-message { margin-top: 0.5rem; padding: 0.625rem; background: var(--gray-50); border-radius: var(--radius); font-size: 0.8rem; color: var(--gray-600); line-height: 1.5; }
+    .guest-message a { color: var(--primary); }
+    .guest-empty { text-align: center; padding: 4rem 1rem; color: var(--gray-400); }
+    .guest-empty i { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .pagination-wrap { padding: 1rem 1.25rem; border-top: 1px solid var(--gray-200); }
+    .page-link-custom { display: flex; align-items: center; justify-content: center; gap: 0.25rem; }
+    @media (max-width: 1024px) { .two-col { grid-template-columns: 1fr; } .form-card { position: static; } .form-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .guest-list-header { flex-direction: column; align-items: flex-start; } .search-wrap { width: 100%; } .search-wrap .form-control { flex: 1; } .guest-actions { flex-direction: row; } .guest-item { flex-direction: column; } }
+</style>
+<?php $__env->stopPush(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="two-col">
+    <div class="card form-card">
+        <div class="form-header">
+            <div class="form-icon"><i class="fas fa-user-plus"></i></div>
+            <div class="form-header-text">
+                <h3>Registrasi Tamu</h3>
+                <p>Isi data diri dan tujuan kunjungan</p>
             </div>
         </div>
-    </nav>
-    <script>
-        function toggleMobileMenu() { var menu = document.getElementById('mobileMenu'); menu.classList.toggle('show'); }
-        document.addEventListener('click', function(e) { var menu = document.getElementById('mobileMenu'); if (!e.target.closest('.d-flex')) menu.classList.remove('show'); });
-    </script>
-
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-5">
-                <div class="form-box scrollbar-thin">
-                    <h3>📝 Isi Buku Tamu</h3>
-                    <form action="/bukutamu" method="POST" novalidate>
-                        <?php echo csrf_field(); ?>
-                        <label>Nama/Instansi:</label>
-                        <input type="text" name="nama" placeholder="Nama atau instansi..." value="<?php echo e(old('nama')); ?>" required>
-                        <?php $__errorArgs = ['nama'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Nomor HP:</label>
-                        <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="<?php echo e(old('nomor_hp')); ?>" required>
-                        <?php $__errorArgs = ['nomor_hp'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Jumlah Orang:</label>
-                        <input type="number" name="jumlah_orang" placeholder="Jumlah orang..." value="<?php echo e(old('jumlah_orang', 1)); ?>" min="1" required>
-                        <?php $__errorArgs = ['jumlah_orang'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Waktu Kedatangan (Opsional):</label>
-                        <input type="time" name="waktu_kedatangan" value="<?php echo e(old('waktu_kedatangan')); ?>" step="3600">
-                        <?php $__errorArgs = ['waktu_kedatangan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Bertemu Dengan:</label>
-                        <input type="text" name="tujuan" placeholder="Siapa yang ingin ditemui..." value="<?php echo e(old('tujuan')); ?>" required>
-                        <?php $__errorArgs = ['tujuan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-
-                        <label>Pesan/Keterangan:</label>
-                        <textarea name="pesan" rows="4" placeholder="Tulis pesan atau keterangan..."><?php echo e(old('pesan')); ?></textarea>
-                        <?php $__errorArgs = ['pesan'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                            <div class="text-danger small mb-2"><?php echo e($message); ?></div>
-                        <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                        
-                        <button type="submit" class="btn-submit">Kirim Pesan</button>
-                    </form>
+        <div class="form-body">
+            <form action="/bukutamu" method="POST" novalidate>
+                <?php echo csrf_field(); ?>
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="nama" class="form-control" placeholder="Nama / Instansi" value="<?php echo e(old('nama')); ?>" required>
                 </div>
-            </div>
+                <?php $__errorArgs = ['nama'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
-            <div class="col-lg-7">
-                <div class="list-box scrollbar-thin">
-                    <div class="stat-cards-horizontal">
-                        <div class="stat-card-sm card-total">
-                            <div class="stat-number"><?php echo e($totalTamu); ?></div>
-                            <div class="stat-label">Total Kunjungan</div>
-                        </div>
-                        <div class="stat-card-sm card-today">
-                            <div class="stat-number"><?php echo e($tamuHariIni); ?></div>
-                            <div class="stat-label">Kunjungan Hari Ini</div>
-                        </div>
-                        <div class="stat-card-sm card-month">
-                            <div class="stat-number"><?php echo e($tamuBulanIni); ?></div>
-                            <div class="stat-label">Kunjungan Bulan Ini</div>
-                        </div>
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" name="nomor_hp" class="form-control" placeholder="Nomor HP (08xxxxxxxxxx)" value="<?php echo e(old('nomor_hp')); ?>" required>
+                </div>
+                <?php $__errorArgs = ['nomor_hp'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                <div class="form-grid mb-3">
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-users"></i>
+                        <input type="number" name="jumlah_orang" class="form-control" placeholder="Jumlah orang" value="<?php echo e(old('jumlah_orang', 1)); ?>" min="1" required>
                     </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <div class="d-flex align-items-center gap-2">
-                            <h3 class="mb-0">📋 Daftar Tamu</h3>
-                            <span class="badge bg-primary"><?php echo e($tamus->total()); ?> tamu</span>
-                        </div>
-                        <form action="/bukutamu" method="GET" class="mb-0">
-                            <div class="search-box">
-                                <input type="text" name="search" class="form-control" placeholder="Cari..." value="<?php echo e(request('search')); ?>">
-                                <button class="btn btn-primary" type="submit">Cari</button>
-                                <?php if(request('search')): ?>
-                                    <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
-                                <?php endif; ?>
-                            </div>
-                        </form>
-                    </div>
-
-                    <?php if(request('search') && $tamus->isEmpty()): ?>
-                        <div class="alert alert-warning text-center">
-                            <strong>Data tidak ditemukan</strong><br>
-                            Tamu dengan nama "<?php echo e(request('search')); ?>" tidak ada di daftar.
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="timeline">
-                    <?php $__empty_1 = true; $__currentLoopData = $tamus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tamu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                        <div class="timeline-item">
-                            <div class="timeline-dot" style="background: #1cc88a;"></div>
-                            <div class="guest-card" style="margin-bottom: 12px;">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <b><?php echo e($tamu->nama); ?></b>
-                                        </div>
-                                        <small class="text-muted">
-                                            <i class="fas fa-phone"></i>
-                                            <?php if(auth()->guard()->check()): ?>
-                                                <?php echo e($tamu->nomor_hp); ?>
-
-                                            <?php else: ?>
-                                                <?php echo e(substr($tamu->nomor_hp, 0, 4)); ?><?php echo e(str_repeat('*', strlen($tamu->nomor_hp) - 7)); ?><?php echo e(substr($tamu->nomor_hp, -3)); ?>
-
-                                            <?php endif; ?>
-                                        </small>
-                                        <br>
-                                        <small class="text-muted">Tujuan: <?php echo e($tamu->tujuan); ?></small>
-                                        <br>
-                                        <small class="text-muted">
-                                            <i class="fa-regular fa-calendar"></i> <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?>
-
-                                            | <i class="fa-regular fa-clock"></i> Diisi: <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('H:i')); ?>
-
-                                            <?php if($tamu->waktu_kedatangan): ?>
-                                                 | <i class="fa-solid fa-right-to-bracket"></i> Datang: <?php echo e(\Carbon\Carbon::parse($tamu->waktu_kedatangan)->format('H:i')); ?>
-
-                                            <?php endif; ?>
-                                        </small>
-                                        <br>
-                                        <small class="text-muted">Jumlah: <?php echo e($tamu->jumlah_orang); ?> orang</small>
-                                    </div>
-                                    <div class="btn-group">
-                                        <a href="<?php echo e(route('buku-tamu.edit', $tamu->id)); ?>" class="btn btn-warning btn-sm" title="Edit" style="padding: 4px 10px; font-size: 13px;">Edit</a>
-                                        <form action="<?php echo e(route('buku-tamu.destroy', $tamu->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus tamu ini?')">
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('DELETE'); ?>
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="padding: 4px 10px; font-size: 13px;">Hapus</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                
-                                <?php if($tamu->pesan): ?>
-                                <p class="mb-0">
-                                    <?php echo e(Str::limit($tamu->pesan, 120)); ?>
-
-                                    <?php if(strlen($tamu->pesan) > 120): ?>
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal<?php echo e($tamu->id); ?>">
-                                            Baca selengkapnya...
-                                        </a>
-                                    <?php endif; ?>
-                                </p>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="detailModal<?php echo e($tamu->id); ?>" tabindex="-1" aria-labelledby="detailModalLabel<?php echo e($tamu->id); ?>" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-scrollable">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="detailModalLabel<?php echo e($tamu->id); ?>">Detail Pesan: <?php echo e($tamu->nama); ?></h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" style="white-space: pre-wrap;"><?php echo e($tamu->pesan); ?></div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                        <p class="text-center text-muted py-5">Belum ada tamu yang mengisi buku tamu.</p>
-                    <?php endif; ?>
-                    </div>
-
-                    <div class="d-flex justify-content-center mt-3">
-                        <?php echo e($tamus->appends(['search' => request('search')])->links()); ?>
-
+                    <div class="input-icon-wrap">
+                        <i class="fas fa-clock"></i>
+                        <input type="time" name="waktu_kedatangan" class="form-control" value="<?php echo e(old('waktu_kedatangan')); ?>" step="3600">
                     </div>
                 </div>
-            </div>
+                <?php $__errorArgs = ['jumlah_orang'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                <?php $__errorArgs = ['waktu_kedatangan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                <div class="input-icon-wrap mb-3">
+                    <i class="fas fa-bullseye"></i>
+                    <input type="text" name="tujuan" class="form-control" placeholder="Bertemu dengan / Tujuan" value="<?php echo e(old('tujuan')); ?>" required>
+                </div>
+                <?php $__errorArgs = ['tujuan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                <div class="form-group mb-4">
+                    <label class="form-label">Pesan / Keterangan</label>
+                    <textarea name="pesan" class="form-control" rows="3" placeholder="Tulis pesan atau keterangan..."><?php echo e(old('pesan')); ?></textarea>
+                </div>
+                <?php $__errorArgs = ['pesan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                    <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;"><?php echo e($message); ?></div>
+                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+
+                <button type="submit" class="btn btn-primary w-full" style="padding: 0.625rem;">
+                    <i class="fas fa-paper-plane me-2"></i>Kirim
+                </button>
+            </form>
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var waktuInput = document.querySelector('input[name="waktu_kedatangan"]');
+    <div class="card">
+        <div class="guest-list-header">
+            <div class="guest-list-title">
+                <h3>Daftar Tamu</h3>
+                <span class="badge badge-primary"><?php echo e($tamus->total()); ?> tamu</span>
+            </div>
+            <form action="/bukutamu" method="GET" class="search-wrap">
+                <input type="text" name="search" class="form-control" placeholder="Cari nama atau instansi..." value="<?php echo e(request('search')); ?>">
+                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
+                <?php if(request('search')): ?>
+                    <a href="/" class="btn btn-outline"><i class="fas fa-times"></i></a>
+                <?php endif; ?>
+            </form>
+        </div>
+
+        <div class="guest-list-body">
+            <?php if(request('search') && $tamus->isEmpty()): ?>
+                <div class="guest-empty" style="padding:3rem;">
+                    <i class="fas fa-search"></i>
+                    <h4>Tidak ditemukan</h4>
+                    <p class="text-muted">Tamu dengan nama "<?php echo e(request('search')); ?>" tidak ada.</p>
+                </div>
+            <?php endif; ?>
+
+            <?php $__empty_1 = true; $__currentLoopData = $tamus; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tamu): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <div class="guest-item">
+                <div class="guest-avatar"><?php echo e(strtoupper(substr($tamu->nama, 0, 1))); ?></div>
+                <div class="guest-content">
+                    <div class="guest-name"><?php echo e($tamu->nama); ?></div>
+                    <div class="guest-meta">
+                        <span><i class="fas fa-phone"></i>
+                            <?php if(auth()->guard()->check()): ?>
+                                <?php echo e($tamu->nomor_hp); ?>
+
+                            <?php else: ?>
+                                <?php echo e(substr($tamu->nomor_hp, 0, 4)); ?><?php echo e(str_repeat('*', max(0, strlen($tamu->nomor_hp) - 7))); ?><?php echo e(substr($tamu->nomor_hp, -3)); ?>
+
+                            <?php endif; ?>
+                        </span>
+                        <span><i class="fas fa-bullseye"></i> <?php echo e($tamu->tujuan); ?></span>
+                        <span><i class="fas fa-users"></i> <?php echo e($tamu->jumlah_orang); ?> orang</span>
+                        <span><i class="fas fa-calendar"></i> <?php echo e(\Carbon\Carbon::parse($tamu->created_at)->format('d M Y')); ?></span>
+                        <?php if($tamu->waktu_kedatangan): ?>
+                        <span><i class="fas fa-clock"></i> <?php echo e(\Carbon\Carbon::parse($tamu->waktu_kedatangan)->format('H:i')); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <?php if($tamu->pesan): ?>
+                    <div class="guest-message">
+                        <?php echo e(Str::limit($tamu->pesan, 150)); ?>
+
+                        <?php if(strlen($tamu->pesan) > 150): ?>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal<?php echo e($tamu->id); ?>"> Baca selengkapnya...</a>
+                        <?php endif; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <?php if(auth()->guard()->check()): ?>
+                <div class="guest-actions">
+                    <a href="<?php echo e(route('buku-tamu.edit', $tamu->id)); ?>" class="btn btn-icon btn-outline" title="Edit">
+                        <i class="fas fa-pen"></i>
+                    </a>
+                    <form action="<?php echo e(route('buku-tamu.destroy', $tamu->id)); ?>" method="POST" class="d-inline" onsubmit="return confirm('Hapus data tamu ini?')">
+                        <?php echo csrf_field(); ?>
+                        <?php echo method_field('DELETE'); ?>
+                        <button type="submit" class="btn btn-icon btn-outline" title="Hapus" style="color:var(--danger);">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="modal fade" id="detailModal<?php echo e($tamu->id); ?>" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Pesan dari <?php echo e($tamu->nama); ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" style="white-space:pre-wrap;font-size:0.9rem;color:var(--gray-700);"><?php echo e($tamu->pesan); ?></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+            <div class="guest-empty">
+                <i class="fas fa-user-slash"></i>
+                <h4>Belum ada tamu</h4>
+                <p class="text-muted">Tamu pertama akan muncul di sini.</p>
+            </div>
+            <?php endif; ?>
+        </div>
+
+        <?php if($tamus->hasPages()): ?>
+        <div class="pagination-wrap">
+            <div class="page-link-custom">
+                <?php echo e($tamus->appends(['search' => request('search')])->links()); ?>
+
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var waktuInput = document.querySelector('input[name="waktu_kedatihan"]');
+        if (waktuInput) {
             var now = new Date();
             var h = String(now.getHours()).padStart(2, '0');
             var m = String(now.getMinutes()).padStart(2, '0');
             waktuInput.max = h + ':' + m;
+        }
+    });
+</script>
+<?php $__env->stopPush(); ?>
 
-            document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
-                if (!waktuInput.value) {
-                    waktuInput.value = h + ':' + m;
-                }
-            });
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <?php echo $__env->make('partials.toast', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-</body>
-</html>
-<?php /**PATH C:\laragon\www\bukutamu\resources\views/bukutamu.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\bukutamu\resources\views/bukutamu.blade.php ENDPATH**/ ?>

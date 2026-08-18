@@ -1,0 +1,216 @@
+@extends('layouts.app')
+
+@section('title', 'Buku Tamu')
+@section('page-title', 'Buku Tamu')
+
+@section('content')
+<style>
+    .form-box, .list-box { background: rgba(255, 255, 255, 0.98); padding: 25px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+    .form-box { height: fit-content; position: sticky; top: 20px; }
+    .list-box { max-height: calc(100vh - 150px); overflow-y: auto; }
+    h3 { color: #333; }
+    textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+    input[type="text"], input[type="email"], input[type="number"], input[type="time"] { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+    label { margin-bottom: 0; display: block; }
+    .btn-submit { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    .btn-submit:hover { background: #41b632; }
+    .stat-cards-horizontal { display: flex; gap: 10px; margin-bottom: 15px; }
+    .stat-card-sm { flex: 1; padding: 12px; border-radius: 10px; color: #fff; text-align: center; }
+    .stat-card-sm .stat-number { font-size: 20px; font-weight: 700; }
+    .stat-card-sm .stat-label { font-size: 10px; opacity: 0.9; }
+    .card-total { background: linear-gradient(135deg, #4e73df, #224abe); }
+    .card-today { background: linear-gradient(135deg, #1cc88a, #13855c); }
+    .card-month { background: linear-gradient(135deg, #f6c23e, #dda20a); }
+    .guest-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
+    .guest-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+    .search-box { display: flex; align-items: center; gap: 0; }
+    .search-box input { border-radius: 4px 0 0 4px; height: 32px; padding: 6px 10px; font-size: 13px; margin: 0; width: auto; }
+    .search-box .btn { border-radius: 0 4px 4px 0; height: 32px; padding: 0 12px; font-size: 13px; }
+    .timeline { position: relative; padding-left: 20px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: #dee2e6; }
+    .timeline-item { position: relative; margin-bottom: 0; }
+    .timeline-dot { position: absolute; left: -17px; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; z-index: 1; }
+</style>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="form-box scrollbar-thin">
+            <h3>Isi Buku Tamu</h3>
+            <form action="/bukutamu" method="POST">
+                @csrf
+                <label>Nama/Instansi:</label>
+                <input type="text" name="nama" placeholder="Nama atau instansi..." value="{{ old('nama') }}" required>
+                @error('nama')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+
+                <label>Jumlah Orang:</label>
+                <input type="number" name="jumlah_orang" placeholder="Jumlah orang..." value="{{ old('jumlah_orang', 1) }}" min="1" required>
+                @error('jumlah_orang')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+
+                <label>Waktu Kedatangan:</label>
+                <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan') }}" step="3600">
+                @error('waktu_kedatangan')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+
+                <label>Nomor HP:</label>
+                <input type="text" name="nomor_hp" placeholder="08xxxxxxxxxx" value="{{ old('nomor_hp') }}" required>
+                @error('nomor_hp')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+
+                <label>Bertemu Dengan:</label>
+                <input type="text" name="tujuan" placeholder="Siapa yang ingin ditemui..." value="{{ old('tujuan') }}" required>
+                @error('tujuan')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+
+                <label>Pesan/Keterangan:</label>
+                <textarea name="pesan" rows="4" placeholder="Tulis pesan atau keterangan...">{{ old('pesan') }}</textarea>
+                @error('pesan')
+                    <div class="text-danger small mb-2">{{ $message }}</div>
+                @enderror
+                
+                <button type="submit" class="btn-submit">Kirim Pesan</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="list-box scrollbar-thin">
+            <div class="stat-cards-horizontal">
+                <div class="stat-card-sm card-total">
+                    <div class="stat-number">{{ $totalTamu }}</div>
+                    <div class="stat-label">Total Kunjungan</div>
+                </div>
+                <div class="stat-card-sm card-today">
+                    <div class="stat-number">{{ $tamuHariIni }}</div>
+                    <div class="stat-label">Kunjungan Hari Ini</div>
+                </div>
+                <div class="stat-card-sm card-month">
+                    <div class="stat-number">{{ $tamuBulanIni }}</div>
+                    <div class="stat-label">Kunjungan Bulan Ini</div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center gap-2">
+                    <h3 class="mb-0">Daftar Tamu</h3>
+                    <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
+                </div>
+                <form action="/bukutamu" method="GET" class="mb-0">
+                    <div class="search-box">
+                        <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
+                        <button class="btn btn-primary" type="submit">Cari</button>
+                        @if(request('search'))
+                            <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                        @endif
+                    </div>
+                </form>
+            </div>
+
+            @if(request('search') && $tamus->isEmpty())
+                <div class="alert alert-warning text-center">
+                    <strong>Data tidak ditemukan</strong><br>
+                    Tamu dengan nama "{{ request('search') }}" tidak ada di daftar.
+                </div>
+            @endif
+
+            <div class="timeline">
+            @forelse($tamus as $tamu)
+                <div class="timeline-item">
+                    <div class="timeline-dot" style="background: #1cc88a;"></div>
+                    <div class="guest-card" style="margin-bottom: 12px;">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <b>{{ $tamu->nama }}</b>
+                                </div>
+                                <small class="text-muted">
+                                    @auth
+                                        {{ $tamu->nomor_hp }}
+                                    @else
+                                        {{ substr($tamu->nomor_hp, 0, 4) }}{{ str_repeat('*', strlen($tamu->nomor_hp) - 7) }}{{ substr($tamu->nomor_hp, -3) }}
+                                    @endauth
+                                </small>
+                                <br>
+                                <small class="text-muted">Tujuan: {{ $tamu->tujuan }}</small>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="fa-regular fa-calendar"></i> {{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y') }}
+                                    | <i class="fa-regular fa-clock"></i> Diisi: {{ \Carbon\Carbon::parse($tamu->created_at)->format('H:i') }}
+                                    @if($tamu->waktu_kedatangan)
+                                         | <i class="fa-solid fa-right-to-bracket"></i> Datang: {{ \Carbon\Carbon::parse($tamu->waktu_kedatangan)->format('H:i') }}
+                                    @endif
+                                </small>
+                                <br>
+                                <small class="text-muted">Jumlah: {{ $tamu->jumlah_orang }} orang</small>
+                            </div>
+                            <div class="btn-group">
+                                <a href="{{ route('buku-tamu.edit', $tamu->id) }}" class="btn btn-warning btn-sm" title="Edit" style="padding: 4px 10px; font-size: 13px;">Edit</a>
+                                <form action="{{ route('buku-tamu.destroy', $tamu->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus tamu ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Hapus" style="padding: 4px 10px; font-size: 13px;">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        @if($tamu->pesan)
+                        <p class="mb-0">
+                            {{ Str::limit($tamu->pesan, 120) }}
+                            @if(strlen($tamu->pesan) > 120)
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#detailModal{{ $tamu->id }}">
+                                    Baca selengkapnya...
+                                </a>
+                            @endif
+                        </p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="modal fade" id="detailModal{{ $tamu->id }}" tabindex="-1" aria-labelledby="detailModalLabel{{ $tamu->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="detailModalLabel{{ $tamu->id }}">Detail Pesan: {{ $tamu->nama }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="white-space: pre-wrap;">{{ $tamu->pesan }}</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-muted py-5">Belum ada tamu yang mengisi buku tamu.</p>
+            @endforelse
+            </div>
+
+            <div class="d-flex justify-content-center mt-3">
+                {{ $tamus->appends(['search' => request('search')])->links() }}
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
+        var waktuInput = document.querySelector('input[name="waktu_kedatangan"]');
+        if (!waktuInput.value) {
+            var now = new Date();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            waktuInput.value = h + ':' + m;
+        }
+    });
+</script>
+@endpush

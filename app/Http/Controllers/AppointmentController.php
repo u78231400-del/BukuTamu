@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\People;
 use App\Exports\AppointmentExport;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -88,8 +89,9 @@ class AppointmentController extends Controller
         $disetujui = Appointment::where('status', 'disetujui')->count();
         $ditolak = Appointment::where('status', 'ditolak')->count();
         $selesai = Appointment::where('status', 'selesai')->count();
+        $peoples = People::orderBy('nama')->get();
 
-        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui', 'ditolak', 'selesai'));
+        return view('buat_janji', compact('appointments', 'totalAppointment', 'menunggu', 'disetujui', 'ditolak', 'selesai', 'peoples'));
     }
 
     public function store(Request $request)

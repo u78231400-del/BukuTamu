@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@bukutamu.com',
             'password' => Hash::make('password123'),
         ]);
+
+        $this->call(PeopleSeeder::class);
     }
 }

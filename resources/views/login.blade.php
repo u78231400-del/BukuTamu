@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>RS Medika - Sistem Manajemen Kunjungan</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -63,6 +64,31 @@
             .login-right { display: none; }
             .login-left { padding: 2rem; flex: none; min-height: 100vh; justify-content: flex-start; padding-top: 3rem; }
             .login-card { max-width: 100%; }
+=======
+    <title>Login Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #D8F3DC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card { background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; width: 100%; max-width: 420px; }
+        .login-header { background: #198754; color: white; padding: 30px; text-align: center; }
+        .login-header h3 { margin: 0; font-weight: 600; }
+        .login-header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
+        .login-body { padding: 30px; }
+        .form-control { border-radius: 8px; padding: 12px 16px; }
+        .btn-login { background: #198754; border: none; border-radius: 8px; padding: 12px; font-weight: 600; width: 100%; }
+        .btn-login:hover { background: #157347; }
+        .input-group-text { border-radius: 8px 0 0 8px; background: #f8f9fa; }
+        @media (max-width: 576px) {
+            .login-card { border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+            .login-header { padding: 20px; }
+            .login-header h3 { font-size: 1.3rem; }
+            .login-header p { font-size: 0.85rem; }
+            .login-body { padding: 20px; }
+            .form-control { padding: 10px 14px; font-size: 0.95rem; }
+            .btn-login { padding: 10px; font-size: 0.95rem; }
+>>>>>>> 16e400a (Update design system and add people feature)
         }
     </style>
 </head>

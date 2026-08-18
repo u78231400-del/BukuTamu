@@ -1,101 +1,58 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Kunjungan - RS Medika')
-@section('page-title', 'Edit Kunjungan')
-@section('breadcrumb')
-    <a href="/"><i class="fas fa-home me-2"></i>Home</a>
-    <i class="fas fa-chevron-right text-xs"></i>
-    <a href="/">Kunjungan Pasien</a>
-    <i class="fas fa-chevron-right text-xs"></i>
-    <span>Edit</span>
-@endsection
-
-@push('styles')
-<style>
-    .edit-layout { display: flex; justify-content: center; }
-    .edit-card { width: 100%; max-width: 560px; }
-    .form-header { display: flex; align-items: center; gap: 0.75rem; padding: 1.25rem; border-bottom: 1px solid var(--gray-200); }
-    .form-icon { width: 40px; height: 40px; background: #fef3c7; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--warning); font-size: 1.1rem; }
-    .form-header-text h3 { font-size: 1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
-    .form-header-text p { font-size: 0.75rem; color: var(--gray-500); margin: 0; }
-    .form-body { padding: 1.25rem; }
-    .input-icon-wrap { position: relative; margin-bottom: 1rem; }
-    .input-icon-wrap .form-control { padding-left: 2.5rem; width: 100%; }
-    .input-icon-wrap i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.9rem; pointer-events: none; }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .btn-back-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gray-500); font-size: 0.875rem; transition: var(--transition); margin-bottom: 1.5rem; }
-    .btn-back-link:hover { color: var(--primary); }
-    @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
-</style>
-@endpush
+@section('title', 'Edit Tamu')
+@section('page-title', 'Edit Tamu')
 
 @section('content')
-<div class="edit-layout">
-    <div class="edit-card">
-        <div class="card">
-            <div class="form-header">
-                <div class="form-icon"><i class="fas fa-user-edit"></i></div>
-                <div class="form-header-text">
-                    <h3>Edit Data Kunjungan</h3>
-                    <p>Perbarui informasi kunjungan</p>
-                </div>
-            </div>
-            <div class="form-body">
-                <a href="/" class="btn-back-link"><i class="fas fa-arrow-left"></i> Kembali</a>
+<style>
+    .form-box { background: rgba(255, 255, 255, 0.98); padding: 30px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); max-width: 600px; }
+    h1 { color: #333; text-align: center; }
+    input, textarea { width: 100%; padding: 10px; margin-top: 5px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+    label { margin-bottom: 0; display: block; }
+    .btn-update { width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    .btn-update:hover { background: #41b632; }
+    .btn-back { display: inline-block; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 15px; }
+    .btn-back:hover { background: #5a6268; color: white; }
+</style>
 
-                <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST" novalidate>
-                    @csrf
-                    @method('PUT')
+<div class="form-box">
+    <a href="/bukutamu" class="btn-back">← Kembali</a>
+    <h1>Edit Tamu</h1>
+    
+    <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <label>Nama/Instansi:</label>
+        <input type="text" name="nama" value="{{ old('nama', $tamu->nama) }}" required>
+        @error('nama')
+            <div class="text-danger small mb-2">{{ $message }}</div>
+        @enderror
 
-                    <div class="input-icon-wrap">
-                        <i class="fas fa-user"></i>
-                        <input type="text" name="nama" class="form-control" placeholder="Nama / Instansi" value="{{ old('nama', $tamu->nama) }}" required>
-                    </div>
-                    @error('nama')
-                        <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
-                    @enderror
+        <label>Jumlah Orang:</label>
+        <input type="number" name="jumlah_orang" value="{{ old('jumlah_orang', $tamu->jumlah_orang) }}" min="1" required>
 
-                    <div class="form-grid">
-                        <div class="input-icon-wrap">
-                            <i class="fas fa-users"></i>
-                            <input type="number" name="jumlah_orang" class="form-control" placeholder="Jumlah orang" value="{{ old('jumlah_orang', $tamu->jumlah_orang) }}" min="1" required>
-                        </div>
-                        <div class="input-icon-wrap">
-                            <i class="fas fa-clock"></i>
-                            <input type="time" name="waktu_kedatangan" class="form-control" value="{{ old('waktu_kedatangan', $tamu->waktu_kedatangan) }}" step="3600">
-                        </div>
-                    </div>
+        <label>Waktu Kedatangan:</label>
+        <input type="time" name="waktu_kedatangan" value="{{ old('waktu_kedatangan', $tamu->waktu_kedatangan) }}" step="3600">
 
-                    <div class="input-icon-wrap">
-                        <i class="fas fa-phone"></i>
-                        <input type="text" name="nomor_hp" class="form-control" placeholder="Nomor HP" value="{{ old('nomor_hp', $tamu->nomor_hp) }}" required>
-                    </div>
-                    @error('nomor_hp')
-                        <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
-                    @enderror
+        <label>Nomor HP:</label>
+        <input type="text" name="nomor_hp" value="{{ old('nomor_hp', $tamu->nomor_hp) }}" required>
+        @error('nomor_hp')
+            <div class="text-danger small mb-2">{{ $message }}</div>
+        @enderror
 
-                    <div class="input-icon-wrap">
-                        <i class="fas fa-bullseye"></i>
-                        <input type="text" name="tujuan" class="form-control" placeholder="Tujuan Bertemu" value="{{ old('tujuan', $tamu->tujuan) }}" required>
-                    </div>
-                    @error('tujuan')
-                        <div class="text-danger text-xs mb-3" style="margin-top:-0.5rem;">{{ $message }}</div>
-                    @enderror
+        <label>Tujuan Bertemu:</label>
+        <input type="text" name="tujuan" value="{{ old('tujuan', $tamu->tujuan) }}" required>
+        @error('tujuan')
+            <div class="text-danger small mb-2">{{ $message }}</div>
+        @enderror
 
-                    <div class="form-group">
-                        <label class="form-label">Pesan / Keterangan</label>
-                        <textarea name="pesan" class="form-control" rows="3" placeholder="Pesan atau keterangan...">{{ old('pesan', $tamu->pesan) }}</textarea>
-                    </div>
-                    @error('pesan')
-                        <div class="text-danger text-xs mb-3">{{ $message }}</div>
-                    @enderror
-
-                    <button type="submit" class="btn btn-success w-full" style="padding: 0.625rem;">
-                        <i class="fas fa-save me-2"></i>Simpan Perubahan
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
+        <label>Pesan/Keterangan:</label>
+        <textarea name="pesan" rows="5">{{ old('pesan', $tamu->pesan) }}</textarea>
+        @error('pesan')
+            <div class="text-danger small mb-2">{{ $message }}</div>
+        @enderror
+        
+        <button type="submit" class="btn-update">Simpan Perubahan</button>
+    </form>
 </div>
 @endsection

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -303,11 +304,224 @@
             .sidebar, .header, .btn, .mobile-toggle { display: none !important; }
             .main-wrapper { margin-left: 0 !important; }
             .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+=======
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title', 'Buku Tamu')</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f4f6f9; margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            width: 260px;
+            height: 100vh;
+            background: #2e8b57;
+            color: white;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.active { left: 0; }
+        
+        .sidebar-header {
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-header h4 { margin: 0; font-weight: 600; }
+        .sidebar-header p { margin: 5px 0 0; font-size: 12px; opacity: 0.7; }
+        
+        .sidebar-menu { flex: 1; padding: 15px 0; overflow-y: auto; }
+        .menu-title { padding: 10px 20px 5px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.2s;
+            gap: 12px;
+        }
+        .menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .menu-item.active { background: rgba(56, 227, 255, 0.2); color: white; border-left: none; border-radius: 25px; margin: 2px 10px; padding: 12px 20px; box-shadow: inset 0 0 0 2px #38e3f; }
+        .menu-item i { width: 20px; text-align: center; }
+        
+        .sidebar-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+        }
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            gap: 10px;
+            background: rgba(231,76,60,0.2);
+            border: 1px solid rgba(231,76,60,0.3);
+        }
+        .logout-btn:hover { background: #e74c3c; color: white; }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        .overlay.active { opacity: 1; visibility: visible; }
+        
+        .main-content {
+            min-height: 100vh;
+            transition: margin 0.3s ease;
+        }
+        .main-content.sidebar-open { margin-left: 260px; }
+        
+        .top-navbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            z-index: 100;
+        }
+        .navbar-left { display: flex; align-items: center; gap: 15px; }
+        .hamburger {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .hamburger:hover { background: #e9ecef; }
+        .hamburger i { font-size: 18px; color: #333; }
+        
+        .page-title { font-size: 18px; font-weight: 600; color: #333; margin: 0; }
+        
+        .navbar-right { display: flex; align-items: center; gap: 15px; }
+        .admin-name { font-weight: 600; color: #333; }
+        .admin-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4e73df, #224abe);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .page-content { padding: 20px; }
+        
+        .menu-icon-only {
+            display: none;
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 998;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .menu-icon-only.visible {
+            display: flex;
+        }
+        .menu-icon-only .menu-icon-item {
+            position: relative;
+        }
+        .menu-icon-only .menu-icon-item a {
+            width: 45px;
+            height: 45px;
+            background: #2e8b57;
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+        .menu-icon-only .menu-icon-item a:hover {
+            background: #257046;
+            transform: scale(1.1);
+        }
+        .menu-icon-only .menu-icon-item a.active {
+            background: #1a5c38;
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.3);
+        }
+        .menu-icon-only .menu-icon-item .page-label {
+            position: absolute;
+            left: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #333;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            pointer-events: none;
+        }
+        .menu-icon-only .menu-icon-item .page-label::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-right-color: #333;
+            border-left: none;
+        }
+        .menu-icon-only .menu-icon-item:hover .page-label {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content.sidebar-open { margin-left: 0; }
+            .admin-name { display: none; }
+            .menu-icon-only { display: flex !important; left: 5px; }
+            .menu-icon-only .menu-icon-item a { width: 40px; height: 40px; border-radius: 10px; }
+>>>>>>> 16e400a (Update design system and add people feature)
         }
     </style>
     @stack('styles')
 </head>
 <body>
+<<<<<<< HEAD
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
     <aside class="sidebar" id="sidebar">
@@ -497,6 +711,129 @@
                 showCancelButton: true,
                 confirmButtonColor: '#4f46e5',
                 cancelButtonColor: '#64748b',
+=======
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+    
+    <div class="menu-icon-only" id="menuIconOnly">
+        <div class="menu-icon-item">
+            <a href="/dashboard" class="{{ Request::is('dashboard') ? 'active' : '' }}" title="Dashboard">
+                <i class="fas fa-chart-line"></i>
+            </a>
+            <span class="page-label">Dashboard</span>
+        </div>
+        <div class="menu-icon-item">
+            <a href="/bukutamu" class="{{ Request::is('bukutamu') ? 'active' : '' }}" title="Buku Tamu">
+                <i class="fas fa-users"></i>
+            </a>
+            <span class="page-label">Buku Tamu</span>
+        </div>
+        <div class="menu-icon-item">
+            <a href="/buat-janji" class="{{ Request::is('buat-janji') ? 'active' : '' }}" title="Buat Janji">
+                <i class="fas fa-calendar-plus"></i>
+            </a>
+            <span class="page-label">Buat Janji</span>
+        </div>
+        <div class="menu-icon-item">
+            <a href="/agenda" class="{{ Request::is('agenda') ? 'active' : '' }}" title="Agenda">
+                <i class="fas fa-calendar-alt"></i>
+            </a>
+            <span class="page-label">Agenda</span>
+        </div>
+    </div>
+    
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4><i class="fas fa-book"></i> Buku Tamu</h4>
+            <p>Admin Panel</p>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-title">Menu Utama</div>
+            <a href="/dashboard" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="/bukutamu" class="menu-item {{ Request::is('bukutamu') ? 'active' : '' }}">
+                <i class="fas fa-users"></i> Buku Tamu
+            </a>
+            <a href="/buat-janji" class="menu-item {{ Request::is('buat-janji') ? 'active' : '' }}">
+                <i class="fas fa-calendar-plus"></i> Buat Janji
+            </a>
+            <a href="/agenda" class="menu-item {{ Request::is('agenda') ? 'active' : '' }}">
+                <i class="fas fa-calendar-alt"></i> Agenda
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn" onclick="confirmLogout(event)">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            <form id="logout-form" method="POST" action="/logout" style="display: none;">
+                @csrf
+            </form>
+        </div>
+    </nav>
+    
+    <div class="main-content" id="mainContent">
+        <nav class="top-navbar">
+            <div class="navbar-left">
+                <button class="hamburger" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
+            </div>
+            <div class="navbar-right">
+                @auth
+                    <span class="admin-name">{{ Auth::user()->name }}</span>
+                    <div class="admin-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
+                @endauth
+            </div>
+        </nav>
+        
+        <div class="page-content">
+            @yield('content')
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const mainContent = document.getElementById('mainContent');
+            const menuIconOnly = document.getElementById('menuIconOnly');
+            
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-open');
+            
+            if (sidebar.classList.contains('active')) {
+                menuIconOnly.classList.remove('visible');
+            } else {
+                menuIconOnly.classList.add('visible');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const menuIconOnly = document.getElementById('menuIconOnly');
+            if (!sidebar.classList.contains('active')) {
+                menuIconOnly.classList.add('visible');
+            }
+        });
+        
+        function confirmLogout(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Yakin ingin keluar?',
+                text: 'Anda akan keluar dari dashboard.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+>>>>>>> 16e400a (Update design system and add people feature)
                 confirmButtonText: 'Ya, Keluar',
                 cancelButtonText: 'Batal'
             }).then((result) => {
@@ -506,7 +843,11 @@
             });
         }
     </script>
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 16e400a (Update design system and add people feature)
     @stack('scripts')
     @include('partials.toast')
 </body>

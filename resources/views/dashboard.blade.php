@@ -1,222 +1,164 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard - RS Medika')
+@section('title', 'Dashboard')
 @section('page-title', 'Dashboard')
-@section('breadcrumb')
-    <a href="/dashboard"><i class="fas fa-home me-2"></i>Home</a>
-    <i class="fas fa-chevron-right text-xs"></i>
-    <span>Dashboard</span>
-@endsection
-
-@push('styles')
-<style>
-    .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-    .charts-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; }
-    .charts-row2 { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
-    .bottom-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
-    .stat-card { position: relative; overflow: hidden; }
-    .stat-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; border-radius: 50%; opacity: 0.1; background: currentColor; }
-    .recent-list { list-style: none; padding: 0; margin: 0; }
-    .recent-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
-    .recent-list li:last-child { border-bottom: none; }
-    .recent-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.8rem; flex-shrink: 0; }
-    .recent-info { flex: 1; margin-left: 0.75rem; min-width: 0; }
-    .recent-name { font-weight: 500; color: var(--gray-900); font-size: 0.875rem; }
-    .recent-time { font-size: 0.75rem; color: var(--gray-400); }
-    .welcome-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: var(--radius-lg); padding: 1.75rem 2rem; color: white; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
-    .welcome-header::before { content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%; }
-    .welcome-header::after { content: ''; position: absolute; bottom: -30%; right: 10%; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; }
-    .welcome-content { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; }
-    .welcome-text h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .welcome-text p { font-size: 0.875rem; opacity: 0.9; }
-    .welcome-icon { font-size: 3.5rem; opacity: 0.3; }
-    .welcome-date { font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem; }
-    @media (max-width: 1200px) { .dashboard-grid { grid-template-columns: repeat(2, 1fr); } .charts-grid, .charts-row2, .bottom-grid { grid-template-columns: 1fr; } .welcome-header { padding: 1.25rem; } .welcome-text h2 { font-size: 1.25rem; } .welcome-icon { font-size: 2.5rem; } }
-    @media (max-width: 640px) { .welcome-content { flex-direction: column; align-items: flex-start; gap: 1rem; } .welcome-icon { display: none; } }
-</style>
-@endpush
 
 @section('content')
-    @if(session('success'))
-    <div class="alert alert-success animate-fade-in">
-        <i class="fas fa-check-circle"></i>
-        <span>{{ session('success') }}</span>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Dashboard Statistik</h2>
+    <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="/bukutamu/export"><i class="fas fa-book"></i> Export Buku Tamu</a></li>
+            <li><a class="dropdown-item" href="/buat-janji/export"><i class="fas fa-calendar-check"></i> Export Janji Tamu</a></li>
+        </ul>
     </div>
-    @endif
+</div>
 
-    <div class="welcome-header animate-fade-in">
-        <div class="welcome-content">
-            <div class="welcome-text">
-                <h2>Selamat Datang Kembali, Admin</h2>
-                <p>Kelola data kunjungan pasien dan jadwal kunjungan dengan mudah.</p>
-                <div class="welcome-date">
-                    <i class="fas fa-calendar-alt me-1"></i>
-                    {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y') }}
+<div class="row g-3 mb-3">
+    <div class="col-md-3">
+        <div class="card stat-box stat-total" style="padding: 12px 15px; border-radius: 10px; color: #fff;">
+            <div class="d-flex align-items-center gap-2">
+                <div style="font-size: 24px; opacity: 0.9;">&#128100;</div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 700; line-height: 1;">{{ $totalTamu }}</div>
+                    <div style="font-size: 0.7rem; opacity: 0.9; margin-top: 2px;">Total Tamu</div>
                 </div>
             </div>
-            <div class="welcome-icon">
-                <i class="fas fa-user-shield"></i>
-            </div>
         </div>
     </div>
-
-    <div class="dashboard-grid mb-4">
-        <div class="stat-card">
-            <div class="stat-icon primary"><i class="fas fa-users"></i></div>
-            <div class="stat-info">
-                <div class="stat-value">{{ $totalTamu }}</div>
-                <div class="stat-label">Total Kunjungan</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon success"><i class="fas fa-calendar-check"></i></div>
-            <div class="stat-info">
-                <div class="stat-value">{{ $tamuHariIni }}</div>
-                <div class="stat-label">Kunjungan Hari Ini</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon danger"><i class="fas fa-chart-line"></i></div>
-            <div class="stat-info">
-                <div class="stat-value">{{ $tamuMingguIni }}</div>
-                <div class="stat-label">Minggu Ini</div>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon warning"><i class="fas fa-calendar"></i></div>
-            <div class="stat-info">
-                <div class="stat-value">{{ $tamuBulanIni }}</div>
-                <div class="stat-label">Bulan Ini</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="charts-grid mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-pie me-2 text-primary"></i>Status Jadwal Kunjungan</h3>
-            </div>
-            <div class="card-body" style="display:flex;align-items:center;justify-content:center;">
-                <canvas id="chartJanji" style="max-width:280px;max-height:280px;"></canvas>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-area me-2 text-success"></i>Tren Kunjungan 7 Hari Terakhir</h3>
-            </div>
-            <div class="card-body">
-                <canvas id="chart7hari"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="charts-row2 mb-4">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-chart-bar me-2 text-info"></i>Data Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h3>
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-outline dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fas fa-download me-1"></i> Export
-                    </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/bukutamu/export"><i class="fas fa-file-excel me-2"></i>Export Excel</a>
-                    </div>
+    <div class="col-md-3">
+        <div class="card stat-box" style="padding: 12px 15px; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #1cc88a, #13855c);">
+            <div class="d-flex align-items-center gap-2">
+                <div style="font-size: 24px; opacity: 0.9;">&#128197;</div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 700; line-height: 1;">{{ $tamuHariIni }}</div>
+                    <div style="font-size: 0.7rem; opacity: 0.9; margin-top: 2px;">Hari Ini</div>
                 </div>
             </div>
-            <div class="card-body">
-                <canvas id="chartBulanan"></canvas>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-box" style="padding: 12px 15px; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #f6c23e, #dda20a);">
+            <div class="d-flex align-items-center gap-2">
+                <div style="font-size: 24px; opacity: 0.9;">&#128202;</div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 700; line-height: 1;">{{ $tamuMingguIni }}</div>
+                    <div style="font-size: 0.7rem; opacity: 0.9; margin-top: 2px;">Minggu Ini</div>
+                </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-tasks me-2 text-warning"></i>Statistik Jadwal Kunjungan</h3>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-box" style="padding: 12px 15px; border-radius: 10px; color: #fff; background: linear-gradient(135deg, #e74a3b, #c0392b);">
+            <div class="d-flex align-items-center gap-2">
+                <div style="font-size: 24px; opacity: 0.9;">&#128198;</div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 700; line-height: 1;">{{ $tamuBulanIni }}</div>
+                    <div style="font-size: 0.7rem; opacity: 0.9; margin-top: 2px;">Bulan Ini</div>
+                </div>
             </div>
-            <div class="card-body">
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                    <div style="padding:1rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:0.75rem;text-align:center;">
-                        <div style="font-size:1.75rem;font-weight:700;color:#059669;">{{ $appointmentMenunggu }}</div>
-                        <div style="font-size:0.75rem;color:#6b7280;margin-top:4px;">Menunggu</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-6 col-md-4">
+        <div class="card text-center py-2 px-3" style="border-radius: 8px;">
+            <h6 class="mb-1" style="font-size: 0.75rem;">Status Janji</h6>
+            <canvas id="chartJanji" style="max-height: 90px;"></canvas>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card" style="padding: 8px 12px; border-radius: 6px;">
+            <h6 class="mb-1" style="font-size: 0.75rem;">Tren Tamu 7 Hari</h6>
+            <canvas id="chart7hari" style="max-height: 70px;"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-3">
+    <div class="col-md-8">
+        <div class="card" style="padding: 15px; border-radius: 10px;">
+            <h6 class="mb-2">Data Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h6>
+            <canvas id="chartBulanan"></canvas>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center" style="padding: 12px; border-radius: 10px;">
+            <h6 class="mb-2">Status Janji Tamu</h6>
+            <div class="row g-2">
+                <div class="col-4">
+                    <div class="p-2 rounded text-center" style="background:#f6c23e20; border:1px solid #f6c23e;">
+                        <div class="fw-bold" style="color:#dda20a; font-size: 1rem;">{{ $appointmentMenunggu }}</div>
+                        <div class="small text-muted">Menunggu</div>
                     </div>
-                    <div style="padding:1rem;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:0.75rem;text-align:center;">
-                        <div style="font-size:1.75rem;font-weight:700;color:#059669;">{{ $appointmentDisetujui }}</div>
-                        <div style="font-size:0.75rem;color:#6b7280;margin-top:4px;">Disetujui</div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 rounded text-center" style="background:#1cc88a20; border:1px solid #1cc88a;">
+                        <div class="fw-bold" style="color:#13855c; font-size: 1rem;">{{ $appointmentDisetujui }}</div>
+                        <div class="small text-muted">Disetujui</div>
                     </div>
-                    <div style="padding:1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:0.75rem;text-align:center;">
-                        <div style="font-size:1.75rem;font-weight:700;color:#dc2626;">{{ $appointmentDitolak }}</div>
-                        <div style="font-size:0.75rem;color:#6b7280;margin-top:4px;">Ditolak</div>
-                    </div>
-                    <div style="padding:1rem;background:#eef2ff;border:1px solid #c7d2fe;border-radius:0.75rem;text-align:center;">
-                        <div style="font-size:1.75rem;font-weight:700;color:#4338ca;">{{ $totalAppointment }}</div>
-                        <div style="font-size:0.75rem;color:#6b7280;margin-top:4px;">Total</div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 rounded text-center" style="background:#e74a3b20; border:1px solid #e74a3b;">
+                        <div class="fw-bold" style="color:#c0392b; font-size: 1rem;">{{ $appointmentDitolak }}</div>
+                        <div class="small text-muted">Ditolak</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="bottom-grid">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-list me-2 text-success"></i>Rekap Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h3>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-wrapper">
-                    <table class="table">
+<div class="row g-3">
+    <div class="col-md-8">
+        <div class="card" style="border-radius: 10px;">
+            <div class="card-body" style="padding: 15px;">
+                <h6 class="mb-2">Rekap Per Bulan {{ Carbon\Carbon::now()->format('Y') }}</h6>
+                <div class="table-responsive" style="max-height: 200px;">
+                    <table class="table table-hover table-sm mb-0">
                         <thead>
                             <tr>
                                 <th>Bulan</th>
-                                <th style="text-align:right;">Jumlah Kunjungan</th>
+                                <th class="text-end">Jumlah Tamu</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($labelsBulan as $index => $bulan)
                             <tr>
                                 <td>{{ $bulan }}</td>
-                                <td style="text-align:right;font-weight:600;">{{ $dataPerBulan[$index] }}</td>
+                                <td class="text-end">{{ $dataPerBulan[$index] }}</td>
                             </tr>
                             @endforeach
                         </tbody>
-                        <tfoot>
-                            <tr style="background:var(--gray-50);font-weight:700;">
-                                <td>Total</td>
-                                <td style="text-align:right;">{{ $totalTamu }}</td>
-                            </tr>
-                        </tfoot>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-user-clock me-2 text-danger"></i>Kunjungan Terbaru</h3>
-            </div>
-            <div class="card-body p-0">
-                <ul class="recent-list" style="padding:0 1rem;">
-                    @forelse($tamuTerbaru as $tamu)
-                    <li>
-                        <div class="flex items-center" style="flex:1;min-width:0;">
-                            <div class="recent-avatar">{{ strtoupper(substr($tamu->nama, 0, 1)) }}</div>
-                            <div class="recent-info">
-                                <div class="recent-name truncate">{{ $tamu->nama }}</div>
-                                <div class="recent-time">{{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y, H:i') }}</div>
-                            </div>
-                        </div>
-                        <span class="badge badge-gray">{{ $tamu->jumlah_orang ?? 1 }} org</span>
+    </div>
+    <div class="col-md-4">
+        <div class="card" style="border-radius: 10px;">
+            <div class="card-body" style="padding: 15px;">
+                <h6 class="mb-2">Tamu Terbaru</h6>
+                <ul class="list-group list-group-flush list-group-sm">
+                    @foreach($tamuTerbaru as $tamu)
+                    <li class="list-group-item px-0 py-2">
+                        <strong>{{ $tamu->nama }}</strong><br>
+                        <small class="text-muted">{{ \Carbon\Carbon::parse($tamu->created_at)->format('d M Y H:i') }}</small>
                     </li>
-                    @empty
-                    <li style="justify-content:center;padding:2rem;text-align:center;color:var(--gray-400);">
-                        <i class="fas fa-inbox" style="font-size:2rem;margin-bottom:0.5rem;display:block;"></i>
-                        Belum ada data
-                    </li>
-                    @endforelse
+                    @endforeach
                 </ul>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctxJanji = document.getElementById('chartJanji').getContext('2d');
     new Chart(ctxJanji, {
@@ -225,79 +167,86 @@
             labels: ['Menunggu', 'Disetujui', 'Ditolak'],
             datasets: [{
                 data: [{{ $appointmentMenunggu }}, {{ $appointmentDisetujui }}, {{ $appointmentDitolak }}],
-                backgroundColor: ['#f59e0b', '#10b981', '#ef4444'],
-                borderWidth: 0,
-                hoverOffset: 8
+                backgroundColor: ['#f6c23e', '#1cc88a', '#e74a3b'],
+                borderWidth: 2,
+                borderColor: '#fff'
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: { position: 'bottom', labels: { padding: 16, font: { size: 12, family: 'Inter' }, usePointStyle: true, pointStyle: 'circle' } },
-                tooltip: { backgroundColor: '#1e293b', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 12, family: 'Inter' }, padding: 10, cornerRadius: 8, callbacks: { label: (ctx) => ' ' + ctx.label + ': ' + ctx.parsed + ' janji' } }
+                legend: { position: 'bottom', labels: { padding: 15, font: { size: 12 } } },
+                tooltip: { backgroundColor: '#333', padding: 10, cornerRadius: 8 }
             },
-            cutout: '65%'
+            cutout: '55%'
         }
     });
 
     const ctx7hari = document.getElementById('chart7hari').getContext('2d');
-    const grad7 = ctx7hari.createLinearGradient(0, 0, 0, 300);
-    grad7.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
-    grad7.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+    const gradient7hari = ctx7hari.createLinearGradient(0, 0, 0, 300);
+    gradient7hari.addColorStop(0, 'rgba(78, 115, 223, 0.3)');
+    gradient7hari.addColorStop(1, 'rgba(78, 115, 223, 0.02)');
+
     new Chart(ctx7hari, {
         type: 'line',
         data: {
             labels: @json($labels7hari),
             datasets: [{
-                label: 'Jumlah Kunjungan',
+                label: 'Jumlah Tamu',
                 data: @json($hariTerakhir),
-                borderColor: '#10b981',
-                backgroundColor: grad7,
-                borderWidth: 2.5,
+                borderColor: '#4e73df',
+                backgroundColor: gradient7hari,
+                borderWidth: 3,
                 fill: true,
                 tension: 0.4,
-                pointBackgroundColor: '#10b981',
+                pointBackgroundColor: '#4e73df',
                 pointBorderColor: '#fff',
                 pointBorderWidth: 2,
-                pointRadius: 4,
-                pointHoverRadius: 6
+                pointRadius: 5,
+                pointHoverRadius: 7
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 12, family: 'Inter' }, padding: 10, cornerRadius: 8 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: { backgroundColor: '#333', titleFont: { size: 13 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 8 }
+            },
             scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11, family: 'Inter' }, color: '#94a3b8' }, grid: { color: '#f1f5f9' } },
-                x: { ticks: { font: { size: 11, family: 'Inter' }, color: '#94a3b8' }, grid: { display: false } }
+                y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
             }
         }
     });
 
     const ctxBulanan = document.getElementById('chartBulanan').getContext('2d');
-    const gradB = ctxBulanan.createLinearGradient(0, 0, 0, 300);
-    gradB.addColorStop(0, 'rgba(79, 70, 229, 0.3)');
-    gradB.addColorStop(1, 'rgba(79, 70, 229, 0.01)');
+    const gradientBulanan = ctxBulanan.createLinearGradient(0, 0, 0, 300);
+    gradientBulanan.addColorStop(0, 'rgba(28, 200, 138, 0.3)');
+    gradientBulanan.addColorStop(1, 'rgba(28, 200, 138, 0.02)');
+
     new Chart(ctxBulanan, {
         type: 'bar',
         data: {
             labels: @json($labelsBulan),
             datasets: [{
-                label: 'Jumlah Kunjungan',
+                label: 'Jumlah Tamu',
                 data: @json($dataPerBulan),
-                backgroundColor: 'rgba(79, 70, 229, 0.8)',
-                borderColor: '#4f46e5',
+                backgroundColor: 'rgba(28, 200, 138, 0.8)',
+                borderColor: '#1cc88a',
                 borderWidth: 1,
                 borderRadius: 6,
-                borderSkipped: false,
-                hoverBackgroundColor: '#4f46e5'
+                hoverBackgroundColor: '#13855c'
             }]
         },
         options: {
             responsive: true,
-            plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1e293b', titleFont: { size: 13, family: 'Inter' }, bodyFont: { size: 12, family: 'Inter' }, padding: 10, cornerRadius: 8 } },
+            plugins: {
+                legend: { display: false },
+                tooltip: { backgroundColor: '#333', titleFont: { size: 13 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 8 }
+            },
             scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 11, family: 'Inter' }, color: '#94a3b8' }, grid: { color: '#f1f5f9' } },
-                x: { ticks: { font: { size: 11, family: 'Inter' }, color: '#94a3b8' }, grid: { display: false } }
+                y: { beginAtZero: true, ticks: { stepSize: 1 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
             }
         }
     });

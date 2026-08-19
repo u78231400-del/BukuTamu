@@ -5,6 +5,11 @@ use App\Http\Controllers\TamuController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AppointmentController;
 
+// Preview Landing Page
+Route::get('/preview', function () {
+    return view('welcome');
+});
+
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');

@@ -7,6 +7,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\VenueController;
+use App\Http\Controllers\ReservationController;
 
 // ==========================================
 // PREVIEW
@@ -63,6 +64,20 @@ Route::middleware('auth')->group(function () {
         'index'
     ])->name('customer.venues');
 
+    Route::get('/customer/venues/{slug}', [
+        VenueController::class,
+        'show'
+    ])->name('customer.venues.show');
+
+    Route::post('/customer/venues/{slug}/reservasi', [
+        ReservationController::class,
+        'store'
+    ])->name('customer.reservations.store');
+
+    Route::get('/customer/reservations', [
+    ReservationController::class,
+    'index'
+])->name('customer.reservations');
 });
 
 

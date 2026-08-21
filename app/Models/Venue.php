@@ -18,4 +18,13 @@ class Venue extends Model
         'foto',
         'status',
     ];
+
+    /**
+     * Relasi ke tabel reservations
+     * Sebuah venue bisa memiliki banyak reservasi
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

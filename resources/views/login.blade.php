@@ -1,168 +1,803 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>RS Medika - Sistem Manajemen Kunjungan</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Masuk - Bukutamu</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-light: #818cf8;
-            --primary-dark: #3730a3;
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1;
-            --gray-400: #94a3b8;
-            --gray-500: #64748b;
-            --gray-600: #475569;
-            --gray-700: #334155;
-            --gray-800: #1e293b;
-            --gray-900: #0f172a;
-            --radius: 0.5rem;
-            --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --gold: #c9a959;
+            --text-dark: #1a1a2e;
+            --text-light: #6b7280;
+            --bg-light: #fafbfc;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; background: var(--gray-50); }
-        .login-left { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem; background: white; position: relative; overflow: hidden; }
-        .login-left::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 30%, rgba(79, 70, 229, 0.05) 0%, transparent 50%), radial-gradient(circle at 70% 70%, rgba(79, 70, 229, 0.03) 0%, transparent 50%); }
-        .login-card { width: 100%; max-width: 400px; position: relative; z-index: 1; }
-        .brand { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; }
-        .brand-icon { width: 44px; height: 44px; background: var(--primary); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; }
-        .brand-text { font-size: 1.5rem; font-weight: 700; color: var(--gray-900); letter-spacing: -0.025em; }
-        .login-title { font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 0.5rem; }
-        .login-subtitle { font-size: 0.9rem; color: var(--gray-500); margin-bottom: 2rem; }
-        .form-group { margin-bottom: 1.25rem; }
-        .form-label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--gray-700); margin-bottom: 0.375rem; }
-        .input-wrap { position: relative; }
-        .input-wrap .form-control { width: 100%; padding: 0.625rem 0.75rem 0.625rem 2.75rem; border: 1px solid var(--gray-200); border-radius: var(--radius); font-size: 0.9rem; color: var(--gray-900); background: var(--gray-50); transition: all 0.2s ease; }
-        .input-wrap .form-control:focus { outline: none; border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
-        .input-wrap .form-icon { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 1rem; pointer-events: none; }
-        .input-wrap .form-control.is-invalid { border-color: #ef4444; }
-        .text-danger { font-size: 0.75rem; color: #ef4444; margin-top: 0.375rem; display: block; }
-        .btn-primary { width: 100%; padding: 0.75rem; background: var(--primary); color: white; border: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .btn-primary:hover { background: var(--primary-dark); }
-        .btn-outline { width: 100%; padding: 0.75rem; background: transparent; color: var(--gray-600); border: 1px solid var(--gray-200); border-radius: var(--radius); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: #eef2ff; }
-        .login-right { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 3rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); position: relative; overflow: hidden; }
-        .login-right::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
-        .showcase-content { text-align: center; color: white; position: relative; z-index: 1; max-width: 400px; }
-        .showcase-icon { width: 80px; height: 80px; background: rgba(255,255,255,0.15); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; font-size: 2rem; backdrop-filter: blur(10px); }
-        .showcase-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.3; }
-        .showcase-desc { font-size: 1rem; opacity: 0.8; line-height: 1.6; margin-bottom: 2rem; }
-        .showcase-features { display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
-        .showcase-feature { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; opacity: 0.9; }
-        .showcase-feature i { width: 28px; height: 28px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; }
-        .alert-success { padding: 0.875rem 1rem; background: #d1fae5; border-left: 3px solid #10b981; color: #065f46; font-size: 0.875rem; border-radius: var(--radius); margin-bottom: 1.25rem; }
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            .login-right { display: none; }
-            .login-left { padding: 2rem; flex: none; min-height: 100vh; justify-content: flex-start; padding-top: 3rem; }
-            .login-card { max-width: 100%; }
-=======
-    <title>Login Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: #D8F3DC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; width: 100%; max-width: 420px; }
-        .login-header { background: #198754; color: white; padding: 30px; text-align: center; }
-        .login-header h3 { margin: 0; font-weight: 600; }
-        .login-header p { margin: 5px 0 0; opacity: 0.8; font-size: 0.9rem; }
-        .login-body { padding: 30px; }
-        .form-control { border-radius: 8px; padding: 12px 16px; }
-        .btn-login { background: #198754; border: none; border-radius: 8px; padding: 12px; font-weight: 600; width: 100%; }
-        .btn-login:hover { background: #157347; }
-        .input-group-text { border-radius: 8px 0 0 8px; background: #f8f9fa; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+           LEFT SIDE
+        ========================== */
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(
+                135deg,
+                var(--primary) 0%,
+                var(--secondary) 100%
+            );
+
+            padding: 60px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+
+            position: absolute;
+            top: -50%;
+            left: -30%;
+
+            width: 80%;
+            height: 150%;
+
+            background: linear-gradient(
+                135deg,
+                rgba(233, 69, 96, 0.15) 0%,
+                rgba(201, 169, 89, 0.1) 100%
+            );
+
+            border-radius: 50%;
+            transform: rotate(-10deg);
+        }
+
+        .login-left::after {
+            content: '';
+
+            position: absolute;
+            bottom: -30%;
+            right: -20%;
+
+            width: 60%;
+            height: 100%;
+
+            background: linear-gradient(
+                135deg,
+                rgba(201, 169, 89, 0.1) 0%,
+                rgba(233, 69, 96, 0.08) 100%
+            );
+
+            border-radius: 50%;
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            color: rgba(255, 255, 255, 0.7);
+
+            text-decoration: none;
+
+            font-size: 0.9rem;
+
+            margin-bottom: 40px;
+
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            margin-bottom: 48px;
+        }
+
+        .brand-logo i {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        .brand-logo span {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            background: rgba(233, 69, 96, 0.2);
+
+            color: white;
+
+            padding: 8px 16px;
+
+            border-radius: 50px;
+
+            font-size: 0.85rem;
+            font-weight: 500;
+
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+
+            color: white;
+
+            line-height: 1.2;
+
+            margin-bottom: 24px;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+
+            color: rgba(255, 255, 255, 0.8);
+
+            line-height: 1.8;
+
+            max-width: 450px;
+
+            margin-bottom: 40px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            color: rgba(255, 255, 255, 0.9);
+
+            font-size: 1rem;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+
+            background: rgba(255, 255, 255, 0.1);
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+        }
+
+        .feature-icon i {
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* =========================
+           RIGHT SIDE
+        ========================== */
+
+        .login-right {
+            flex: 0.6;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 60px 40px;
+
+            background: white;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+
+            color: var(--primary);
+
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+
+            color: var(--text-dark);
+
+            margin-bottom: 8px;
+        }
+
+        .input-group-custom {
+            position: relative;
+        }
+
+        .form-control-custom {
+            width: 100%;
+
+            padding: 14px 48px 14px 16px;
+
+            font-size: 1rem;
+
+            font-family: 'Plus Jakarta Sans', sans-serif;
+
+            border: 2px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            background: white;
+
+            transition: all 0.3s ease;
+        }
+
+        .form-control-custom:focus {
+            outline: none;
+
+            border-color: var(--accent);
+
+            box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1);
+        }
+
+        .form-control-custom::placeholder {
+            color: #9ca3af;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            right: 16px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--text-light);
+
+            cursor: pointer;
+
+            transition: color 0.3s ease;
+        }
+
+        .input-icon:hover {
+            color: var(--accent);
+        }
+
+        .error-message {
+            color: var(--accent);
+
+            font-size: 0.85rem;
+
+            margin-top: 6px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+        }
+
+        .success-message {
+            padding: 12px 16px;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border-left: 3px solid #10b981;
+
+            border-radius: 8px;
+
+            font-size: 0.9rem;
+
+            margin-bottom: 20px;
+        }
+
+        .btn-login {
+            width: 100%;
+
+            padding: 16px;
+
+            background: var(--accent);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 12px;
+
+            font-size: 1rem;
+
+            font-weight: 600;
+
+            font-family: 'Plus Jakarta Sans', sans-serif;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+
+            margin-top: 12px;
+        }
+
+        .btn-login:hover {
+            background: #d63651;
+
+            transform: translateY(-2px);
+
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+
+            align-items: center;
+
+            margin: 28px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+
+            height: 1px;
+
+            background: #e5e7eb;
+        }
+
+        .divider-text {
+            padding: 0 16px;
+
+            color: var(--text-light);
+
+            font-size: 0.9rem;
+        }
+
+        .register-link {
+            text-align: center;
+
+            color: var(--text-light);
+
+            font-size: 0.95rem;
+        }
+
+        .register-link a {
+            color: var(--accent);
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: color 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #d63651;
+
+            text-decoration: underline;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 991px) {
+
+            .login-page {
+                flex-direction: column;
+            }
+
+            .login-left {
+                padding: 40px 24px;
+                min-height: auto;
+            }
+
+            .brand-logo {
+                margin-bottom: 32px;
+            }
+
+            .brand-logo i {
+                font-size: 2rem;
+            }
+
+            .brand-logo span {
+                font-size: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .login-right {
+                padding: 40px 24px;
+            }
+
+            .form-card {
+                max-width: 100%;
+            }
+        }
+
         @media (max-width: 576px) {
-            .login-card { border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
-            .login-header { padding: 20px; }
-            .login-header h3 { font-size: 1.3rem; }
-            .login-header p { font-size: 0.85rem; }
-            .login-body { padding: 20px; }
-            .form-control { padding: 10px 14px; font-size: 0.95rem; }
-            .btn-login { padding: 10px; font-size: 0.95rem; }
->>>>>>> 16e400a (Update design system and add people feature)
+
+            .login-left {
+                padding: 32px 20px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-description {
+                font-size: 0.95rem;
+
+                margin-bottom: 28px;
+            }
+
+            .login-right {
+                padding: 32px 20px;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .form-control-custom {
+                padding: 12px 44px 12px 14px;
+
+                font-size: 0.95rem;
+            }
+
+            .btn-login {
+                padding: 14px;
+            }
         }
     </style>
 </head>
+
 <body>
+
+<div class="login-page">
+
+    <!-- LEFT -->
     <div class="login-left">
-        <div class="login-card">
-            <div class="brand">
-                <div class="brand-icon"><i class="fas fa-hospital"></i></div>
-                <span class="brand-text">RS Medika</span>
+
+        <div class="left-content">
+
+            <a href="/" class="back-link">
+                <i class="bi bi-arrow-left"></i>
+                Kembali ke Beranda
+            </a>
+
+            <div class="brand-logo">
+                <i class="bi bi-building"></i>
+                <span>Bukutamu</span>
             </div>
 
-            <h1 class="login-title">Selamat Datang</h1>
-            <p class="login-subtitle">Login untuk mengakses dashboard</p>
+            <div class="hero-badge">
+                <i class="bi bi-star-fill"></i>
+                Platform Reservasi Venue Terpercaya
+            </div>
+
+            <h1 class="hero-title">
+                Selamat Datang Kembali
+            </h1>
+
+            <p class="hero-description">
+                Masuk ke akun Bukutamu dan temukan venue terbaik
+                untuk berbagai kebutuhan acara kamu.
+            </p>
+
+            <div class="features-list">
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+
+                    <span>
+                        500+ Venue terverifikasi di seluruh Indonesia
+                    </span>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+
+                    <span>
+                        Proses reservasi cepat dan transparan
+                    </span>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+
+                    <span>
+                        Kelola reservasi dengan mudah
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT -->
+    <div class="login-right">
+
+        <div class="form-card">
+
+            <a href="/" class="back-link"
+               style="color: var(--text-light); margin-bottom: 24px;">
+                <i class="bi bi-arrow-left"></i>
+                Kembali ke Beranda
+            </a>
+
+            <div class="form-header">
+
+                <h2 class="form-title">
+                    Masuk ke Akun
+                </h2>
+
+                <p class="form-subtitle">
+                    Selamat datang kembali di Bukutamu
+                </p>
+
+            </div>
+
 
             @if(session('status'))
-                <div class="alert-success">{{ session('status') }}</div>
+
+                <div class="success-message">
+                    <i class="bi bi-check-circle"></i>
+                    {{ session('status') }}
+                </div>
+
             @endif
 
-            <form method="POST" action="/login">
+
+            <form method="POST" action="{{ route('login') }}">
+
                 @csrf
+
+                <!-- EMAIL -->
                 <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-envelope form-icon"></i>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autofocus placeholder="admin@email.com">
+
+                    <label for="email" class="form-label">
+                        Email
+                    </label>
+
+                    <div class="input-group-custom">
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control-custom @error('email') is-invalid @enderror"
+                            value="{{ old('email') }}"
+                            placeholder="Masukkan alamat email Anda"
+                            required
+                            autofocus
+                            autocomplete="email"
+                        >
+
+                        <span class="input-icon">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+
                     </div>
+
                     @error('email')
-                        <span class="text-danger">{{ $message }}</span>
+
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-circle"></i>
+                            {{ $message }}
+                        </div>
+
                     @enderror
+
                 </div>
 
+
+                <!-- PASSWORD -->
                 <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="input-wrap">
-                        <i class="fas fa-lock form-icon"></i>
-                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required placeholder="Masukkan password">
+
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+
+                    <div class="input-group-custom">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control-custom @error('password') is-invalid @enderror"
+                            placeholder="Masukkan password Anda"
+                            required
+                            autocomplete="current-password"
+                        >
+
+                        <span
+                            class="input-icon"
+                            onclick="togglePassword()"
+                        >
+                            <i class="bi bi-eye" id="password-icon"></i>
+                        </span>
+
                     </div>
+
                     @error('password')
-                        <span class="text-danger">{{ $message }}</span>
+
+                        <div class="error-message">
+                            <i class="bi bi-exclamation-circle"></i>
+                            {{ $message }}
+                        </div>
+
                     @enderror
+
                 </div>
 
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Login
+
+                <!-- BUTTON -->
+                <button type="submit" class="btn-login">
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    Masuk
+
                 </button>
+
             </form>
+
+
+            <div class="divider">
+
+                <div class="divider-line"></div>
+
+                <span class="divider-text">
+                    atau
+                </span>
+
+                <div class="divider-line"></div>
+
+            </div>
+
+
+            <p class="register-link">
+
+                Belum punya akun?
+
+                <a href="{{ route('register') }}">
+                    Daftar sekarang
+                </a>
+
+            </p>
+
         </div>
+
     </div>
 
-    <div class="login-right">
-        <div class="showcase-content">
-            <div class="showcase-icon"><i class="fas fa-hospital"></i></div>
-            <h2 class="showcase-title">Sistem Manajemen Kunjungan RS Medika</h2>
-            <p class="showcase-desc">Kelola kunjungan pasien dan jadwal kunjungan dengan mudah, efisien, dan profesional.</p>
-            <div class="showcase-features">
-                <div class="showcase-feature">
-                    <i class="fas fa-check"></i>
-                    <span>Registrasi kunjungan otomatis</span>
-                </div>
-                <div class="showcase-feature">
-                    <i class="fas fa-check"></i>
-                    <span>Manajemen jadwal kunjungan</span>
-                </div>
-                <div class="showcase-feature">
-                    <i class="fas fa-check"></i>
-                    <span>Dashboard statistik real-time</span>
-                </div>
-                <div class="showcase-feature">
-                    <i class="fas fa-check"></i>
-                    <span>Export rekap data kunjungan</span>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+
+
+<script>
+
+    function togglePassword() {
+
+        const password = document.getElementById('password');
+        const icon = document.getElementById('password-icon');
+
+        if (password.type === 'password') {
+
+            password.type = 'text';
+
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+
+        } else {
+
+            password.type = 'password';
+
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+
+        }
+
+    }
+
+</script>
+
 </body>
 </html>

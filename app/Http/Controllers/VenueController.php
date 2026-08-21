@@ -14,4 +14,10 @@ class VenueController extends Controller
         // Diubah menjadi customer.venues.index
         return view('customer.venues.index', compact('venues'));
     }
+    public function show($slug)
+    {
+        $venue = Venue::where('slug', $slug)->firstOrFail();
+
+        return view('customer.venues.show', compact('venue'));
+    }
 }

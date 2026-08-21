@@ -29,4 +29,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi ke tabel reservations
+     * Seorang user bisa memiliki banyak reservasi
+     */
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * Cek apakah user adalah admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Cek apakah user adalah customer
+     */
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
+    }
 }

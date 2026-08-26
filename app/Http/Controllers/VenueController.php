@@ -12,7 +12,14 @@ class VenueController extends Controller
     {
         $venues = Venue::where('status', 'available')->get();
 
-        return view('customer.venues.index', compact('venues'));
+        $favoriteVenueIds = Favorite::where('user_id', Auth::id())
+            ->pluck('venue_id')
+            ->toArray();
+
+        return view(
+            'customer.venues.index',
+            compact('venues', 'favoriteVenueIds')
+        );
     }
 
     public function show($slug)
@@ -23,7 +30,10 @@ class VenueController extends Controller
             ->where('venue_id', $venue->id)
             ->exists();
 
-        return view('customer.venues.show', compact('venue', 'isFavorite'));
+        return view(
+            'customer.venues.show',
+            compact('venue', 'isFavorite')
+        );
     }
 }
 

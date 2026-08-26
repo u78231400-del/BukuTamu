@@ -205,6 +205,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .user-dropdown:hover {
@@ -242,6 +243,62 @@
         .user-dropdown i {
             color: var(--text-light);
             font-size: 0.9rem;
+        }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e5e7eb;
+            min-width: 180px;
+            padding: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .dropdown-menu-custom.show {
+            display: block;
+        }
+
+        .dropdown-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .dropdown-item-custom:hover {
+            background: var(--bg-light);
+        }
+
+        .dropdown-item-custom i {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .dropdown-item-custom.text-danger {
+            color: #ef4444;
+        }
+
+        .dropdown-item-custom.text-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .dropdown-item-custom.text-danger i {
+            color: #ef4444;
         }
 
         .page-content {
@@ -496,30 +553,12 @@
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="{{ route('customer.favorites') }}" class="nav-item">
                         <i class="bi bi-heart"></i>
                         Favorit
                     </a>
                 </div>
-
-                <div class="nav-section">
-                    <div class="nav-section-title">Akun</div>
-                    <a href="#" class="nav-item">
-                        <i class="bi bi-person"></i>
-                        Profil
-                    </a>
-                </div>
             </nav>
-
-            <div class="sidebar-footer">
-                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <a href="#" class="nav-item logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="bi bi-box-arrow-right"></i>
-                        Logout
-                    </a>
-                </form>
-            </div>
         </aside>
 
         <main class="main-content">
@@ -532,13 +571,27 @@
                 </div>
 
                 <div class="topbar-right">
-                    <div class="user-dropdown">
-                        <div class="user-avatar">{{ substr(Auth::user()->name ?? 'U', 0, 2) }}</div>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
                         <div class="user-info">
-                            <div class="user-name">{{ Auth::user()->name ?? 'User' }}</div>
+                            <div class="user-name">{{ Auth::user()->name }}</div>
                             <div class="user-role">Customer</div>
                         </div>
                         <i class="bi bi-chevron-down"></i>
+
+                        <div class="dropdown-menu-custom" id="dropdown-menu">
+                            <a href="{{ route('customer.profile') }}" class="dropdown-item-custom">
+                                <i class="bi bi-person"></i>
+                                Profil
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item-custom text-danger">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -705,21 +758,32 @@
     </div>
 
     <script>
-        const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle');
         const overlay = document.getElementById('overlay');
+        const userDropdown = document.getElementById('user-dropdown');
+        const dropdownMenu = document.getElementById('dropdown-menu');
 
-        if (menuToggle && sidebar && overlay) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-            });
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
 
-            overlay.addEventListener('click', () => {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-        }
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        userDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!userDropdown.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>

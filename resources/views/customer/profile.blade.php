@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Bukutamu</title>
+    <title>Profil - Bukutamu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -128,31 +128,6 @@
             font-size: 1.2rem;
             width: 24px;
             text-align: center;
-            pointer-events: auto;
-        }
-
-        .nav-section-title {
-            pointer-events: none;
-        }
-
-        .nav-item {
-            pointer-events: auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .sidebar-footer {
-            padding: 16px;
-            border-top: 1px solid #f0f0f0;
-        }
-
-        .nav-item.logout {
-            color: #ef4444;
-        }
-
-        .nav-item.logout:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #dc2626;
         }
 
         .main-content {
@@ -206,70 +181,6 @@
             display: flex;
             align-items: center;
             gap: 16px;
-        }
-
-        .topbar-search {
-            position: relative;
-        }
-
-        .topbar-search input {
-            width: 280px;
-            padding: 10px 16px 10px 40px;
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-light);
-            transition: all 0.2s ease;
-        }
-
-        .topbar-search input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: white;
-        }
-
-        .topbar-search i {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-        }
-
-        .topbar-icons {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .topbar-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .topbar-icon:hover {
-            background: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
         }
 
         .user-dropdown {
@@ -381,203 +292,86 @@
             padding: 32px;
         }
 
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 16px;
-            padding: 32px;
-            color: white;
-            margin-bottom: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 60%;
-            height: 200%;
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(201, 169, 89, 0.1) 100%);
-            border-radius: 50%;
-            transform: rotate(-15deg);
-        }
-
-        .welcome-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .welcome-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-bottom: 0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .stat-card {
+        .profile-card {
             background: white;
             border-radius: 16px;
-            padding: 24px;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             border: 1px solid #f0f0f0;
+            overflow: hidden;
+            max-width: 600px;
         }
 
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 32px;
+            text-align: center;
+            color: white;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: white;
+            color: var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
-
-        .stat-icon.accent {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .stat-icon.gold {
-            background: rgba(201, 169, 89, 0.15);
-            color: var(--gold);
-        }
-
-        .stat-icon.primary {
-            background: rgba(26, 26, 46, 0.08);
-            color: var(--primary);
-        }
-
-        .stat-icon.success {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-dark);
+            font-size: 2.5rem;
+            margin: 0 auto 16px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 4px;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .content-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-            margin-bottom: 24px;
-        }
-
-        .content-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .content-card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .btn-link {
-            color: var(--accent);
-            font-weight: 600;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .btn-link:hover {
-            color: #d63651;
-        }
-
-        .placeholder-content {
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            text-align: center;
-            padding: 40px;
-        }
-
-        .placeholder-content i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .placeholder-content h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .placeholder-content p {
+        .profile-role {
             font-size: 0.95rem;
-            max-width: 400px;
+            opacity: 0.9;
         }
 
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+        .profile-body {
+            padding: 32px;
         }
 
-        .quick-action-btn {
+        .profile-info-item {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-info-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--accent-light);
+            color: var(--accent);
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
-            background: var(--bg-light);
-            border: 2px dashed #e5e7eb;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.2s ease;
+            font-size: 1.2rem;
+            margin-right: 16px;
         }
 
-        .quick-action-btn:hover {
-            border-color: var(--accent);
-            background: var(--accent-light);
+        .profile-info-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 2px;
         }
 
-        .quick-action-btn i {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-
-        .quick-action-btn span {
-            font-size: 0.9rem;
+        .profile-info-value {
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-dark);
-            text-align: center;
         }
 
         .overlay {
@@ -593,12 +387,6 @@
 
         .overlay.active {
             display: block;
-        }
-
-        @media (max-width: 1199px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
 
         @media (max-width: 991px) {
@@ -617,18 +405,6 @@
             .menu-toggle {
                 display: block;
             }
-
-            .topbar-search {
-                display: none;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .quick-actions {
-                grid-template-columns: repeat(2, 1fr);
-            }
         }
 
         @media (max-width: 576px) {
@@ -644,29 +420,12 @@
                 padding: 20px 16px;
             }
 
-            .welcome-banner {
+            .profile-header {
                 padding: 24px;
             }
 
-            .welcome-title {
-                font-size: 1.3rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-card {
+            .profile-body {
                 padding: 20px;
-            }
-
-            .user-info {
-                display: none;
             }
         }
     </style>
@@ -677,7 +436,7 @@
     <div class="dashboard-wrapper">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="sidebar-logo">
+                <a href="{{ route('customer.dashboard') }}" class="sidebar-logo">
                     <i class="bi bi-building"></i>
                     <span>Bukutamu</span>
                 </a>
@@ -686,7 +445,7 @@
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Menu Utama</div>
-                    <a href="{{ route('customer.dashboard') }}" class="nav-item active">
+                    <a href="{{ route('customer.dashboard') }}" class="nav-item">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
@@ -712,29 +471,14 @@
                     <button class="menu-toggle" id="menu-toggle">
                         <i class="bi bi-list"></i>
                     </button>
-                    <h1 class="page-title">Dashboard</h1>
+                    <h1 class="page-title">Profil</h1>
                 </div>
 
                 <div class="topbar-right">
-                    <div class="topbar-search">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Cari venue...">
-                    </div>
-
-                    <div class="topbar-icons">
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-bell"></i>
-                            <span class="notification-badge"></span>
-                        </a>
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </a>
-                    </div>
-
                     <div class="user-dropdown" id="user-dropdown">
-                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
+                        <div class="user-avatar">{{ strtoupper(substr($user->name, 0, 2)) }}</div>
                         <div class="user-info">
-                            <div class="user-name">{{ Auth::user()->name }}</div>
+                            <div class="user-name">{{ $user->name }}</div>
                             <div class="user-role">Customer</div>
                         </div>
                         <i class="bi bi-chevron-down"></i>
@@ -757,82 +501,38 @@
             </header>
 
             <div class="page-content">
-                <div class="welcome-banner">
-                    <div class="welcome-content">
-                        <h2 class="welcome-title">Selamat Datang, {{ Auth::user()->name }}!</h2>
-                        <p class="welcome-subtitle">Temukan venue terbaik untuk acara spesialmu hari ini.</p>
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">{{ strtoupper(substr($user->name, 0, 2)) }}</div>
+                        <h2 class="profile-name">{{ $user->name }}</h2>
+                        <p class="profile-role">{{ ucfirst($user->role ?? 'Customer') }}</p>
                     </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon accent">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Reservasi Aktif</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon gold">
-                            <i class="bi bi-heart-fill"></i>
-                        </div>
-                        <div class="stat-value">{{ $userFavoriteCount }}</div>
-                        <div class="stat-label">Venue Favorit</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon primary">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Riwayat Reservasi</div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Reservasi Selesai</div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Venue Populer</h3>
-                                <a href="{{ route('customer.venues') }}" class="btn-link">
-                                    Lihat Semua <i class="bi bi-arrow-right"></i>
-                                </a>
+                    <div class="profile-body">
+                        <div class="profile-info-item">
+                            <div class="profile-info-icon">
+                                <i class="bi bi-person"></i>
                             </div>
-                            <div class="placeholder-content">
-                                <i class="bi bi-building"></i>
-                                <h4>Belum Ada Venue</h4>
-                                <p>Mulai jelajahi venue-venue terbaik untuk acara spesialmu.</p>
+                            <div>
+                                <div class="profile-info-label">Nama Lengkap</div>
+                                <div class="profile-info-value">{{ $user->name }}</div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Aksi Cepat</h3>
+                        <div class="profile-info-item">
+                            <div class="profile-info-icon">
+                                <i class="bi bi-envelope"></i>
                             </div>
-                            <div class="quick-actions">
-                                <a href="{{ route('customer.venues') }}" class="quick-action-btn">
-                                    <i class="bi bi-search"></i>
-                                    <span>Cari Venue</span>
-                                </a>
-                                <a href="{{ route('customer.venues') }}" class="quick-action-btn">
-                                    <i class="bi bi-calendar-plus"></i>
-                                    <span>Reservasi Baru</span>
-                                </a>
-                                <a href="{{ route('customer.favorites') }}" class="quick-action-btn">
-                                    <i class="bi bi-heart"></i>
-                                    <span>Favorit</span>
-                                </a>
+                            <div>
+                                <div class="profile-info-label">Email</div>
+                                <div class="profile-info-value">{{ $user->email }}</div>
+                            </div>
+                        </div>
+                        <div class="profile-info-item">
+                            <div class="profile-info-icon">
+                                <i class="bi bi-shield"></i>
+                            </div>
+                            <div>
+                                <div class="profile-info-label">Role</div>
+                                <div class="profile-info-value">{{ ucfirst($user->role ?? 'Customer') }}</div>
                             </div>
                         </div>
                     </div>

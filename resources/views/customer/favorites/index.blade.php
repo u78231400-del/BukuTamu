@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dashboard - Bukutamu</title>
+    <title>Favorit - Bukutamu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -128,17 +128,6 @@
             font-size: 1.2rem;
             width: 24px;
             text-align: center;
-            pointer-events: auto;
-        }
-
-        .nav-section-title {
-            pointer-events: none;
-        }
-
-        .nav-item {
-            pointer-events: auto;
-            position: relative;
-            z-index: 1;
         }
 
         .sidebar-footer {
@@ -381,121 +370,31 @@
             padding: 32px;
         }
 
-        .welcome-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 16px;
-            padding: 32px;
-            color: white;
-            margin-bottom: 32px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .welcome-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 60%;
-            height: 200%;
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(201, 169, 89, 0.1) 100%);
-            border-radius: 50%;
-            transform: rotate(-15deg);
-        }
-
-        .welcome-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .welcome-subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-bottom: 0;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+        .page-header {
             margin-bottom: 32px;
         }
 
-        .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 16px;
-        }
-
-        .stat-icon.accent {
-            background: var(--accent-light);
-            color: var(--accent);
-        }
-
-        .stat-icon.gold {
-            background: rgba(201, 169, 89, 0.15);
-            color: var(--gold);
-        }
-
-        .stat-icon.primary {
-            background: rgba(26, 26, 46, 0.08);
-            color: var(--primary);
-        }
-
-        .stat-icon.success {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-        }
-
-        .stat-value {
+        .page-title-main {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
+        .page-subtitle {
+            font-size: 1rem;
             color: var(--text-light);
         }
 
-        .content-card {
-            background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-            margin-bottom: 24px;
-        }
-
-        .content-card-header {
+        .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
-        .content-card-title {
-            font-size: 1.1rem;
+        .section-title {
+            font-size: 1.3rem;
             font-weight: 600;
             color: var(--text-dark);
         }
@@ -514,70 +413,199 @@
             color: #d63651;
         }
 
-        .placeholder-content {
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-            text-align: center;
-            padding: 40px;
-        }
-
-        .placeholder-content i {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            opacity: 0.5;
-        }
-
-        .placeholder-content h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-dark);
-        }
-
-        .placeholder-content p {
-            font-size: 0.95rem;
-            max-width: 400px;
-        }
-
-        .quick-actions {
+        .venues-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
+            gap: 24px;
         }
 
-        .quick-action-btn {
+        .venue-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .venue-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .venue-image-wrapper {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .venue-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .venue-card:hover .venue-image {
+            transform: scale(1.05);
+        }
+
+        .venue-category {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .venue-body {
+            padding: 20px;
+        }
+
+        .venue-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .venue-info {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .venue-location {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .venue-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .venue-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .venue-price span {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .btn-detail {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .btn-detail:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-remove-favorite {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px 16px;
-            background: var(--bg-light);
-            border: 2px dashed #e5e7eb;
-            border-radius: 12px;
+            gap: 6px;
+        }
+
+        .btn-remove-favorite:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+            opacity: 0.6;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+            margin-bottom: 24px;
+        }
+
+        .btn-empty-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             text-decoration: none;
             transition: all 0.2s ease;
         }
 
-        .quick-action-btn:hover {
-            border-color: var(--accent);
-            background: var(--accent-light);
-        }
-
-        .quick-action-btn i {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-
-        .quick-action-btn span {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            text-align: center;
+        .btn-empty-action:hover {
+            background: #d63651;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
         }
 
         .overlay {
@@ -596,7 +624,7 @@
         }
 
         @media (max-width: 1199px) {
-            .stats-grid {
+            .venues-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -618,15 +646,7 @@
                 display: block;
             }
 
-            .topbar-search {
-                display: none;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .quick-actions {
+            .venues-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -640,29 +660,21 @@
                 font-size: 1.2rem;
             }
 
+            .topbar-search {
+                display: none;
+            }
+
             .page-content {
                 padding: 20px 16px;
             }
 
-            .welcome-banner {
-                padding: 24px;
+            .page-title-main {
+                font-size: 1.5rem;
             }
 
-            .welcome-title {
-                font-size: 1.3rem;
-            }
-
-            .stats-grid {
+            .venues-grid {
                 grid-template-columns: 1fr;
-                gap: 12px;
-            }
-
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-card {
-                padding: 20px;
+                gap: 16px;
             }
 
             .user-info {
@@ -686,7 +698,7 @@
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Menu Utama</div>
-                    <a href="{{ route('customer.dashboard') }}" class="nav-item active">
+                    <a href="{{ route('customer.dashboard') }}" class="nav-item">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
@@ -698,8 +710,8 @@
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
-                    <a href="{{ route('customer.favorites') }}" class="nav-item">
-                        <i class="bi bi-heart"></i>
+                    <a href="{{ route('customer.favorites') }}" class="nav-item active">
+                        <i class="bi bi-heart-fill"></i>
                         Favorit
                     </a>
                 </div>
@@ -712,7 +724,7 @@
                     <button class="menu-toggle" id="menu-toggle">
                         <i class="bi bi-list"></i>
                     </button>
-                    <h1 class="page-title">Dashboard</h1>
+                    <h1 class="page-title">Favorit</h1>
                 </div>
 
                 <div class="topbar-right">
@@ -757,86 +769,104 @@
             </header>
 
             <div class="page-content">
-                <div class="welcome-banner">
-                    <div class="welcome-content">
-                        <h2 class="welcome-title">Selamat Datang, {{ Auth::user()->name }}!</h2>
-                        <p class="welcome-subtitle">Temukan venue terbaik untuk acara spesialmu hari ini.</p>
-                    </div>
+                <div class="page-header">
+                    <h1 class="page-title-main">Venue Favorit Saya</h1>
+                    <p class="page-subtitle">Kelola venue-venue yang telah kamu tambahkan ke favorit.</p>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon accent">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Reservasi Aktif</div>
+                @if($favorites->count() > 0)
+
+                    <div class="section-header">
+                        <h2 class="section-title">Daftar Favorit ({{ $favorites->count() }})</h2>
+                        <a href="{{ route('customer.venues') }}" class="btn-link">
+                            Cari Venue Lain <i class="bi bi-plus"></i>
+                        </a>
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon gold">
-                            <i class="bi bi-heart-fill"></i>
-                        </div>
-                        <div class="stat-value">{{ $userFavoriteCount }}</div>
-                        <div class="stat-label">Venue Favorit</div>
+                    <div class="venues-grid">
+
+                        @foreach($favorites as $favorite)
+
+                            @if($favorite->venue)
+
+                                <div class="venue-card">
+
+                                    <div class="venue-image-wrapper">
+
+                                        <img
+                                            src="{{ $favorite->venue->foto ? asset('storage/' . $favorite->venue->foto) : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80' }}"
+                                            alt="{{ $favorite->venue->nama_venue }}"
+                                            class="venue-image"
+                                        >
+
+                                        <span class="venue-category">
+                                            Venue
+                                        </span>
+
+                                    </div>
+
+                                    <div class="venue-body">
+
+                                        <h3 class="venue-name">
+                                            {{ $favorite->venue->nama_venue }}
+                                        </h3>
+
+                                        <div class="venue-info">
+
+                                            <span class="venue-location">
+                                                <i class="bi bi-geo-alt"></i>
+                                                {{ $favorite->venue->lokasi ?? 'Lokasi belum tersedia' }}
+                                            </span>
+
+                                        </div>
+
+                                        <div class="venue-price">
+                                            Kapasitas {{ $favorite->venue->kapasitas }} orang
+                                        </div>
+
+                                        <a
+                                            href="{{ route('customer.venues.show', $favorite->venue->slug) }}"
+                                            class="btn-detail"
+                                        >
+                                            Lihat Detail
+                                        </a>
+
+                                        <form
+                                            action="{{ route('customer.favorites.destroy', $favorite->venue->id) }}"
+                                            method="POST"
+                                        >
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn-remove-favorite">
+                                                <i class="bi bi-heartbreak"></i>
+                                                Hapus dari Favorit
+                                            </button>
+                                        </form>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+                        @endforeach
+
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon primary">
-                            <i class="bi bi-clock-history"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Riwayat Reservasi</div>
+                @else
+
+                    <div class="empty-state">
+                        <i class="bi bi-heart"></i>
+                        <h3>Belum Ada Venue Favorit</h3>
+                        <p>Yuk mulai jelajahi venue-venue terbaik dan tambahkan ke favorit!</p>
+                        <a href="{{ route('customer.venues') }}" class="btn-empty-action">
+                            <i class="bi bi-search"></i>
+                            Cari Venue
+                        </a>
                     </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-                        <div class="stat-value">0</div>
-                        <div class="stat-label">Reservasi Selesai</div>
-                    </div>
-                </div>
+                @endif
 
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Venue Populer</h3>
-                                <a href="{{ route('customer.venues') }}" class="btn-link">
-                                    Lihat Semua <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                            <div class="placeholder-content">
-                                <i class="bi bi-building"></i>
-                                <h4>Belum Ada Venue</h4>
-                                <p>Mulai jelajahi venue-venue terbaik untuk acara spesialmu.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4">
-                        <div class="content-card">
-                            <div class="content-card-header">
-                                <h3 class="content-card-title">Aksi Cepat</h3>
-                            </div>
-                            <div class="quick-actions">
-                                <a href="{{ route('customer.venues') }}" class="quick-action-btn">
-                                    <i class="bi bi-search"></i>
-                                    <span>Cari Venue</span>
-                                </a>
-                                <a href="{{ route('customer.venues') }}" class="quick-action-btn">
-                                    <i class="bi bi-calendar-plus"></i>
-                                    <span>Reservasi Baru</span>
-                                </a>
-                                <a href="{{ route('customer.favorites') }}" class="quick-action-btn">
-                                    <i class="bi bi-heart"></i>
-                                    <span>Favorit</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
     </div>

@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\Venue;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
+    /**
+     * Menampilkan daftar venue favorit customer
+     */
+    public function index()
+    {
+        $favorites = Favorite::with('venue')
+            ->where('user_id', Auth::id())
+            ->get();
+
+        return view('customer.favorites.index', compact('favorites'));
+    }
+
     /**
      * Tambahkan venue ke favorit
      */
@@ -20,10 +33,14 @@ class FavoriteController extends Controller
             'venue_id' => $venue->id,
         ]);
 
-        return back()->with(
-            'success',
-            'Venue berhasil ditambahkan ke favorit.'
-        );
+        if (request()->expectsJson() || request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Venue berhasil ditambahkan ke favorit.'
+            ]);
+        }
+
+        return back()->with('success', 'Venue berhasil ditambahkan ke favorit.');
     }
 
     /**
@@ -35,9 +52,13 @@ class FavoriteController extends Controller
             ->where('venue_id', $venueId)
             ->delete();
 
-        return back()->with(
-            'success',
-            'Venue berhasil dihapus dari favorit.'
-        );
+        if (request()->expectsJson() || request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Venue berhasil dihapus dari favorit.'
+            ]);
+        }
+
+        return back()->with('success', 'Venue berhasil dihapus dari favorit.');
     }
 }

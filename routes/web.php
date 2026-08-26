@@ -13,6 +13,8 @@ use App\Http\Controllers\AdminVenueController;
 use App\Http\Controllers\VenueController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ProfileController;
+use App\Models\Venue;
 
 
 // ==========================================
@@ -59,20 +61,13 @@ Route::post('/logout', [
 // ==========================================
 
 Route::get('/', function () {
+    $venues = \App\Models\Venue::where('status', 'available')
+        ->latest()
+        ->take(4)
+        ->get();
 
-    if (auth()->check()) {
-
-        if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-
-        return redirect()->route('customer.dashboard');
-    }
-
-    return redirect()->route('login');
-
+    return view('welcome', compact('venues'));
 });
-
 
 // ==========================================
 // CUSTOMER
@@ -85,6 +80,12 @@ Route::middleware('auth')->group(function () {
         CustomerDashboardController::class,
         'index'
     ])->name('customer.dashboard');
+
+    // Customer Profile
+    Route::get('/customer/profile', [
+        ProfileController::class,
+        'index'
+    ])->name('customer.profile');
 
 
     // Daftar Venue
@@ -115,6 +116,10 @@ Route::middleware('auth')->group(function () {
     ])->name('customer.reservations');
 
     // Favorit Customer
+    Route::get('/customer/favorites', [
+        FavoriteController::class,
+        'index'
+    ])->name('customer.favorites');
     Route::post('/customer/favorites/{venueId}', [
         FavoriteController::class,
         'store'

@@ -269,6 +269,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .user-dropdown:hover {
@@ -306,6 +307,62 @@
         .user-dropdown i {
             color: var(--text-light);
             font-size: 0.9rem;
+        }
+
+        .dropdown-menu-custom {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            border: 1px solid #e5e7eb;
+            min-width: 180px;
+            padding: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .dropdown-menu-custom.show {
+            display: block;
+        }
+
+        .dropdown-item-custom {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .dropdown-item-custom:hover {
+            background: var(--bg-light);
+        }
+
+        .dropdown-item-custom i {
+            font-size: 1.1rem;
+            color: var(--text-light);
+        }
+
+        .dropdown-item-custom.text-danger {
+            color: #ef4444;
+        }
+
+        .dropdown-item-custom.text-danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .dropdown-item-custom.text-danger i {
+            color: #ef4444;
         }
 
         .page-content {
@@ -502,7 +559,7 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .venue-favorite {
+        .venue-favorite-btn {
             position: absolute;
             top: 12px;
             right: 12px;
@@ -518,12 +575,35 @@
             transition: all 0.2s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             border: none;
+            z-index: 10;
         }
 
-        .venue-favorite:hover,
-        .venue-favorite.active {
+        .venue-favorite-btn:hover {
             color: var(--accent);
             background: var(--accent-light);
+            transform: scale(1.1);
+        }
+
+        .venue-favorite-btn.active {
+            color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .venue-favorite-btn i {
+            font-size: 1.2rem;
+        }
+
+        .venue-favorite-btn.loading {
+            pointer-events: none;
+        }
+
+        .venue-favorite-btn.loading i {
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .venue-body {
@@ -586,11 +666,41 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer;
             transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
         }
 
         .btn-detail:hover {
             background: var(--primary);
             color: white;
+        }
+
+        .empty-state {
+            background: white;
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            color: var(--text-light);
         }
 
         .overlay {
@@ -606,6 +716,62 @@
 
         .overlay.active {
             display: block;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 280px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast.success {
+            border-left: 4px solid #22c55e;
+        }
+
+        .toast i {
+            font-size: 1.3rem;
+        }
+
+        .toast.error i {
+            color: #ef4444;
+        }
+
+        .toast.success i {
+            color: #22c55e;
+        }
+
+        .toast-message {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @media (max-width: 1199px) {
@@ -683,6 +849,7 @@
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
+    <div class="toast-container" id="toastContainer"></div>
 
     <div class="dashboard-wrapper">
         <aside class="sidebar" id="sidebar">
@@ -708,30 +875,12 @@
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="{{ route('customer.favorites') }}" class="nav-item">
                         <i class="bi bi-heart"></i>
                         Favorit
                     </a>
                 </div>
-
-                <div class="nav-section">
-                    <div class="nav-section-title">Akun</div>
-                    <a href="#" class="nav-item">
-                        <i class="bi bi-person"></i>
-                        Profil
-                    </a>
-                </div>
             </nav>
-
-            <div class="sidebar-footer">
-                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <a href="#" class="nav-item logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i class="bi bi-box-arrow-right"></i>
-                        Logout
-                    </a>
-                </form>
-            </div>
         </aside>
 
         <main class="main-content">
@@ -759,13 +908,27 @@
                         </a>
                     </div>
 
-                    <div class="user-dropdown">
-                        <div class="user-avatar">JD</div>
+                    <div class="user-dropdown" id="user-dropdown">
+                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
                         <div class="user-info">
-                            <div class="user-name">John Doe</div>
+                            <div class="user-name">{{ Auth::user()->name }}</div>
                             <div class="user-role">Customer</div>
                         </div>
                         <i class="bi bi-chevron-down"></i>
+
+                        <div class="dropdown-menu-custom" id="dropdown-menu">
+                            <a href="{{ route('customer.profile') }}" class="dropdown-item-custom">
+                                <i class="bi bi-person"></i>
+                                Profil
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item-custom text-danger">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -814,74 +977,223 @@
                 </div>
 
                 <div class="section-header">
-                    <h2 class="section-title">Venue Populer</h2>
-                    <a href="#" class="btn-link">
-                        Lihat Semua <i class="bi bi-arrow-right"></i>
+                    <h2 class="section-title">Venue Tersedia</h2>
+                    <a href="{{ route('customer.favorites') }}" class="btn-link">
+                        Lihat Favorit <i class="bi bi-heart"></i>
                     </a>
                 </div>
 
                 <div class="venues-grid">
 
-    @forelse($venues as $venue)
+                    @forelse($venues as $venue)
 
-        <div class="venue-card">
+                        <div class="venue-card">
 
-            <div class="venue-image-wrapper">
+                            <div class="venue-image-wrapper">
 
-                <img
-                    src="{{ $venue->foto ? asset('storage/' . $venue->foto) : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80' }}"
-                    alt="{{ $venue->nama_venue }}"
-                    class="venue-image"
-                >
+                                <img
+                                    src="{{ $venue->foto ? asset('storage/' . $venue->foto) : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80' }}"
+                                    alt="{{ $venue->nama_venue }}"
+                                    class="venue-image"
+                                >
 
-                <span class="venue-category">
-                    Venue
-                </span>
+                                <span class="venue-category">
+                                    Venue
+                                </span>
 
-                <button class="venue-favorite" type="button">
-                    <i class="bi bi-heart"></i>
-                </button>
+                                @if(Auth::check())
+                                    <button
+                                        type="button"
+                                        class="venue-favorite-btn {{ in_array($venue->id, $favoriteVenueIds) ? 'active' : '' }}"
+                                        data-venue-id="{{ $venue->id }}"
+                                        data-is-favorite="{{ in_array($venue->id, $favoriteVenueIds) ? 'true' : 'false' }}"
+                                        title="{{ in_array($venue->id, $favoriteVenueIds) ? 'Hapus dari Favorit' : 'Tambah ke Favorit' }}"
+                                    >
+                                        <i class="bi {{ in_array($venue->id, $favoriteVenueIds) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="venue-favorite-btn" title="Login untuk menambahkan favorit">
+                                        <i class="bi bi-heart"></i>
+                                    </a>
+                                @endif
 
-            </div>
+                            </div>
 
-            <div class="venue-body">
+                            <div class="venue-body">
 
-                <h3 class="venue-name">
-                    {{ $venue->nama_venue }}
-                </h3>
+                                <h3 class="venue-name">
+                                    {{ $venue->nama_venue }}
+                                </h3>
 
-                <div class="venue-info">
+                                <div class="venue-info">
 
-                    <span class="venue-location">
-                        <i class="bi bi-geo-alt"></i>
-                        {{ $venue->lokasi ?? 'Lokasi belum tersedia' }}
-                    </span>
+                                    <span class="venue-location">
+                                        <i class="bi bi-geo-alt"></i>
+                                        {{ $venue->lokasi ?? 'Lokasi belum tersedia' }}
+                                    </span>
+
+                                </div>
+
+                                <div class="venue-price">
+                                    Kapasitas {{ $venue->kapasitas }} orang
+                                </div>
+
+                                <a
+                                    href="{{ route('customer.venues.show', $venue->slug) }}"
+                                    class="btn-detail"
+                                >
+                                    Lihat Detail
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    @empty
+
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <i class="bi bi-building"></i>
+                            <h3>Belum ada venue tersedia</h3>
+                            <p>Belum ada venue yang dapat dipesan saat ini.</p>
+                        </div>
+
+                    @endforelse
 
                 </div>
-
-                <div class="venue-price">
-                    Kapasitas {{ $venue->kapasitas }} orang
-                </div>
-
-                <a
-                    href="{{ route('customer.venues.show', $venue->slug) }}"
-                    class="btn-detail"
-                >
-                    Lihat Detail
-                </a>
-
             </div>
+        </main>
+    </div>
 
-        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('menu-toggle');
+        const overlay = document.getElementById('overlay');
+        const userDropdown = document.getElementById('user-dropdown');
+        const dropdownMenu = document.getElementById('dropdown-menu');
 
-    @empty
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
 
-        <div class="empty-state">
-            <i class="bi bi-building"></i>
-            <h3>Belum ada venue tersedia</h3>
-            <p>Belum ada venue yang dapat dipesan saat ini.</p>
-        </div>
+        overlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
 
-    @endforelse
+        userDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
 
-</div>
+        document.addEventListener('click', function(e) {
+            if (!userDropdown.contains(e.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'error' ? 'bi-exclamation-circle' : 'bi-check-circle'}"></i>
+                <span class="toast-message">${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease reverse';
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        document.querySelectorAll('.venue-favorite-btn[data-venue-id]').forEach(function(button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const btn = this;
+                const venueId = btn.dataset.venueId;
+                const isFavorite = btn.dataset.isFavorite === 'true';
+                const icon = btn.querySelector('i');
+
+                if (btn.classList.contains('loading')) {
+                    return;
+                }
+
+                btn.classList.add('loading');
+                const originalIconClass = icon.className;
+                icon.className = 'bi bi-arrow-repeat';
+
+                const wasFavorite = isFavorite;
+                if (wasFavorite) {
+                    btn.classList.remove('active');
+                    icon.className = 'bi bi-heart';
+                    btn.dataset.isFavorite = 'false';
+                } else {
+                    btn.classList.add('active');
+                    icon.className = 'bi bi-heart-fill';
+                    btn.dataset.isFavorite = 'true';
+                }
+
+                const url = wasFavorite
+                    ? `/customer/favorites/${venueId}`
+                    : `/customer/favorites/${venueId}`;
+
+                const method = wasFavorite ? 'DELETE' : 'POST';
+
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function(response) {
+                    if (response.status === 401) {
+                        window.location.href = '{{ route("login") }}';
+                        return null;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error('Request failed');
+                    }
+
+                    return response.json();
+                })
+                .then(function(data) {
+                    btn.classList.remove('loading');
+                    if (data && data.success) {
+                        if (!wasFavorite) {
+                            btn.classList.add('active');
+                            icon.className = 'bi bi-heart-fill';
+                            btn.dataset.isFavorite = 'true';
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    btn.classList.remove('loading');
+
+                    if (wasFavorite) {
+                        btn.classList.add('active');
+                        icon.className = 'bi bi-heart-fill';
+                        btn.dataset.isFavorite = 'true';
+                    } else {
+                        btn.classList.remove('active');
+                        icon.className = 'bi bi-heart';
+                        btn.dataset.isFavorite = 'false';
+                    }
+
+                    showToast('Terjadi kesalahan. Silakan coba lagi.', 'error');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

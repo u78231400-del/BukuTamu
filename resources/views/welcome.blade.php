@@ -1007,100 +1007,78 @@
                     <p class="section-subtitle-left">Temukan tempat yang cocok untuk acara dan momen spesial Anda.</p>
                 </div>
                 <div class="venue-header-right">
-                    <a href="#" class="lihat-semua">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+                    <a href="{{ route('customer.venues') }}" class="lihat-semua">Lihat Semua <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
 
             <div class="venue-grid">
-                <div class="venue-card">
-                    <div class="venue-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80" alt="Grand Ballroom" class="venue-image">
-                        <div class="venue-favorite">
-                            <i class="bi bi-heart"></i>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <h3 class="venue-nama">Grand Ballroom</h3>
-                        <div class="venue-info">
-                            <span class="venue-lokasi">
-                                <i class="bi bi-geo-alt"></i> Jakarta
-                            </span>
-                            <span class="venue-rating">
-                                <i class="bi bi-star-fill"></i> 4.8
-                            </span>
-                        </div>
-                        <div class="venue-harga">Rp10.000.000 <span>/ hari</span></div>
-                        <button class="btn-detail">Lihat Detail</button>
-                    </div>
+
+    @forelse($venues as $venue)
+
+        <div class="venue-card">
+
+            <div class="venue-image-wrapper">
+
+                @if($venue->foto)
+                    <img
+                        src="{{ asset('storage/' . $venue->foto) }}"
+                        alt="{{ $venue->nama_venue }}"
+                        class="venue-image"
+                    >
+                @else
+                    <img
+                        src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80"
+                        alt="{{ $venue->nama_venue }}"
+                        class="venue-image"
+                    >
+                @endif
+
+                <div class="venue-favorite">
+                    <i class="bi bi-heart"></i>
                 </div>
 
-                <div class="venue-card">
-                    <div class="venue-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80" alt="Harmony Event Hall" class="venue-image">
-                        <div class="venue-favorite">
-                            <i class="bi bi-heart"></i>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <h3 class="venue-nama">Harmony Event Hall</h3>
-                        <div class="venue-info">
-                            <span class="venue-lokasi">
-                                <i class="bi bi-geo-alt"></i> Bandung
-                            </span>
-                            <span class="venue-rating">
-                                <i class="bi bi-star-fill"></i> 4.7
-                            </span>
-                        </div>
-                        <div class="venue-harga">Rp7.500.000 <span>/ hari</span></div>
-                        <button class="btn-detail">Lihat Detail</button>
-                    </div>
-                </div>
-
-                <div class="venue-card">
-                    <div class="venue-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=600&q=80" alt="Garden Celebration" class="venue-image">
-                        <div class="venue-favorite">
-                            <i class="bi bi-heart"></i>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <h3 class="venue-nama">Garden Celebration</h3>
-                        <div class="venue-info">
-                            <span class="venue-lokasi">
-                                <i class="bi bi-geo-alt"></i> Yogyakarta
-                            </span>
-                            <span class="venue-rating">
-                                <i class="bi bi-star-fill"></i> 4.9
-                            </span>
-                        </div>
-                        <div class="venue-harga">Rp6.000.000 <span>/ hari</span></div>
-                        <button class="btn-detail">Lihat Detail</button>
-                    </div>
-                </div>
-
-                <div class="venue-card">
-                    <div class="venue-image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Meeting Space" class="venue-image">
-                        <div class="venue-favorite">
-                            <i class="bi bi-heart"></i>
-                        </div>
-                    </div>
-                    <div class="venue-body">
-                        <h3 class="venue-nama">Meeting Space</h3>
-                        <div class="venue-info">
-                            <span class="venue-lokasi">
-                                <i class="bi bi-geo-alt"></i> Surabaya
-                            </span>
-                            <span class="venue-rating">
-                                <i class="bi bi-star-fill"></i> 4.6
-                            </span>
-                        </div>
-                        <div class="venue-harga">Rp2.500.000 <span>/ hari</span></div>
-                        <button class="btn-detail">Lihat Detail</button>
-                    </div>
-                </div>
             </div>
+
+            <div class="venue-body">
+
+                <h3 class="venue-nama">
+                    {{ $venue->nama_venue }}
+                </h3>
+
+                <div class="venue-info">
+
+                    <span class="venue-lokasi">
+                        <i class="bi bi-geo-alt"></i>
+                        {{ $venue->lokasi ?? 'Lokasi tidak tersedia' }}
+                    </span>
+
+                </div>
+
+                <div class="venue-harga">
+                    Kapasitas {{ $venue->kapasitas }} orang
+                </div>
+
+                <a
+                    href="{{ route('customer.venues.show', $venue->slug) }}"
+                    class="btn-detail"
+                    style="display: block; text-align: center; text-decoration: none;"
+                >
+                    Lihat Detail
+                </a>
+
+            </div>
+
         </div>
+
+    @empty
+
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+            <p>Belum ada venue yang tersedia.</p>
+        </div>
+
+    @endforelse
+
+</div>
     </section>
 
     {{-- Kenapa Memilih Section --}}
@@ -1148,5 +1126,24 @@
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.querySelectorAll('.venue-favorite').forEach(function (button) {
+        button.addEventListener('click', function () {
+            this.classList.toggle('active');
+
+            const icon = this.querySelector('i');
+
+            if (this.classList.contains('active')) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill');
+            } else {
+                icon.classList.remove('bi-heart-fill');
+                icon.classList.add('bi-heart');
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

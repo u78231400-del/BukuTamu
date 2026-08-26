@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -40,6 +40,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Relasi ke tabel favorites
+     * Seorang user bisa memiliki banyak venue favorit
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    /**
      * Cek apakah user adalah admin
      */
     public function isAdmin(): bool
@@ -55,3 +64,4 @@ class User extends Authenticatable
         return $this->role === 'customer';
     }
 }
+

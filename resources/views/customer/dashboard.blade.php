@@ -106,6 +106,8 @@
             font-weight: 500;
             transition: all 0.2s ease;
             margin-bottom: 4px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .nav-item:hover {
@@ -644,16 +646,12 @@
             </nav>
 
             <div class="sidebar-footer">
-    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-        @csrf
-
-        <a href="#" class="nav-item logout"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="bi bi-box-arrow-right"></i>
-            Logout
-        </a>
-    </form>
-</div>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <a href="#" class="nav-item logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+                    </a>
                 </form>
             </div>
         </aside>

@@ -106,6 +106,8 @@
             font-weight: 500;
             transition: all 0.2s ease;
             margin-bottom: 4px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .nav-item:hover {
@@ -694,15 +696,15 @@
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Menu Utama</div>
-                    <a href="#" class="nav-item">
+                    <a href="{{ route('customer.dashboard') }}" class="nav-item">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
-                    <a href="#" class="nav-item active">
+                    <a href="{{ route('customer.venues') }}" class="nav-item active">
                         <i class="bi bi-search"></i>
                         Cari Venue
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="{{ route('customer.reservations') }}" class="nav-item">
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
@@ -722,7 +724,8 @@
             </nav>
 
             <div class="sidebar-footer">
-                <form id="logout-form" action="#" method="POST">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
                     <a href="#" class="nav-item logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="bi bi-box-arrow-right"></i>
                         Logout

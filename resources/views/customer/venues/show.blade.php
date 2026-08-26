@@ -37,7 +37,40 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-2">
             <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $venue->nama_venue }}</h1>
+                <div class="flex items-center justify-between gap-4 mb-2">
+    <h1 class="text-3xl font-bold text-gray-800">
+        {{ $venue->nama_venue }}
+    </h1>
+
+    @if($isFavorite)
+        <form action="{{ route('customer.favorites.destroy', $venue->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+
+            <button
+                type="submit"
+                class="flex items-center gap-2 rounded-lg bg-red-100 px-4 py-2 text-red-600 hover:bg-red-200 transition"
+                title="Hapus dari favorit"
+            >
+                <span class="text-xl">♥</span>
+                <span class="font-medium">Hapus Favorit</span>
+            </button>
+        </form>
+    @else
+        <form action="{{ route('customer.favorites.store', $venue->id) }}" method="POST">
+            @csrf
+
+            <button
+                type="submit"
+                class="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 transition"
+                title="Tambah ke favorit"
+            >
+                <span class="text-xl">♡</span>
+                <span class="font-medium">Tambah Favorit</span>
+            </button>
+        </form>
+    @endif
+</div>
                 <p class="text-gray-500 mb-4">📍 {{ $venue->lokasi ?? 'Lokasi belum diatur' }} | 👥 Kapasitas: {{ $venue->kapasitas }} Orang</p>
                 <div class="border-t pt-4">
                     <h3 class="font-semibold text-lg text-gray-800 mb-2">Deskripsi Ruangan</h3>
@@ -58,6 +91,7 @@
             type="date"
             name="tanggal_mulai"
             value="{{ old('tanggal_mulai') }}"
+            min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
             required
         >
@@ -75,6 +109,7 @@
             type="date"
             name="tanggal_selesai"
             value="{{ old('tanggal_selesai') }}"
+            min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2"
             required
         >

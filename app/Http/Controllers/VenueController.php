@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Venue;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VenueController extends Controller
 {
@@ -11,13 +12,18 @@ class VenueController extends Controller
     {
         $venues = Venue::where('status', 'available')->get();
 
-        // Diubah menjadi customer.venues.index
         return view('customer.venues.index', compact('venues'));
     }
+
     public function show($slug)
     {
         $venue = Venue::where('slug', $slug)->firstOrFail();
 
-        return view('customer.venues.show', compact('venue'));
+        $isFavorite = Favorite::where('user_id', Auth::id())
+            ->where('venue_id', $venue->id)
+            ->exists();
+
+        return view('customer.venues.show', compact('venue', 'isFavorite'));
     }
 }
+

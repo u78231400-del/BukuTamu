@@ -27,4 +27,13 @@ class Venue extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    /**
+     * Relasi ke tabel favorites
+     * Sebuah venue bisa menjadi favorit banyak user
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

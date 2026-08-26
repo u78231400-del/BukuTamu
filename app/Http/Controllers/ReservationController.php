@@ -27,12 +27,24 @@ class ReservationController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'tanggal_mulai' => ['required', 'date'],
-            'tanggal_selesai' => ['required', 'date', 'after_or_equal:tanggal_mulai'],
+            'tanggal_mulai' => [
+                'required',
+                'date',
+                'date_format:Y-m-d',
+                'after_or_equal:' . \Carbon\Carbon::today()->addDays(2)->format('Y-m-d'),
+            ],
+            'tanggal_selesai' => [
+                'required',
+                'date',
+                'date_format:Y-m-d',
+                'after_or_equal:tanggal_mulai',
+            ],
             'waktu_mulai' => ['required', 'date_format:H:i'],
             'waktu_selesai' => ['required', 'date_format:H:i', 'after:waktu_mulai'],
             'jumlah_peserta' => ['required', 'integer', 'min:1', 'max:' . $venue->kapasitas],
             'keterangan' => ['nullable', 'string', 'max:1000'],
+        ], [
+            'tanggal_mulai.after_or_equal' => 'Reservasi harus dilakukan minimal 2 hari sebelum tanggal acara.',
         ]);
 
         Reservation::create([

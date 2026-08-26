@@ -769,7 +769,7 @@
                         <div class="stat-icon accent">
                             <i class="bi bi-calendar-check"></i>
                         </div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value">{{ $activeReservations }}</div>
                         <div class="stat-label">Reservasi Aktif</div>
                     </div>
 
@@ -785,7 +785,7 @@
                         <div class="stat-icon primary">
                             <i class="bi bi-clock-history"></i>
                         </div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value">{{ $historyReservations }}</div>
                         <div class="stat-label">Riwayat Reservasi</div>
                     </div>
 
@@ -793,7 +793,7 @@
                         <div class="stat-icon success">
                             <i class="bi bi-check-circle"></i>
                         </div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value">{{ $completedReservations }}</div>
                         <div class="stat-label">Reservasi Selesai</div>
                     </div>
                 </div>

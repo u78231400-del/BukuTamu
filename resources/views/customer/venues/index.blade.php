@@ -1117,19 +1117,21 @@
                 e.stopPropagation();
 
                 const btn = this;
+
+                if (btn.dataset.processing === 'true') {
+                    return;
+                }
+
                 const venueId = btn.dataset.venueId;
                 const isFavorite = btn.dataset.isFavorite === 'true';
                 const icon = btn.querySelector('i');
 
-                if (btn.classList.contains('loading')) {
-                    return;
-                }
-
-                btn.classList.add('loading');
-                const originalIconClass = icon.className;
-                icon.className = 'bi bi-arrow-repeat';
-
                 const wasFavorite = isFavorite;
+                const prevIconClass = icon.className;
+                const prevActiveClass = btn.classList.contains('active') ? 'active' : '';
+
+                btn.dataset.processing = 'true';
+
                 if (wasFavorite) {
                     btn.classList.remove('active');
                     icon.className = 'bi bi-heart';
@@ -1140,13 +1142,9 @@
                     btn.dataset.isFavorite = 'true';
                 }
 
-                const url = wasFavorite
-                    ? `/customer/favorites/${venueId}`
-                    : `/customer/favorites/${venueId}`;
-
                 const method = wasFavorite ? 'DELETE' : 'POST';
 
-                fetch(url, {
+                fetch(`/customer/favorites/${venueId}`, {
                     method: method,
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -1168,17 +1166,10 @@
                     return response.json();
                 })
                 .then(function(data) {
-                    btn.classList.remove('loading');
-                    if (data && data.success) {
-                        if (!wasFavorite) {
-                            btn.classList.add('active');
-                            icon.className = 'bi bi-heart-fill';
-                            btn.dataset.isFavorite = 'true';
-                        }
-                    }
+                    btn.dataset.processing = 'false';
                 })
                 .catch(function(error) {
-                    btn.classList.remove('loading');
+                    btn.dataset.processing = 'false';
 
                     if (wasFavorite) {
                         btn.classList.add('active');

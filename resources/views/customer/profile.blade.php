@@ -298,7 +298,8 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
             border: 1px solid #f0f0f0;
             overflow: hidden;
-            max-width: 600px;
+            width: 100%;
+            max-width: 900px;
         }
 
         .profile-header {
@@ -372,6 +373,174 @@
             font-size: 1rem;
             font-weight: 600;
             color: var(--text-dark);
+        }
+
+        .btn-edit {
+            background: white;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-edit:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .profile-form-group {
+            margin-bottom: 20px;
+        }
+
+        .profile-form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .profile-form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .profile-form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .profile-form-control:disabled {
+            background: var(--bg-light);
+            color: var(--text-light);
+            cursor: not-allowed;
+        }
+
+        .profile-form-control.is-invalid {
+            border-color: #ef4444;
+        }
+
+        .profile-form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .btn-save {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-save:hover {
+            background: #d63651;
+        }
+
+        .btn-cancel {
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid #e5e7eb;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cancel:hover {
+            background: var(--bg-light);
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #16a34a;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .invalid-feedback {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0 32px 20px;
+        }
+
+        .profile-info-view {
+            display: block;
+        }
+
+        .profile-info-edit {
+            display: none;
+        }
+
+        .profile-info-edit.active {
+            display: block;
+        }
+
+        .profile-info-view.hidden {
+            display: none;
+        }
+
+        @media (max-width: 576px) {
+            .profile-actions {
+                padding: 0 20px 16px;
+            }
+
+            .profile-form-actions {
+                flex-direction: column;
+            }
+
+            .btn-save, .btn-cancel {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         .overlay {
@@ -508,32 +677,108 @@
                         <p class="profile-role">{{ ucfirst($user->role ?? 'Customer') }}</p>
                     </div>
                     <div class="profile-body">
-                        <div class="profile-info-item">
-                            <div class="profile-info-icon">
-                                <i class="bi bi-person"></i>
+                        @if(session('success'))
+                            <div class="alert-success">
+                                <i class="bi bi-check-circle-fill"></i>
+                                {{ session('success') }}
                             </div>
-                            <div>
-                                <div class="profile-info-label">Nama Lengkap</div>
-                                <div class="profile-info-value">{{ $user->name }}</div>
+                        @endif
+
+                        @if($errors->any())
+                            <div class="alert-danger">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
+                        <div class="profile-actions">
+                            <button type="button" class="btn-edit" id="btn-edit-profile">
+                                <i class="bi bi-pencil"></i>
+                                Edit Profil
+                            </button>
+                        </div>
+
+                        <div class="profile-info-view" id="profile-view">
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                <div>
+                                    <div class="profile-info-label">Nama Lengkap</div>
+                                    <div class="profile-info-value">{{ $user->name }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-envelope"></i>
+                                </div>
+                                <div>
+                                    <div class="profile-info-label">Email</div>
+                                    <div class="profile-info-value">{{ $user->email }}</div>
+                                </div>
+                            </div>
+                            <div class="profile-info-item">
+                                <div class="profile-info-icon">
+                                    <i class="bi bi-shield"></i>
+                                </div>
+                                <div>
+                                    <div class="profile-info-label">Role</div>
+                                    <div class="profile-info-value">{{ ucfirst($user->role ?? 'Customer') }}</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="profile-info-item">
-                            <div class="profile-info-icon">
-                                <i class="bi bi-envelope"></i>
-                            </div>
-                            <div>
-                                <div class="profile-info-label">Email</div>
-                                <div class="profile-info-value">{{ $user->email }}</div>
-                            </div>
-                        </div>
-                        <div class="profile-info-item">
-                            <div class="profile-info-icon">
-                                <i class="bi bi-shield"></i>
-                            </div>
-                            <div>
-                                <div class="profile-info-label">Role</div>
-                                <div class="profile-info-value">{{ ucfirst($user->role ?? 'Customer') }}</div>
-                            </div>
+
+                        <div class="profile-info-edit" id="profile-edit">
+                            <form action="{{ route('customer.profile.update') }}" method="POST">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="profile-form-group">
+                                    <label class="profile-form-label" for="name">Nama Lengkap</label>
+                                    <input type="text" 
+                                           class="profile-form-control @error('name') is-invalid @enderror" 
+                                           id="name" 
+                                           name="name" 
+                                           value="{{ old('name', $user->name) }}"
+                                           required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="profile-form-group">
+                                    <label class="profile-form-label" for="email">Email</label>
+                                    <input type="email" 
+                                           class="profile-form-control @error('email') is-invalid @enderror" 
+                                           id="email" 
+                                           name="email" 
+                                           value="{{ old('email', $user->email) }}"
+                                           required>
+                                    @error('email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="profile-form-group">
+                                    <label class="profile-form-label" for="role">Role</label>
+                                    <input type="text" 
+                                           class="profile-form-control" 
+                                           id="role" 
+                                           value="{{ ucfirst($user->role ?? 'Customer') }}"
+                                           disabled>
+                                </div>
+
+                                <div class="profile-form-actions">
+                                    <button type="submit" class="btn-save">
+                                        <i class="bi bi-check-lg"></i>
+                                        Simpan Perubahan
+                                    </button>
+                                    <button type="button" class="btn-cancel" id="btn-cancel">
+                                        <i class="bi bi-x-lg"></i>
+                                        Batal
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -569,6 +814,25 @@
                 dropdownMenu.classList.remove('show');
             }
         });
+
+        const btnEdit = document.getElementById('btn-edit-profile');
+        const btnCancel = document.getElementById('btn-cancel');
+        const profileView = document.getElementById('profile-view');
+        const profileEdit = document.getElementById('profile-edit');
+
+        if (btnEdit && profileView && profileEdit) {
+            btnEdit.addEventListener('click', function() {
+                profileView.classList.add('hidden');
+                profileEdit.classList.add('active');
+                btnEdit.style.display = 'none';
+            });
+
+            btnCancel.addEventListener('click', function() {
+                profileView.classList.remove('hidden');
+                profileEdit.classList.remove('active');
+                btnEdit.style.display = 'inline-flex';
+            });
+        }
     </script>
 </body>
 </html>

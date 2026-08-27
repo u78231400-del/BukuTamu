@@ -87,6 +87,10 @@ Route::middleware('auth')->group(function () {
         'index'
     ])->name('customer.profile');
 
+    Route::put('/customer/profile', [
+        ProfileController::class,
+        'update'
+    ])->name('customer.profile.update');
 
     // Daftar Venue
     Route::get('/customer/venues', [

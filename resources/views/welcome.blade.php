@@ -856,22 +856,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#">Beranda</a>
+                        <a class="nav-link nav-link-custom" href="{{ url('/') }}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#">Venue</a>
+                        <a class="nav-link nav-link-custom" href="{{ route('venues.index') }}">Venue</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#">Cara Kerja</a>
+                        <a class="nav-link nav-link-custom" href="#cara-kerja">Cara Kerja</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#">Tentang</a>
+                        <a class="nav-link nav-link-custom" href="#tentang">Tentang</a>
                     </li>
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
                     <a href="/login" class="btn btn-masuk">Masuk</a>
-                    <a href="#" class="btn btn-daftar">Daftar</a>
+                    <a href="{{ route('register') }}" class="btn btn-daftar">Daftar</a>
                 </div>
             </div>
         </div>
@@ -895,13 +895,18 @@
                         Temukan venue untuk pernikahan, meeting, lomba, jamuan, seminar, dan berbagai acara lainnya.
                     </p>
 
-                    <div class="search-box">
+                    <form action="{{ route('customer.venues') }}" method="GET" class="search-box">
                         <div class="search-icon">
                             <i class="bi bi-search"></i>
                         </div>
-                        <input type="text" placeholder="Cari venue, lokasi, atau jenis acara...">
-                        <button class="btn-search">Cari</button>
-                    </div>
+                        <input 
+                            type="text" 
+                            name="search" 
+                            placeholder="Cari venue, lokasi, atau jenis acara..." 
+                            value="{{ request('search') }}"
+                        >
+                        <button type="submit" class="btn-search">Cari</button>
+                    </form>
 
                     <div class="popular-tags">
                         <span class="popular-label">Populer:</span>
@@ -1007,7 +1012,7 @@
                     <p class="section-subtitle-left">Temukan tempat yang cocok untuk acara dan momen spesial Anda.</p>
                 </div>
                 <div class="venue-header-right">
-                    <a href="{{ route('customer.venues') }}" class="lihat-semua">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+                    <a href="{{ route('venues.index') }}" class="lihat-semua">Lihat Semua <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
 
@@ -1059,7 +1064,7 @@
                 </div>
 
                 <a
-                    href="{{ route('customer.venues.show', $venue->slug) }}"
+                    href="{{ route('venues.show', $venue->slug) }}"
                     class="btn-detail"
                     style="display: block; text-align: center; text-decoration: none;"
                 >
@@ -1080,6 +1085,135 @@
 
 </div>
     </section>
+
+{{-- Cara Kerja Section --}}
+<section id="cara-kerja" style="padding: 80px 0; background: white;">
+    <div class="container">
+
+        <div class="section-header">
+            <h2 class="section-title">Cara Kerja Bukutamu</h2>
+            <p class="section-subtitle">
+                Reservasi venue menjadi lebih mudah dengan beberapa langkah sederhana.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            {{-- Langkah 1 --}}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4 h-100">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center"
+                        style="
+                            width: 64px;
+                            height: 64px;
+                            border-radius: 50%;
+                            background: rgba(233, 69, 96, 0.1);
+                            color: var(--accent);
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                        "
+                    >
+                        1
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">
+                        Cari Venue
+                    </h3>
+
+                    <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
+                        Temukan venue yang sesuai dengan kebutuhan acara Anda.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Langkah 2 --}}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4 h-100">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center"
+                        style="
+                            width: 64px;
+                            height: 64px;
+                            border-radius: 50%;
+                            background: rgba(233, 69, 96, 0.1);
+                            color: var(--accent);
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                        "
+                    >
+                        2
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">
+                        Pilih Venue
+                    </h3>
+
+                    <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
+                        Lihat informasi venue seperti lokasi, kapasitas, dan detail lainnya.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Langkah 3 --}}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4 h-100">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center"
+                        style="
+                            width: 64px;
+                            height: 64px;
+                            border-radius: 50%;
+                            background: rgba(233, 69, 96, 0.1);
+                            color: var(--accent);
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                        "
+                    >
+                        3
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">
+                        Ajukan Reservasi
+                    </h3>
+
+                    <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
+                        Tentukan tanggal dan kebutuhan reservasi, lalu kirim pengajuan.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Langkah 4 --}}
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center p-4 h-100">
+                    <div
+                        class="mx-auto mb-3 d-flex align-items-center justify-content-center"
+                        style="
+                            width: 64px;
+                            height: 64px;
+                            border-radius: 50%;
+                            background: rgba(233, 69, 96, 0.1);
+                            color: var(--accent);
+                            font-size: 1.5rem;
+                            font-weight: 700;
+                        "
+                    >
+                        4
+                    </div>
+
+                    <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary);">
+                        Tunggu Konfirmasi
+                    </h3>
+
+                    <p style="font-size: 0.9rem; color: var(--text-light); line-height: 1.6;">
+                        Pantau status reservasi Anda melalui akun Customer.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 
     {{-- Kenapa Memilih Section --}}
     <section class="kenapa-section">
@@ -1124,6 +1258,80 @@
             </div>
         </div>
     </section>
+
+             {{-- Tentang Section --}}
+<section id="tentang" style="padding: 80px 0; background: var(--bg-light); scroll-margin-top: 90px;">
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+                <div class="section-header text-start mb-4">
+                    <h2 class="section-title">Tentang Bukutamu</h2>
+                </div>
+
+                <p style="color: var(--text-light); line-height: 1.8;">
+                    Bukutamu adalah platform yang membantu pengguna menemukan
+                    dan melakukan reservasi berbagai venue untuk kebutuhan acara.
+                    Mulai dari pernikahan, meeting, seminar, lomba, jamuan,
+                    hingga berbagai acara lainnya.
+                </p>
+
+                <p style="color: var(--text-light); line-height: 1.8;">
+                    Dengan Bukutamu, pengguna dapat melihat informasi venue,
+                    mengetahui kapasitas dan lokasi, kemudian mengajukan
+                    reservasi dengan lebih mudah dan terorganisir.
+                </p>
+            </div>
+
+            <div class="col-lg-6">
+                <div
+                    style="
+                        background: white;
+                        padding: 36px;
+                        border-radius: 20px;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06);
+                    "
+                >
+                    <h3 style="
+                        color: var(--primary);
+                        font-size: 1.3rem;
+                        font-weight: 700;
+                        margin-bottom: 20px;
+                    ">
+                        Reservasi Venue Jadi Lebih Mudah
+                    </h3>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <i class="bi bi-check-circle-fill"
+                           style="color: var(--accent); font-size: 1.2rem;"></i>
+                        <span style="color: var(--text-light);">
+                            Pilihan venue untuk berbagai kebutuhan acara.
+                        </span>
+                    </div>
+
+                    <div class="d-flex gap-3 mb-3">
+                        <i class="bi bi-check-circle-fill"
+                           style="color: var(--accent); font-size: 1.2rem;"></i>
+                        <span style="color: var(--text-light);">
+                            Informasi venue yang mudah dipahami.
+                        </span>
+                    </div>
+
+                    <div class="d-flex gap-3">
+                        <i class="bi bi-check-circle-fill"
+                           style="color: var(--accent); font-size: 1.2rem;"></i>
+                        <span style="color: var(--text-light);">
+                            Proses reservasi yang lebih praktis dan terorganisir.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -6,7 +6,7 @@ use App\Models\Favorite;
 use App\Models\Venue;
 use Illuminate\Support\Facades\Auth;
 
-class VenueController extends Controller
+class CustomerVenueController extends Controller
 {
     public function index()
     {
@@ -21,6 +21,10 @@ class VenueController extends Controller
             });
         }
 
+        if (request()->has('lokasi') && request('lokasi') !== '') {
+            $query->where('lokasi', request('lokasi'));
+        }
+
         $venues = $query->get();
 
         $favoriteVenueIds = [];
@@ -30,30 +34,23 @@ class VenueController extends Controller
                 ->toArray();
         }
 
-        return view(
-            'venues.index',
-            compact('venues', 'favoriteVenueIds')
-        );
+        return view('customer.venues.index', compact('venues', 'favoriteVenueIds'));
     }
 
     public function show($slug)
-{
-    $venue = Venue::where('slug', $slug)
-        ->where('status', 'available')
-        ->firstOrFail();
+    {
+        $venue = Venue::where('slug', $slug)
+            ->where('status', 'available')
+            ->firstOrFail();
 
-    $isFavorite = false;
+        $isFavorite = false;
 
-    if (Auth::check()) {
-        $isFavorite = Favorite::where('user_id', Auth::id())
-            ->where('venue_id', $venue->id)
-            ->exists();
+        if (Auth::check()) {
+            $isFavorite = Favorite::where('user_id', Auth::id())
+                ->where('venue_id', $venue->id)
+                ->exists();
+        }
+
+        return view('customer.venues.show', compact('venue', 'isFavorite'));
     }
-
-    return view(
-        'venues.show',
-        compact('venue')
-    );
-   } 
 }
-

@@ -12,7 +12,6 @@
             --primary: #1a1a2e;
             --secondary: #16213e;
             --accent: #e94560;
-            --accent-light: rgba(233, 69, 96, 0.1);
             --gold: #c9a959;
             --text-dark: #1a1a2e;
             --text-light: #6b7280;
@@ -116,7 +115,7 @@
         }
 
         .nav-item.active {
-            background: var(--accent-light);
+            background: rgba(233, 69, 96, 0.1);
             color: var(--accent);
         }
 
@@ -130,6 +129,20 @@
             text-align: center;
         }
 
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .nav-item.logout {
+            color: #ef4444;
+        }
+
+        .nav-item.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
@@ -140,7 +153,7 @@
 
         .topbar {
             background: white;
-            padding: 16px 32px;
+            padding: 20px 40px;
             border-bottom: 1px solid #e5e7eb;
             display: flex;
             align-items: center;
@@ -172,7 +185,7 @@
         }
 
         .page-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--text-dark);
         }
@@ -187,7 +200,7 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 6px 12px 6px 6px;
+            padding: 8px 16px 8px 8px;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -199,8 +212,8 @@
         }
 
         .user-avatar {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 10px;
             background: var(--accent);
             color: white;
@@ -208,7 +221,7 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .user-info {
@@ -216,19 +229,19 @@
         }
 
         .user-name {
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-dark);
         }
 
         .user-role {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--text-light);
         }
 
         .user-dropdown i {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
 
         .dropdown-menu-custom {
@@ -239,7 +252,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
             border: 1px solid #e5e7eb;
-            min-width: 180px;
+            min-width: 200px;
             padding: 8px;
             display: none;
             z-index: 100;
@@ -253,11 +266,11 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 10px 14px;
+            padding: 12px 16px;
             color: var(--text-dark);
             text-decoration: none;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 500;
             transition: all 0.2s ease;
             border: none;
@@ -271,7 +284,7 @@
         }
 
         .dropdown-item-custom i {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-light);
         }
 
@@ -289,20 +302,21 @@
 
         .page-content {
             flex: 1;
-            padding: 32px;
+            padding: 40px 48px;
+            max-width: 1400px;
         }
 
         .content-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 32px;
         }
 
         .content-card {
             background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             border: 1px solid #f0f0f0;
         }
 
@@ -310,24 +324,25 @@
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 20px;
+            margin-bottom: 24px;
         }
 
         .venue-title {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--text-dark);
+            line-height: 1.3;
         }
 
         .btn-favorite {
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             border: 2px solid var(--accent);
@@ -336,7 +351,7 @@
         }
 
         .btn-favorite.active {
-            background: var(--accent-light);
+            background: rgba(233, 69, 96, 0.1);
             color: var(--accent);
         }
 
@@ -351,73 +366,98 @@
         }
 
         .btn-favorite i {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .venue-meta {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 32px;
             color: var(--text-light);
-            margin-bottom: 24px;
-            font-size: 1rem;
+            margin-bottom: 28px;
+            font-size: 1.1rem;
         }
 
         .venue-meta span {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
-        .venue-description h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            padding-top: 20px;
+        .venue-meta i {
+            color: var(--accent);
+        }
+
+        .venue-image-container {
+            width: 100%;
+            height: 420px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+
+        .venue-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .venue-description-customer {
+            margin-top: 24px;
+            padding-top: 24px;
             border-top: 1px solid #f0f0f0;
         }
 
-        .venue-description p {
+        .venue-description-customer h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+
+        .venue-description-customer p {
             color: var(--text-light);
-            line-height: 1.7;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         .form-card {
             background: white;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             border: 1px solid #f0f0f0;
             position: sticky;
             top: 100px;
         }
 
         .form-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
-            font-size: 0.9rem;
-            font-weight: 500;
+            font-size: 1rem;
+            font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .form-input {
             width: 100%;
-            padding: 12px 14px;
+            padding: 14px 16px;
             border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            font-size: 0.95rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-family: 'Plus Jakarta Sans', sans-serif;
             transition: all 0.2s ease;
         }
@@ -430,46 +470,47 @@
 
         textarea.form-input {
             resize: vertical;
-            min-height: 80px;
+            min-height: 100px;
         }
 
         .form-hint {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-light);
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .form-error {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #ef4444;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .btn-submit {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
             font-weight: 600;
             font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer;
             transition: all 0.2s ease;
+            margin-top: 8px;
         }
 
         .btn-submit:hover {
             background: #d63651;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.3);
         }
 
         .alert {
-            padding: 14px 16px;
-            border-radius: 10px;
+            padding: 16px 20px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
         .alert-success {
@@ -484,18 +525,19 @@
             border: 1px solid #fecaca;
         }
 
-        .btn-back {
+        .btn-back-customer {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: var(--accent);
             text-decoration: none;
             font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 1rem;
+            margin-bottom: 24px;
             transition: all 0.2s ease;
         }
 
-        .btn-back:hover {
+        .btn-back-customer:hover {
             color: #d63651;
         }
 
@@ -569,6 +611,10 @@
             .user-info {
                 display: none;
             }
+
+            .venue-image-container {
+                height: 280px;
+            }
         }
     </style>
 </head>
@@ -578,7 +624,7 @@
     <div class="dashboard-wrapper">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <a href="/" class="sidebar-logo">
+                <a href="{{ route('customer.dashboard') }}" class="sidebar-logo">
                     <i class="bi bi-building"></i>
                     <span>Bukutamu</span>
                 </a>
@@ -605,6 +651,16 @@
                     </a>
                 </div>
             </nav>
+
+            <div class="sidebar-footer">
+                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-item logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Logout
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
         </aside>
 
         <main class="main-content">
@@ -630,7 +686,7 @@
                                 <i class="bi bi-person"></i>
                                 Profil
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                            <form id="logout-form-topbar" action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="dropdown-item-custom text-danger">
                                     <i class="bi bi-box-arrow-right"></i>
@@ -645,17 +701,17 @@
             <div class="page-content">
                 @if(session('success'))
                     <div class="alert alert-success">
-                        {{ session('success') }}
+                        <i class="bi bi-check-circle"></i> {{ session('success') }}
                     </div>
                 @endif
 
                 @if(session('error'))
                     <div class="alert alert-error">
-                        {{ session('error') }}
+                        <i class="bi bi-x-circle"></i> {{ session('error') }}
                     </div>
                 @endif
 
-                <a href="{{ route('customer.venues') }}" class="btn-back">
+                <a href="{{ route('customer.venues') }}" class="btn-back-customer">
                     <i class="bi bi-arrow-left"></i>
                     Kembali ke Daftar Venue
                 </a>
@@ -696,14 +752,26 @@
                             </span>
                         </div>
 
-                        <div class="venue-description">
+                        @if($venue->foto)
+                            <div class="venue-image-container">
+                                <img
+                                    src="{{ asset('storage/' . $venue->foto) }}"
+                                    alt="{{ $venue->nama_venue }}"
+                                >
+                            </div>
+                        @endif
+
+                        <div class="venue-description-customer">
                             <h3>Deskripsi Ruangan</h3>
                             <p>{{ $venue->deskripsi }}</p>
                         </div>
                     </div>
 
                     <div class="form-card">
-                        <h2 class="form-title">Form Reservasi</h2>
+                        <h2 class="form-title">
+                            <i class="bi bi-calendar-check" style="color: var(--accent);"></i>
+                            Form Reservasi
+                        </h2>
 
                         <form action="{{ route('customer.reservations.store', $venue->slug) }}" method="POST">
                             @csrf
@@ -713,13 +781,13 @@
                                 <input
                                     type="date"
                                     name="tanggal_mulai"
-                                    value="{{ old('tanggal_mulai') }}"
-                                    min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
-                                    class="form-input"
+                                    value="{{ old('tanggal_mulai', \Carbon\Carbon::today()->addDays(2)->format('Y-m-d')) }}"
+                                    min="{{ \Carbon\Carbon::today()->subDays(2)->format('Y-m-d') }}"
+                                    class="form-input @error('tanggal_mulai') is-invalid @enderror"
                                     required
                                 >
                                 @error('tanggal_mulai')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -728,13 +796,13 @@
                                 <input
                                     type="date"
                                     name="tanggal_selesai"
-                                    value="{{ old('tanggal_selesai') }}"
-                                    min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
-                                    class="form-input"
+                                    value="{{ old('tanggal_selesai', \Carbon\Carbon::today()->addDays(2)->format('Y-m-d')) }}"
+                                    min="{{ \Carbon\Carbon::today()->subDays(2)->format('Y-m-d') }}"
+                                    class="form-input @error('tanggal_selesai') is-invalid @enderror"
                                     required
                                 >
                                 @error('tanggal_selesai')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -743,12 +811,12 @@
                                 <input
                                     type="time"
                                     name="waktu_mulai"
-                                    value="{{ old('waktu_mulai') }}"
-                                    class="form-input"
+                                    value="{{ old('waktu_mulai', '09:00') }}"
+                                    class="form-input @error('waktu_mulai') is-invalid @enderror"
                                     required
                                 >
                                 @error('waktu_mulai')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -757,12 +825,12 @@
                                 <input
                                     type="time"
                                     name="waktu_selesai"
-                                    value="{{ old('waktu_selesai') }}"
-                                    class="form-input"
+                                    value="{{ old('waktu_selesai', '17:00') }}"
+                                    class="form-input @error('waktu_selesai') is-invalid @enderror"
                                     required
                                 >
                                 @error('waktu_selesai')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -771,15 +839,15 @@
                                 <input
                                     type="number"
                                     name="jumlah_peserta"
-                                    value="{{ old('jumlah_peserta') }}"
+                                    value="{{ old('jumlah_peserta', '1') }}"
                                     min="1"
                                     max="{{ $venue->kapasitas }}"
-                                    class="form-input"
+                                    class="form-input @error('jumlah_peserta') is-invalid @enderror"
                                     required
                                 >
                                 <p class="form-hint">Maksimal {{ $venue->kapasitas }} orang</p>
                                 @error('jumlah_peserta')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -792,12 +860,12 @@
                                     placeholder="Contoh: Rapat Koordinasi Tim"
                                 >{{ old('keterangan') }}</textarea>
                                 @error('keterangan')
-                                    <p class="form-error">{{ $message }}</p>
+                                    <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
                             </div>
 
                             <button type="submit" class="btn-submit">
-                                Ajukan Reservasi
+                                <i class="bi bi-send"></i> Ajukan Reservasi
                             </button>
                         </form>
                     </div>

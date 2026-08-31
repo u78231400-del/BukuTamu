@@ -545,6 +545,8 @@
                 <form action="{{ route('register') }}" method="POST">
                     @csrf
 
+                    <input type="hidden" name="redirect" value="{{ request()->query('redirect', session('register_redirect', url()->previous())) }}">
+
                     <div class="form-group">
                         <label for="name" class="form-label">Nama Lengkap</label>
                         <div class="input-group-custom">
@@ -649,7 +651,7 @@
                 </div>
 
                 <p class="login-link">
-                    Sudah punya akun? <a href="{{ route('login') }}">Masuk</a>
+                    Sudah punya akun? <a href="{{ route('login', ['redirect' => request()->query('redirect', session('register_redirect', url()->previous()))]) }}">Masuk</a>
                 </p>
             </div>
         </div>

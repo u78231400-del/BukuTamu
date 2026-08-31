@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AdminReservationController;
 use App\Http\Controllers\AdminVenueController;
 use App\Http\Controllers\VenueController;
+use App\Http\Controllers\CustomerVenueController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
@@ -70,7 +71,36 @@ Route::get('/', function () {
 });
 
 // ==========================================
-// CUSTOMER
+// PUBLIC VENUE
+// ==========================================
+
+Route::get('/venues', [
+    VenueController::class,
+    'index'
+])->name('venues.index');
+
+Route::get('/venues/{slug}', [
+    VenueController::class,
+    'show'
+])->name('venues.show');
+
+// ==========================================
+// CUSTOMER - PUBLIC (auth optional)
+// ==========================================
+
+Route::get('/customer/venues', [
+    CustomerVenueController::class,
+    'index'
+])->name('customer.venues');
+
+Route::get('/customer/venues/{slug}', [
+    CustomerVenueController::class,
+    'show'
+])->name('customer.venues.show');
+
+
+// ==========================================
+// CUSTOMER - AUTH REQUIRED
 // ==========================================
 
 Route::middleware('auth')->group(function () {
@@ -91,20 +121,6 @@ Route::middleware('auth')->group(function () {
         ProfileController::class,
         'update'
     ])->name('customer.profile.update');
-
-    // Daftar Venue
-    Route::get('/customer/venues', [
-        VenueController::class,
-        'index'
-    ])->name('customer.venues');
-
-
-    // Detail Venue
-    Route::get('/customer/venues/{slug}', [
-        VenueController::class,
-        'show'
-    ])->name('customer.venues.show');
-
 
     // Buat Reservasi
     Route::post('/customer/venues/{slug}/reservasi', [

@@ -651,6 +651,8 @@
 
                 @csrf
 
+                <input type="hidden" name="redirect" value="{{ request()->query('redirect', session('login_redirect', url()->previous())) }}">
+
                 <!-- EMAIL -->
                 <div class="form-group">
 
@@ -759,7 +761,7 @@
 
                 Belum punya akun?
 
-                <a href="{{ route('register') }}">
+                <a href="{{ route('register', ['redirect' => request()->query('redirect', session('login_redirect', url()->previous()))]) }}">
                     Daftar sekarang
                 </a>
 

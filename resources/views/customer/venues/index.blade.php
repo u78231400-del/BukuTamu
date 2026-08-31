@@ -367,7 +367,19 @@
 
         .page-content {
             flex: 1;
-            padding: 32px;
+            padding: 0;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 80px 32px 60px 32px;
+            margin-bottom: 0;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
         }
 
         .page-header {
@@ -375,24 +387,28 @@
         }
 
         .page-title-main {
-            font-size: 1.8rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 8px;
+            color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
         }
 
         .page-subtitle {
-            font-size: 1rem;
-            color: var(--text-light);
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0;
+            line-height: 1.6;
         }
 
         .search-filter-section {
             background: white;
             border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid #f0f0f0;
-            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            border: none;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .search-form {
@@ -484,15 +500,33 @@
 
         .section-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
         .section-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .venues-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .venues-section {
+            padding: 48px 0 64px 0;
         }
 
         .btn-link {
@@ -503,6 +537,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            white-space: nowrap;
         }
 
         .btn-link:hover {
@@ -519,19 +554,21 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
             border: 1px solid #f0f0f0;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
 
         .venue-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
         }
 
         .venue-image-wrapper {
             position: relative;
-            height: 180px;
+            height: 200px;
             overflow: hidden;
         }
 
@@ -607,29 +644,31 @@
         }
 
         .venue-body {
-            padding: 20px;
+            padding: 24px;
         }
 
         .venue-name {
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--text-dark);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            line-height: 1.4;
         }
 
         .venue-info {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .venue-location {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             font-size: 0.85rem;
             color: var(--text-light);
+            line-height: 1.4;
         }
 
         .venue-rating {
@@ -645,7 +684,8 @@
             font-size: 1.1rem;
             font-weight: 700;
             color: var(--text-dark);
-            margin-bottom: 16px;
+            margin-bottom: 18px;
+            line-height: 1.4;
         }
 
         .venue-price span {
@@ -776,7 +816,7 @@
 
         @media (max-width: 1199px) {
             .venues-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -811,6 +851,25 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 24px 48px 24px;
+            }
+
+            .page-title-main {
+                font-size: 2rem;
+            }
+
+            .venues-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .venue-image-wrapper {
+                height: 180px;
+            }
+        }
+
         @media (max-width: 576px) {
             .topbar {
                 padding: 12px 16px;
@@ -824,21 +883,53 @@
                 display: none;
             }
 
-            .page-content {
-                padding: 20px 16px;
+            .hero-section {
+                padding: 48px 16px 40px 16px;
+            }
+
+            .page-header {
+                margin-bottom: 24px;
             }
 
             .page-title-main {
-                font-size: 1.5rem;
+                font-size: 1.75rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
             }
 
             .search-filter-section {
                 padding: 20px;
+                border-radius: 12px;
+            }
+
+            .venues-container {
+                padding: 0 16px;
+            }
+
+            .venues-section {
+                padding: 32px 0 48px 0;
+            }
+
+            .section-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+                margin-bottom: 24px;
             }
 
             .venues-grid {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 20px;
+            }
+
+            .venue-image-wrapper {
+                height: 200px;
+            }
+
+            .venue-body {
+                padding: 20px;
             }
 
             .user-info {
@@ -908,82 +999,90 @@
                         </a>
                     </div>
 
-                    <div class="user-dropdown" id="user-dropdown">
-                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
-                        <div class="user-info">
-                            <div class="user-name">{{ Auth::user()->name }}</div>
-                            <div class="user-role">Customer</div>
-                        </div>
-                        <i class="bi bi-chevron-down"></i>
+                    @auth
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
+                            <div class="user-info">
+                                <div class="user-name">{{ Auth::user()->name }}</div>
+                                <div class="user-role">Customer</div>
+                            </div>
+                            <i class="bi bi-chevron-down"></i>
 
-                        <div class="dropdown-menu-custom" id="dropdown-menu">
-                            <a href="{{ route('customer.profile') }}" class="dropdown-item-custom">
-                                <i class="bi bi-person"></i>
-                                Profil
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item-custom text-danger">
-                                    <i class="bi bi-box-arrow-right"></i>
-                                    Logout
-                                </button>
-                            </form>
+                            <div class="dropdown-menu-custom" id="dropdown-menu">
+                                <a href="{{ route('customer.profile') }}" class="dropdown-item-custom">
+                                    <i class="bi bi-person"></i>
+                                    Profil
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item-custom text-danger">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="auth-buttons" style="display: flex; gap: 8px;">
+                            <a href="{{ route('login') }}" class="btn" style="padding: 8px 16px; border: 2px solid var(--primary); border-radius: 8px; color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">
+                                Masuk
+                            </a>
+                            <a href="{{ route('register') }}" class="btn" style="padding: 8px 16px; background: var(--accent); border: none; border-radius: 8px; color: white; font-weight: 600; text-decoration: none; font-size: 0.9rem;">
+                                Daftar
+                            </a>
+                        </div>
+                    @endauth
                 </div>
             </header>
 
             <div class="page-content">
-                <div class="page-header">
-                    <h1 class="page-title-main">Cari Venue</h1>
-                    <p class="page-subtitle">Temukan tempat terbaik untuk acara spesialmu.</p>
-                </div>
-
-                <div class="search-filter-section">
-                    <form class="search-form">
-                        <div class="search-input-group">
-                            <i class="bi bi-search"></i>
-                            <input type="text" placeholder="Cari nama venue atau lokasi...">
+                <section class="hero-section">
+                    <div class="hero-content">
+                        <div class="page-header">
+                            <h1 class="page-title-main">Temukan Venue Impian Anda</h1>
+                            <p class="page-subtitle">Jelajahi berbagai venue terbaik untuk acara spesial Anda.</p>
                         </div>
 
-                        <div class="filter-select">
-                            <select>
-                                <option value="">Semua Lokasi</option>
-                                <option value="jakarta">Jakarta</option>
-                                <option value="bandung">Bandung</option>
-                                <option value="yogyakarta">Yogyakarta</option>
-                                <option value="surabaya">Surabaya</option>
-                                <option value="bali">Bali</option>
-                            </select>
+                        <div class="search-filter-section">
+                            <form action="{{ route('customer.venues') }}" method="GET" class="search-form">
+                                <div class="search-input-group">
+                                    <i class="bi bi-search"></i>
+                                    <input type="text" name="search" placeholder="Cari nama venue atau lokasi..." value="{{ request('search') }}">
+                                </div>
+
+                                <div class="filter-select">
+                                    <select name="lokasi">
+                                        <option value="">Semua Lokasi</option>
+                                        <option value="Jakarta" {{ request('lokasi') == 'Jakarta' ? 'selected' : '' }}>Jakarta</option>
+                                        <option value="Bandung" {{ request('lokasi') == 'Bandung' ? 'selected' : '' }}>Bandung</option>
+                                        <option value="Yogyakarta" {{ request('lokasi') == 'Yogyakarta' ? 'selected' : '' }}>Yogyakarta</option>
+                                        <option value="Surabaya" {{ request('lokasi') == 'Surabaya' ? 'selected' : '' }}>Surabaya</option>
+                                        <option value="Bali" {{ request('lokasi') == 'Bali' ? 'selected' : '' }}>Bali</option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn-search">
+                                    <i class="bi bi-search"></i>
+                                    Cari
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="venues-section">
+                    <div class="venues-container">
+                        <div class="section-header">
+                            <div>
+                                <h2 class="section-title">Venue Tersedia</h2>
+                                <p class="section-subtitle">Berikut adalah venue yang siap untuk dipesan.</p>
+                            </div>
+                            <a href="{{ route('customer.favorites') }}" class="btn-link">
+                                Lihat Favorit <i class="bi bi-heart"></i>
+                            </a>
                         </div>
 
-                        <div class="filter-select">
-                            <select>
-                                <option value="">Semua Kategori</option>
-                                <option value="aula">Aula</option>
-                                <option value="pernikahan">Pernikahan</option>
-                                <option value="meeting">Meeting</option>
-                                <option value="jamuan">Jamuan</option>
-                                <option value="lomba">Lomba</option>
-                                <option value="seminar">Seminar</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn-search">
-                            <i class="bi bi-search"></i>
-                            Cari
-                        </button>
-                    </form>
-                </div>
-
-                <div class="section-header">
-                    <h2 class="section-title">Venue Tersedia</h2>
-                    <a href="{{ route('customer.favorites') }}" class="btn-link">
-                        Lihat Favorit <i class="bi bi-heart"></i>
-                    </a>
-                </div>
-
-                <div class="venues-grid">
+                        <div class="venues-grid">
 
                     @forelse($venues as $venue)
 
@@ -1059,7 +1158,8 @@
 
                     @endforelse
 
-                </div>
+                    </div>
+                </section>
             </div>
         </main>
     </div>

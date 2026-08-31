@@ -63,5 +63,22 @@ class User extends Authenticatable
     {
         return $this->role === 'customer';
     }
+
+    /**
+     * Relasi ke tabel venues
+     * Seorang owner bisa memiliki banyak venue
+     */
+    public function venues()
+    {
+        return $this->hasMany(Venue::class, 'owner_id');
+    }
+
+    /**
+     * Cek apakah user adalah owner
+     */
+    public function isOwner(): bool
+    {
+        return $this->role === 'owner';
+    }
 }
 

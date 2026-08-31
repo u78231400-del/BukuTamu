@@ -22,6 +22,7 @@ class AuthController extends Controller
             '/login',
             '/register',
             '/admin',
+            '/owner',
             '/customer/dashboard'
         ];
 
@@ -32,6 +33,14 @@ class AuthController extends Controller
                     $blocked === '/customer/dashboard' &&
                     Auth::check() &&
                     Auth::user()->role === 'customer'
+                ) {
+                    continue;
+                }
+
+                if (
+                    $blocked === '/owner' &&
+                    Auth::check() &&
+                    Auth::user()->role === 'owner'
                 ) {
                     continue;
                 }
@@ -54,6 +63,10 @@ class AuthController extends Controller
 
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
+            }
+
+            if ($user->role === 'owner') {
+                return redirect()->route('owner.dashboard');
             }
 
             return redirect()->route('login');
@@ -126,6 +139,11 @@ class AuthController extends Controller
             // ADMIN
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
+            }
+
+            // OWNER
+            if (Auth::user()->role === 'owner') {
+                return redirect()->route('owner.dashboard');
             }
 
             return redirect()->route('login');

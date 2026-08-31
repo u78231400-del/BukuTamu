@@ -15,7 +15,9 @@ use App\Http\Controllers\CustomerVenueController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\OwnerDashboardController;
+use App\Http\Controllers\OwnerVenueController;
+use App\Http\Controllers\AdminOwnerController;
 
 
 // ==========================================
@@ -176,7 +178,7 @@ Route::middleware('auth')->group(function () {
 // ADMIN
 // ==========================================
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     // --------------------------------------
     // Admin Dashboard
@@ -251,8 +253,77 @@ Route::middleware('auth')->group(function () {
         'reject'
     ])->name('admin.reservations.reject');
 
+    // --------------------------------------
+    // Admin Owner
+    // --------------------------------------
+
+    Route::get('/admin/owners', [
+        AdminOwnerController::class,
+        'index'
+    ])->name('admin.owners.index');
+
+    Route::get('/admin/owners/create', [
+        AdminOwnerController::class,
+        'create'
+    ])->name('admin.owners.create');
+
+    Route::post('/admin/owners', [
+        AdminOwnerController::class,
+        'store'
+    ])->name('admin.owners.store');
+
 });
 
+// ==========================================
+// OWNER
+// ==========================================
+Route::middleware(['auth', 'owner'])->group(function () {
+
+    // --------------------------------------
+    // Owner Dashboard
+    // --------------------------------------
+
+    Route::get('/owner/dashboard', [
+        OwnerDashboardController::class,
+        'index'
+    ])->name('owner.dashboard');
+
+
+    // --------------------------------------
+    // Owner Venue
+    // --------------------------------------
+
+    Route::get('/owner/venues', [
+        OwnerVenueController::class,
+        'index'
+    ])->name('owner.venues.index');
+
+    Route::get('/owner/venues/create', [
+        OwnerVenueController::class,
+        'create'
+    ])->name('owner.venues.create');
+
+    Route::post('/owner/venues', [
+        OwnerVenueController::class,
+        'store'
+    ])->name('owner.venues.store');
+
+    Route::get('/owner/venues/{id}/edit', [
+        OwnerVenueController::class,
+        'edit'
+    ])->name('owner.venues.edit');
+
+    Route::put('/owner/venues/{id}', [
+        OwnerVenueController::class,
+        'update'
+    ])->name('owner.venues.update');
+
+    Route::delete('/owner/venues/{id}', [
+        OwnerVenueController::class,
+        'destroy'
+    ])->name('owner.venues.destroy');
+
+});
 
 // ==========================================
 // BUKU TAMU - LEGACY
@@ -289,7 +360,7 @@ Route::delete('/bukutamu/{id}', [
 // LEGACY DASHBOARD BUKU TAMU
 // ==========================================
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/dashboard', [
         TamuController::class,
@@ -348,7 +419,7 @@ Route::delete('/appointment/{id}', [
 // ADMIN - APPOINTMENT ACTION
 // ==========================================
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::post('/appointment/{id}/approve', [
         AppointmentController::class,

@@ -17,6 +17,7 @@ class Venue extends Model
         'lokasi',
         'foto',
         'fasilitas',
+        'owner_id',
         'status',
     ];
 
@@ -40,5 +41,14 @@ class Venue extends Model
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    /**
+     * Relasi ke owner/user
+     * Sebuah venue dimiliki oleh satu owner
+     */
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 }

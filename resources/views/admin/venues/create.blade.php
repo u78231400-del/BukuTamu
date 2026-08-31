@@ -74,18 +74,34 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">
-                        Status <span class="text-danger">*</span>
+                        Owner <span class="text-danger">*</span>
                     </label>
-                    <select name="status" class="form-select" required>
-                        <option value="">Pilih Status</option>
-                        <option value="available" {{ old('status') === 'available' ? 'selected' : '' }}>
-                            Tersedia
-                        </option>
-                        <option value="unavailable" {{ old('status') === 'unavailable' ? 'selected' : '' }}>
-                            Tidak Tersedia
-                        </option>
+                    <select name="owner_id" class="form-select" required>
+                        <option value="">Pilih Owner</option>
+                        @forelse($owners as $owner)
+                            <option value="{{ $owner->id }}" {{ old('owner_id') == $owner->id ? 'selected' : '' }}>
+                                {{ $owner->name }}
+                            </option>
+                        @empty
+                            <option value="" disabled>Tidak ada owner tersedia</option>
+                        @endforelse
                     </select>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">
+                    Status <span class="text-danger">*</span>
+                </label>
+                <select name="status" class="form-select" required>
+                    <option value="">Pilih Status</option>
+                    <option value="available" {{ old('status') === 'available' ? 'selected' : '' }}>
+                        Tersedia
+                    </option>
+                    <option value="unavailable" {{ old('status') === 'unavailable' ? 'selected' : '' }}>
+                        Tidak Tersedia
+                    </option>
+                </select>
             </div>
 
             <div class="mb-4">

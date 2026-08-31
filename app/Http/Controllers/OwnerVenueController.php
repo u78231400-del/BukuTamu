@@ -2,37 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Venue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class AdminVenueController extends Controller
+class OwnerVenueController extends Controller
 {
-    /**
-     * Daftar semua venue
-     */
     public function index()
     {
-        $venues = Venue::latest()->get();
+        $venues = Venue::where('owner_id', Auth::id())->latest()->get();
 
-        return view('admin.venues.index', compact('venues'));
+        return view('owner.venues.index', compact('venues'));
     }
 
-    /**
-     * Form tambah venue
-     */
     public function create()
     {
-        $owners = User::where('role', 'owner')->get();
-
-        return view('admin.venues.create', compact('owners'));
+        return view('owner.venues.create');
     }
 
-    /**
-     * Simpan venue baru
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -43,12 +32,6 @@ class AdminVenueController extends Controller
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'fasilitas' => ['nullable', 'array'],
             'status' => ['required', 'in:available,maintenance'],
-            'owner_id' => ['required', 'exists:users,id', function ($attribute, $value, $fail) {
-                $owner = User::where('id', $value)->where('role', 'owner')->first();
-                if (!$owner) {
-                    $fail('Owner yang dipilih tidak valid.');
-                }
-            }],
         ]);
 
         if ($request->hasFile('foto')) {
@@ -57,31 +40,25 @@ class AdminVenueController extends Controller
         }
 
         $validated['slug'] = Str::slug($validated['nama_venue']);
+        $validated['owner_id'] = Auth::id();
 
         Venue::create($validated);
 
         return redirect()
-            ->route('admin.venues.index')
+            ->route('owner.venues.index')
             ->with('success', 'Venue berhasil ditambahkan.');
     }
 
-    /**
-     * Form edit venue
-     */
     public function edit($id)
     {
-        $venue = Venue::findOrFail($id);
-        $owners = User::where('role', 'owner')->get();
+        $venue = Venue::where('owner_id', Auth::id())->findOrFail($id);
 
-        return view('admin.venues.edit', compact('venue', 'owners'));
+        return view('owner.venues.edit', compact('venue'));
     }
 
-    /**
-     * Update venue
-     */
     public function update(Request $request, $id)
     {
-        $venue = Venue::findOrFail($id);
+        $venue = Venue::where('owner_id', Auth::id())->findOrFail($id);
 
         $validated = $request->validate([
             'nama_venue' => ['required', 'string', 'max:255'],
@@ -91,16 +68,9 @@ class AdminVenueController extends Controller
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'fasilitas' => ['nullable', 'array'],
             'status' => ['required', 'in:available,maintenance'],
-            'owner_id' => ['required', 'exists:users,id', function ($attribute, $value, $fail) {
-                $owner = User::where('id', $value)->where('role', 'owner')->first();
-                if (!$owner) {
-                    $fail('Owner yang dipilih tidak valid.');
-                }
-            }],
         ]);
 
         if ($request->hasFile('foto')) {
-
             if ($venue->foto && Storage::disk('public')->exists($venue->foto)) {
                 Storage::disk('public')->delete($venue->foto);
             }
@@ -114,39 +84,22 @@ class AdminVenueController extends Controller
         $venue->update($validated);
 
         return redirect()
-            ->route('admin.venues.index')
+            ->route('owner.venues.index')
             ->with('success', 'Venue berhasil diperbarui.');
     }
 
-    /**
-     * Nonaktifkan venue
-     */
     public function destroy($id)
     {
-        $venue = Venue::findOrFail($id);
+        $venue = Venue::where('owner_id', Auth::id())->findOrFail($id);
 
-        $venue->update([
-            'status' => 'maintenance',
-        ]);
+        if ($venue->foto && Storage::disk('public')->exists($venue->foto)) {
+            Storage::disk('public')->delete($venue->foto);
+        }
 
-        return redirect()
-            ->route('admin.venues.index')
-            ->with('success', 'Venue berhasil dinonaktifkan.');
-    }
-
-    /**
-     * Aktifkan kembali venue
-     */
-    public function activate($id)
-    {
-        $venue = Venue::findOrFail($id);
-
-        $venue->update([
-            'status' => 'available',
-        ]);
+        $venue->delete();
 
         return redirect()
-            ->route('admin.venues.index')
-            ->with('success', 'Venue berhasil diaktifkan kembali.');
+            ->route('owner.venues.index')
+            ->with('success', 'Venue berhasil dihapus.');
     }
 }

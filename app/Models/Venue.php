@@ -16,7 +16,12 @@ class Venue extends Model
         'kapasitas',
         'lokasi',
         'foto',
+        'fasilitas',
         'status',
+    ];
+
+    protected $casts = [
+        'fasilitas' => 'array',
     ];
 
     /**

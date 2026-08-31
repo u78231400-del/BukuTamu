@@ -421,6 +421,39 @@
             font-size: 1.05rem;
         }
 
+        .facilities-grid-customer {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .facility-item-customer {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--bg-light);
+            border-radius: 10px;
+        }
+
+        .facility-icon-customer {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(233, 69, 96, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+
+        .facility-text-customer {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.9rem;
+        }
+
         .form-card {
             background: white;
             border-radius: 20px;
@@ -763,12 +796,76 @@
 
                         <div class="venue-description-customer">
                             <h3>Deskripsi Ruangan</h3>
-                            <p>{{ $venue->deskripsi }}</p>
+                            <p>{{ $venue->deskripsi ?? 'Deskripsi venue belum tersedia.' }}</p>
                         </div>
+
+                        @if($venue->fasilitas && is_array($venue->fasilitas) && count($venue->fasilitas) > 0)
+                            <div class="venue-description-customer">
+                                <h3>Fasilitas</h3>
+                                <div class="facilities-grid-customer">
+                                    @foreach($venue->fasilitas as $fasilitas)
+                                        @php
+                                            $fasilitasConfig = [
+                                                'wifi' => ['icon' => 'bi-wifi', 'label' => 'WiFi Gratis'],
+                                                'parkir' => ['icon' => 'bi-p-circle', 'label' => 'Area Parkir'],
+                                                'ac' => ['icon' => 'bi-snow', 'label' => 'AC'],
+                                                'sound_system' => ['icon' => 'bi-speaker', 'label' => 'Sound System'],
+                                                'proyektor' => ['icon' => 'bi bi-projector', 'label' => 'Proyektor'],
+                                                'whiteboard' => ['icon' => 'bi bi-easel2', 'label' => 'Whiteboard'],
+                                                'tv' => ['icon' => 'bi bi-tv', 'label' => 'TV/Layar'],
+                                                'telepon' => ['icon' => 'bi bi-telephone', 'label' => 'Telepon Konferensi'],
+                                            ];
+                                            $config = $fasilitasConfig[$fasilitas] ?? ['icon' => 'bi-check-circle', 'label' => ucfirst($fasilitas)];
+                                        @endphp
+                                        <div class="facility-item-customer">
+                                            <div class="facility-icon-customer">
+                                                <i class="bi {{ $config['icon'] }}"></i>
+                                            </div>
+                                            <span class="facility-text-customer">{{ $config['label'] }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
 
                     <div class="form-card">
                         <h2 class="form-title">
+                            <i class="bi bi-building" style="color: var(--accent);"></i>
+                            {{ $venue->nama_venue }}
+                        </h2>
+
+                        <ul class="venue-meta-list" style="list-style: none; padding: 0; margin: 0 0 20px 0;">
+                            <li class="venue-meta-item" style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div class="venue-meta-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(233, 69, 96, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                                    <i class="bi bi-geo-alt"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Lokasi</div>
+                                    <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark);">{{ $venue->lokasi ?? 'Belum tersedia' }}</div>
+                                </div>
+                            </li>
+                            <li class="venue-meta-item" style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f0f0f0;">
+                                <div class="venue-meta-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(233, 69, 96, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Kapasitas</div>
+                                    <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-dark);">{{ $venue->kapasitas }} Orang</div>
+                                </div>
+                            </li>
+                            <li class="venue-meta-item" style="display: flex; align-items: center; gap: 12px; padding: 10px 0;">
+                                <div class="venue-meta-icon" style="width: 36px; height: 36px; border-radius: 8px; background: rgba(233, 69, 96, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent);">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; color: var(--text-light);">Status</div>
+                                    <div style="font-size: 0.95rem; font-weight: 600; color: #16a34a;">Tersedia</div>
+                                </div>
+                            </li>
+                        </ul>
+
+                        <h2 class="form-title" style="border-top: 2px solid #f0f0f0; padding-top: 20px; margin-top: 8px;">
                             <i class="bi bi-calendar-check" style="color: var(--accent);"></i>
                             Form Reservasi
                         </h2>
@@ -782,10 +879,10 @@
                                     type="date"
                                     name="tanggal_mulai"
                                     value="{{ old('tanggal_mulai', \Carbon\Carbon::today()->addDays(2)->format('Y-m-d')) }}"
-                                    min="{{ \Carbon\Carbon::today()->subDays(2)->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
                                     class="form-input @error('tanggal_mulai') is-invalid @enderror"
                                     required
-                                >
+                            >
                                 @error('tanggal_mulai')
                                     <p class="form-error"><i class="bi bi-exclamation-circle"></i> {{ $message }}</p>
                                 @enderror
@@ -797,7 +894,7 @@
                                     type="date"
                                     name="tanggal_selesai"
                                     value="{{ old('tanggal_selesai', \Carbon\Carbon::today()->addDays(2)->format('Y-m-d')) }}"
-                                    min="{{ \Carbon\Carbon::today()->subDays(2)->format('Y-m-d') }}"
+                                    min="{{ \Carbon\Carbon::today()->addDays(2)->format('Y-m-d') }}"
                                     class="form-input @error('tanggal_selesai') is-invalid @enderror"
                                     required
                                 >

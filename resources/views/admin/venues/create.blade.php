@@ -100,6 +100,34 @@
                        required>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Fasilitas</label>
+                <div class="row g-2">
+                    @php
+                        $fasilitasOptions = [
+                            'wifi' => 'WiFi Gratis',
+                            'parkir' => 'Area Parkir',
+                            'ac' => 'AC',
+                            'sound_system' => 'Sound System',
+                            'proyektor' => 'Proyektor',
+                            ' whiteboard' => 'Whiteboard',
+                            'tv' => 'TV/Layar',
+                            'telepon' => 'Telepon Konferensi',
+                        ];
+                    @endphp
+                    @foreach($fasilitasOptions as $value => $label)
+                        <div class="col-6 col-md-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="fasilitas[]" value="{{ $value }}" id="fasilitas_{{ $value }}" {{ is_array(old('fasilitas')) && in_array($value, old('fasilitas')) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="fasilitas_{{ $value }}">
+                                    {{ $label }}
+                                </label>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="mb-0">
                 <label class="form-label">Foto Venue</label>
                 <div class="file-upload" id="file-upload">

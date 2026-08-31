@@ -15,7 +15,7 @@ use App\Http\Controllers\CustomerVenueController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Venue;
+
 
 
 // ==========================================
@@ -58,7 +58,7 @@ Route::post('/logout', [
 
 
 // ==========================================
-// HOME
+// HOME / LANDING PAGE
 // ==========================================
 
 Route::get('/', function () {
@@ -70,33 +70,22 @@ Route::get('/', function () {
     return view('welcome', compact('venues'));
 });
 
+
 // ==========================================
 // PUBLIC VENUE
 // ==========================================
 
+// Bisa diakses tanpa login
 Route::get('/venues', [
     VenueController::class,
     'index'
 ])->name('venues.index');
 
+// Bisa diakses tanpa login
 Route::get('/venues/{slug}', [
     VenueController::class,
     'show'
 ])->name('venues.show');
-
-// ==========================================
-// CUSTOMER - PUBLIC (auth optional)
-// ==========================================
-
-Route::get('/customer/venues', [
-    CustomerVenueController::class,
-    'index'
-])->name('customer.venues');
-
-Route::get('/customer/venues/{slug}', [
-    CustomerVenueController::class,
-    'show'
-])->name('customer.venues.show');
 
 
 // ==========================================
@@ -105,13 +94,35 @@ Route::get('/customer/venues/{slug}', [
 
 Route::middleware('auth')->group(function () {
 
+    // --------------------------------------
     // Customer Dashboard
+    // --------------------------------------
+
     Route::get('/customer/dashboard', [
         CustomerDashboardController::class,
         'index'
     ])->name('customer.dashboard');
 
+
+    // --------------------------------------
+    // Customer Venue
+    // --------------------------------------
+
+    Route::get('/customer/venues', [
+        CustomerVenueController::class,
+        'index'
+    ])->name('customer.venues');
+
+    Route::get('/customer/venues/{slug}', [
+        CustomerVenueController::class,
+        'show'
+    ])->name('customer.venues.show');
+
+
+    // --------------------------------------
     // Customer Profile
+    // --------------------------------------
+
     Route::get('/customer/profile', [
         ProfileController::class,
         'index'
@@ -122,24 +133,32 @@ Route::middleware('auth')->group(function () {
         'update'
     ])->name('customer.profile.update');
 
-    // Buat Reservasi
+
+    // --------------------------------------
+    // Customer Reservation
+    // --------------------------------------
+
     Route::post('/customer/venues/{slug}/reservasi', [
         ReservationController::class,
         'store'
     ])->name('customer.reservations.store');
 
 
-    // Riwayat Reservasi Customer
     Route::get('/customer/reservations', [
         ReservationController::class,
         'index'
     ])->name('customer.reservations');
 
-    // Favorit Customer
+
+    // --------------------------------------
+    // Customer Favorite
+    // --------------------------------------
+
     Route::get('/customer/favorites', [
         FavoriteController::class,
         'index'
     ])->name('customer.favorites');
+
     Route::post('/customer/favorites/{venueId}', [
         FavoriteController::class,
         'store'
@@ -159,14 +178,20 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+    // --------------------------------------
     // Admin Dashboard
+    // --------------------------------------
+
     Route::get('/admin/dashboard', [
         AdminDashboardController::class,
         'index'
     ])->name('admin.dashboard');
 
 
+    // --------------------------------------
     // Admin Venue
+    // --------------------------------------
+
     Route::get('/admin/venues', [
         AdminVenueController::class,
         'index'
@@ -202,21 +227,25 @@ Route::middleware('auth')->group(function () {
         'activate'
     ])->name('admin.venues.activate');
 
+
+    // --------------------------------------
     // Admin Reservations
+    // --------------------------------------
+
     Route::get('/admin/reservations', [
         AdminReservationController::class,
         'index'
     ])->name('admin.reservations.index');
 
 
-    // Approve Reservation
+
     Route::post('/admin/reservations/{id}/approve', [
         AdminReservationController::class,
         'approve'
     ])->name('admin.reservations.approve');
 
 
-    // Reject Reservation
+
     Route::post('/admin/reservations/{id}/reject', [
         AdminReservationController::class,
         'reject'
@@ -226,9 +255,10 @@ Route::middleware('auth')->group(function () {
 
 
 // ==========================================
-// BUKU TAMU
+// BUKU TAMU - LEGACY
 // ==========================================
 
+// Halaman Buku Tamu lama
 Route::get('/bukutamu', [
     TamuController::class,
     'index'
@@ -256,7 +286,7 @@ Route::delete('/bukutamu/{id}', [
 
 
 // ==========================================
-// ADMIN / EXISTING DASHBOARD BUKU TAMU
+// LEGACY DASHBOARD BUKU TAMU
 // ==========================================
 
 Route::middleware('auth')->group(function () {

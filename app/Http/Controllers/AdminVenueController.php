@@ -38,6 +38,7 @@ class AdminVenueController extends Controller
             'kapasitas' => ['required', 'integer', 'min:1'],
             'lokasi' => ['required', 'string', 'max:255'],
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'fasilitas' => ['nullable', 'array'],
             'status' => ['required', 'in:available,maintenance'],
         ]);
 
@@ -78,6 +79,7 @@ class AdminVenueController extends Controller
             'kapasitas' => ['required', 'integer', 'min:1'],
             'lokasi' => ['required', 'string', 'max:255'],
             'foto' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'fasilitas' => ['nullable', 'array'],
             'status' => ['required', 'in:available,maintenance'],
         ]);
 

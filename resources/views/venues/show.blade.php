@@ -587,35 +587,34 @@
                         </div>
                     </div>
 
-                    <div class="facilities-section">
-                        <h2 class="section-title">Fasilitas</h2>
-                        <div class="facilities-grid">
-                            <div class="facility-item">
-                                <div class="facility-icon">
-                                    <i class="bi bi-wifi"></i>
-                                </div>
-                                <span class="facility-text">WiFi Gratis</span>
-                            </div>
-                            <div class="facility-item">
-                                <div class="facility-icon">
-                                    <i class="bi bi-p-circle"></i>
-                                </div>
-                                <span class="facility-text">Area Parkir</span>
-                            </div>
-                            <div class="facility-item">
-                                <div class="facility-icon">
-                                    <i class="bi bi-snow"></i>
-                                </div>
-                                <span class="facility-text">AC</span>
-                            </div>
-                            <div class="facility-item">
-                                <div class="facility-icon">
-                                    <i class="bi bi-speaker"></i>
-                                </div>
-                                <span class="facility-text">Sound System</span>
+                    @if($venue->fasilitas && is_array($venue->fasilitas) && count($venue->fasilitas) > 0)
+                        <div class="facilities-section">
+                            <h2 class="section-title">Fasilitas</h2>
+                            <div class="facilities-grid">
+                                @foreach($venue->fasilitas as $fasilitas)
+                                    @php
+                                        $fasilitasConfig = [
+                                            'wifi' => ['icon' => 'bi-wifi', 'label' => 'WiFi Gratis'],
+                                            'parkir' => ['icon' => 'bi-p-circle', 'label' => 'Area Parkir'],
+                                            'ac' => ['icon' => 'bi-snow', 'label' => 'AC'],
+                                            'sound_system' => ['icon' => 'bi-speaker', 'label' => 'Sound System'],
+                                            'proyektor' => ['icon' => 'bi bi-projector', 'label' => 'Proyektor'],
+                                            'whiteboard' => ['icon' => 'bi bi-easel2', 'label' => 'Whiteboard'],
+                                            'tv' => ['icon' => 'bi bi-tv', 'label' => 'TV/Layar'],
+                                            'telepon' => ['icon' => 'bi bi-telephone', 'label' => 'Telepon Konferensi'],
+                                        ];
+                                        $config = $fasilitasConfig[$fasilitas] ?? ['icon' => 'bi-check-circle', 'label' => ucfirst($fasilitas)];
+                                    @endphp
+                                    <div class="facility-item">
+                                        <div class="facility-icon">
+                                            <i class="bi {{ $config['icon'] }}"></i>
+                                        </div>
+                                        <span class="facility-text">{{ $config['label'] }}</span>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="venue-info-card">
@@ -652,14 +651,11 @@
                     </ul>
 
                     @auth
-                        <a href="{{ route('customer.reservations.store', $venue->slug) }}" class="btn-reservasi">
+                        <a href="{{ route('customer.venues.show', $venue->slug) }}" class="btn-reservasi">
                             <i class="bi bi-calendar-check"></i> Reservasi Sekarang
                         </a>
                         <p style="font-size: 0.8rem; color: var(--text-light); text-align: center; margin-top: 12px;">
                             <i class="bi bi-person"></i> {{ Auth::user()->name }}
-                        </p>
-                        <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; margin-top: 8px;">
-                            <a href="{{ route('customer.venues.show', $venue->slug) }}" style="color: var(--accent);">Lihat detail & reservasi lengkap</a>
                         </p>
                     @else
                         <a href="{{ route('register', ['redirect' => url()->current()]) }}" class="btn-reservasi">

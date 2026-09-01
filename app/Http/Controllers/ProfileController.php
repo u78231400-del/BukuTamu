@@ -11,13 +11,15 @@ class ProfileController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $role = $user->role;
 
-        return view('customer.profile', compact('user'));
+        return view('profile.index', compact('user', 'role'));
     }
 
     public function update(Request $request)
     {
         $user = Auth::user();
+        $role = $user->role;
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -34,10 +36,19 @@ class ProfileController extends Controller
             'email.unique' => 'Email tersebut sudah digunakan oleh pengguna lain.',
         ]);
 
-        $user->update($validated);
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        $routeMap = [
+            'admin' => 'admin.profile',
+            'owner' => 'owner.profile',
+            'customer' => 'customer.profile',
+        ];
 
         return redirect()
-            ->route('customer.profile')
+            ->route($routeMap[$role] ?? 'customer.profile')
             ->with('success', 'Profil berhasil diperbarui.');
     }
 }

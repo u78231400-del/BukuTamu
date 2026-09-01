@@ -576,10 +576,16 @@
         @auth
         <div class="sidebar-footer">
             <div class="user-card">
-                <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                <div class="user-avatar">
+                    @if(Auth::user()->profile_photo && \Illuminate\Support\Facades\Storage::disk('public')->exists(Auth::user()->profile_photo))
+                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+                    @else
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    @endif
+                </div>
                 <div class="user-info">
                     <div class="user-name">{{ Auth::user()->name }}</div>
-                    <div class="user-role">Admin RS</div>
+                    <div class="user-role">{{ ucfirst(Auth::user()->role) }}</div>
                 </div>
                 <button class="btn btn-ghost btn-icon sm" onclick="confirmLogout()" title="Logout">
                     <i class="fas fa-sign-out-alt"></i>

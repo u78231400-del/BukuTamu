@@ -19,7 +19,7 @@ class Reservation extends Model
         'waktu_selesai',
         'jumlah_peserta',
         'keterangan',
-        'status'
+        'status',
     ];
 
     public function venue()

@@ -74,7 +74,7 @@
                             Venue Aktif
                         </div>
                         <div class="fw-bold" style="font-size: 28px; color: var(--dark);">
-                            {{ $venues->where('status', 'aktif')->count() }}
+                            {{ $venues->where('status', 'available')->count() }}
                         </div>
                     </div>
                     <div class="stat-icon" style="background: #ecfdf5; color: #16a34a;">
@@ -113,10 +113,10 @@
                 <div class="d-flex justify-content-between align-items-start">
                     <div>
                         <div class="mb-1" style="font-size: 12px; color: var(--muted);">
-                            Venue Tidak Aktif
+                            Reservasi Pending
                         </div>
                         <div class="fw-bold" style="font-size: 28px; color: var(--dark);">
-                            {{ $venues->where('status', '!=', 'aktif')->count() }}
+                            {{ $reservations->where('status', 'pending')->count() }}
                         </div>
                     </div>
                     <div class="stat-icon" style="background: #fefce8; color: #ca8a04;">
@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="mt-2" style="font-size: 11px; color: var(--muted);">
-                    Perlu diaktifkan
+                    Menunggu persetujuan
                 </div>
             </div>
         </div>
@@ -185,7 +185,7 @@
                         <tr>
                             <td style="padding: 16px 8px;">
                                 <div class="fw-semibold" style="color: var(--dark); font-size: 14px;">
-                                    {{ $venue->nama }}
+                                    {{ $venue->nama_venue }}
                                 </div>
                             </td>
                             <td style="padding: 16px 8px;">
@@ -199,13 +199,13 @@
                                 </span>
                             </td>
                             <td style="padding: 16px 8px;">
-                                @if($venue->status === 'aktif')
+                                @if($venue->status === 'available')
                                     <span class="badge" style="background: #ecfdf5; color: #16a34a; font-size: 12px; padding: 6px 12px;">
-                                        <i class="bi bi-check-circle me-1"></i> Aktif
+                                        <i class="bi bi-check-circle me-1"></i> Available
                                     </span>
-                                @elseif($venue->status === 'tidak_aktif')
+                                @elseif($venue->status === 'maintenance')
                                     <span class="badge" style="background: #fef2f2; color: #dc2626; font-size: 12px; padding: 6px 12px;">
-                                        <i class="bi bi-x-circle me-1"></i> Tidak Aktif
+                                        <i class="bi bi-tools me-1"></i> Maintenance
                                     </span>
                                 @else
                                     <span class="badge" style="background: #fefce8; color: #ca8a04; font-size: 12px; padding: 6px 12px;">

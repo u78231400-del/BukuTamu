@@ -187,22 +187,223 @@
         }
 
         /* =========================
-           LOGOUT
+           USER DROPDOWN
         ========================= */
 
-        .sidebar-bottom {
-            padding: 12px;
+        .topbar-profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 12px 6px 6px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
 
+        .topbar-profile-trigger:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary-soft);
+        }
+
+        .topbar-dropdown {
+            margin-top: 8px !important;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            padding: 6px;
+            min-width: 180px;
+        }
+
+        .topbar-dropdown .dropdown-item {
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: var(--text);
+            transition: all .15s ease;
+        }
+
+        .topbar-dropdown .dropdown-item:hover {
+            background: var(--primary-soft);
+            color: var(--primary);
+        }
+
+        .topbar-dropdown .dropdown-divider {
+            margin: 6px 0;
+            border-color: var(--border);
+        }
+
+        .topbar-dropdown .logout-item {
+            color: #dc2626;
+        }
+
+        .topbar-dropdown .logout-item:hover {
+            background: #fff1f2;
+            color: #dc2626;
+        }
+
+        .topbar-dropdown .bi {
+            font-size: 16px;
+        }
+
+        /* =========================
+           NOTIFICATION DROPDOWN
+        ========================= */
+
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #dc2626;
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        .notif-dropdown {
+            width: 340px;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1);
+            margin-top: 10px !important;
+        }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .notif-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .notif-mark-read {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .notif-mark-read:hover {
+            text-decoration: underline;
+        }
+
+        .notif-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            transition: background .15s ease;
+            position: relative;
+        }
+
+        .notif-item:hover {
+            background: var(--bg);
+        }
+
+        .notif-item.unread {
+            background: var(--primary-soft);
+        }
+
+        .notif-item.unread:hover {
+            background: var(--primary-soft-hover);
+        }
+
+        .notif-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-icon-wrap i {
+            font-size: 16px;
+        }
+
+        .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-text {
+            font-size: 13px;
+            color: var(--dark);
+            font-weight: 500;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .notif-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .notif-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            color: var(--muted);
+        }
+
+        .notif-empty i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
+        .notif-empty span {
+            font-size: 13px;
+        }
+
+        .notif-footer {
+            display: block;
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+            text-decoration: none;
             border-top: 1px solid var(--border);
         }
 
-        .logout-link {
-            color: #ef4444 !important;
-        }
-
-        .logout-link:hover {
-            background: #fff1f2 !important;
-            color: #dc2626 !important;
+        .notif-footer:hover {
+            background: var(--primary-soft);
         }
 
         /* =========================
@@ -329,23 +530,6 @@
         .notification:hover {
             background: var(--primary-soft);
             color: var(--primary);
-        }
-
-        .topbar-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 6px 12px 6px 6px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all .2s ease;
-        }
-
-        .topbar-profile:hover {
-            background: var(--primary-soft);
-            border-color: var(--primary-soft);
         }
 
         .topbar-profile-avatar {
@@ -748,6 +932,14 @@
             .admin-card {
                 border-radius: 12px;
             }
+
+            .topbar-profile-trigger {
+                padding: 4px 8px 4px 4px;
+            }
+
+            .topbar-profile-trigger .topbar-profile-info {
+                display: none;
+            }
         }
     </style>
 
@@ -784,61 +976,69 @@
     {{-- NAV --}}
     <nav class="admin-nav">
 
-        <div class="nav-label">
-            Menu
-        </div>
+        @if(auth()->user()->role === 'admin')
 
-        <a
-            href="{{ route('admin.dashboard') }}"
-            class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-        >
-            <i class="bi bi-grid-1x2"></i>
-            Dashboard
-        </a>
+            <a
+                href="{{ route('admin.dashboard') }}"
+                class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
 
+            <div class="nav-label">
+                MENU
+            </div>
 
-        <a
-            href="{{ route('admin.venues.index') }}"
-            class="nav-link {{ request()->routeIs('admin.venues.*') ? 'active' : '' }}"
-        >
-            <i class="bi bi-geo-alt"></i>
-            Venue
-        </a>
+            <a
+                href="{{ route('admin.venues.index') }}"
+                class="nav-link {{ request()->routeIs('admin.venues.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-geo-alt"></i>
+                Venue
+            </a>
 
+            <a
+                href="{{ route('admin.reservations.index') }}"
+                class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-calendar-check"></i>
+                Reservasi
+            </a>
 
-        <a
-            href="{{ route('admin.reservations.index') }}"
-            class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"
-        >
-            <i class="bi bi-calendar-check"></i>
-            Reservasi
-        </a>
+        @elseif(auth()->user()->role === 'owner')
+
+            <a
+                href="{{ route('owner.dashboard') }}"
+                class="nav-link {{ request()->routeIs('owner.dashboard') ? 'active' : '' }}"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <div class="nav-label">
+                MENU
+            </div>
+
+            <a
+                href="{{ route('owner.venues.index') }}"
+                class="nav-link {{ request()->routeIs('owner.venues.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-geo-alt"></i>
+                Venue
+            </a>
+
+            <a
+                href="{{ route('owner.reservations.index') }}"
+                class="nav-link {{ request()->routeIs('owner.reservations.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-calendar-check"></i>
+                Reservasi
+            </a>
+
+        @endif
 
     </nav>
-
-
-    {{-- LOGOUT --}}
-    <div class="sidebar-bottom">
-
-        <a
-            href="{{ route('logout') }}"
-            class="nav-link logout-link"
-            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-        >
-            <i class="bi bi-box-arrow-right"></i>
-            Logout
-        </a>
-
-        <form
-            id="logout-form"
-            action="{{ route('logout') }}"
-            method="POST"
-            style="display:none;"
-        >
-            @csrf
-        </form>
-
-    </div>
 
 </aside>
 
@@ -865,18 +1065,121 @@
 
         <div class="topbar-right">
 
-            <button class="notification" title="Notifikasi">
-                <i class="bi bi-bell"></i>
-            </button>
+            <div class="dropdown">
+                <button class="notification" data-bs-toggle="dropdown" aria-expanded="false" title="Notifikasi" id="notifDropdown">
+                    <i class="bi bi-bell"></i>
+                    @if(auth()->user()->unreadNotifications->count() > 0)
+                        <span class="notif-badge">{{ auth()->user()->unreadNotifications->count() }}</span>
+                    @endif
+                </button>
+                <div class="dropdown-menu dropdown-menu-end notif-dropdown" id="notifMenu">
+                    <div class="notif-header">
+                        <span class="notif-title">Notifikasi</span>
+                        @if(auth()->user()->unreadNotifications->count() > 0)
+                            <a href="#" class="notif-mark-read" onclick="event.preventDefault(); markAllNotifications();">Tandai semua dibaca</a>
+                        @endif
+                    </div>
+                    <div class="notif-list">
+                        @forelse(auth()->user()->notifications->take(5) as $notif)
+                            <a href="{{ $notif->link ? route($notif->link) : '#' }}"
+                               class="notif-item {{ $notif->is_read ? 'read' : 'unread' }}"
+                               data-id="{{ $notif->id }}">
+                                <div class="notif-icon-wrap" style="background: {{ $notif->type === 'success' ? '#ecfdf5' : ($notif->type === 'warning' ? '#fffbeb' : ($notif->type === 'danger' ? '#fff1f2' : 'var(--primary-soft)')) }};">
+                                    <i class="bi {{ $notif->icon ?: 'bi-bell' }}" style="color: {{ $notif->type === 'success' ? '#16a34a' : ($notif->type === 'warning' ? '#ca8a04' : ($notif->type === 'danger' ? '#dc2626' : 'var(--primary)')) }};"></i>
+                                </div>
+                                <div class="notif-content">
+                                    <div class="notif-text">{{ $notif->title }}</div>
+                                    <div class="notif-time">{{ $notif->created_at->diffForHumans() }}</div>
+                                </div>
+                                @if(!$notif->is_read)
+                                    <div class="notif-dot"></div>
+                                @endif
+                            </a>
+                        @empty
+                            <div class="notif-empty">
+                                <i class="bi bi-bell-slash"></i>
+                                <span>Tidak ada notifikasi</span>
+                            </div>
+                        @endforelse
+                    </div>
+                    <a href="{{ route('notifications.index') }}" class="notif-footer">
+                        Lihat semua notifikasi
+                    </a>
+                </div>
+            </div>
 
-            <div class="topbar-profile">
-                <div class="topbar-profile-avatar">
-                    {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+            <div class="dropdown">
+                <button class="notification" data-bs-toggle="dropdown" aria-expanded="false" title="Pesan" id="msgDropdown">
+                    <i class="bi bi-chat-dots"></i>
+                    @if(auth()->user()->unreadMessages->count() > 0)
+                        <span class="notif-badge">{{ auth()->user()->unreadMessages->count() }}</span>
+                    @endif
+                </button>
+                <div class="dropdown-menu dropdown-menu-end notif-dropdown" id="msgMenu">
+                    <div class="notif-header">
+                        <span class="notif-title">Pesan</span>
+                    </div>
+                    <div class="notif-list">
+                        @forelse(auth()->user()->receivedMessages()->latest()->take(5)->get() as $msg)
+                            <a href="{{ route('messages.show', $msg->id) }}"
+                               class="notif-item {{ $msg->read_at ? 'read' : 'unread' }}">
+                                <div class="notif-icon-wrap" style="background: {{ $msg->read_at ? '#f8fafc' : 'var(--primary-soft)' }};">
+                                    <i class="bi bi-envelope" style="color: {{ $msg->read_at ? '#94a3b8' : 'var(--primary)' }};"></i>
+                                </div>
+                                <div class="notif-content">
+                                    <div class="notif-text">{{ $msg->subject }}</div>
+                                    <div class="notif-time">{{ $msg->created_at->diffForHumans() }}</div>
+                                </div>
+                                @if(!$msg->read_at)
+                                    <div class="notif-dot"></div>
+                                @endif
+                            </a>
+                        @empty
+                            <div class="notif-empty">
+                                <i class="bi bi-inbox"></i>
+                                <span>Tidak ada pesan</span>
+                            </div>
+                        @endforelse
+                    </div>
+                    <a href="{{ route('messages.index') }}" class="notif-footer">
+                        Lihat semua pesan
+                    </a>
                 </div>
-                <div class="topbar-profile-info">
-                    <span class="topbar-profile-name">{{ auth()->user()->name ?? 'Admin' }}</span>
-                    <span class="topbar-profile-role">Administrator</span>
+            </div>
+
+            <div class="topbar-profile dropdown">
+                <div class="topbar-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="topbar-profile-avatar">
+                        @if(auth()->user()->profile_photo && \Illuminate\Support\Facades\Storage::disk('public')->exists(auth()->user()->profile_photo))
+                            <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                        @endif
+                    </div>
+                    <div class="topbar-profile-info">
+                        <span class="topbar-profile-name">{{ auth()->user()->name ?? 'Admin' }}</span>
+                        <span class="topbar-profile-role">{{ ucfirst(auth()->user()->role ?? 'User') }}</span>
+                    </div>
+                    <i class="bi bi-chevron-down" style="font-size: 12px; color: var(--muted); margin-left: 4px;"></i>
                 </div>
+                <ul class="dropdown-menu dropdown-menu-end topbar-dropdown">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.index') }}">
+                            <i class="bi bi-person me-2"></i>
+                            Profil
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="dropdown-item logout-item">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                </ul>
             </div>
 
         </div>
@@ -921,7 +1224,45 @@
                 toggleSidebar();
             }
         });
+
+        // Mark single notification as read on click
+        document.querySelectorAll('.notif-item[data-id]').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                const notifId = this.dataset.id;
+                fetch('/notifications/' + notifId + '/read', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+            });
+        });
     });
+
+    function markAllNotifications() {
+        fetch('{{ route('notifications.markAllRead') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.querySelectorAll('.notif-item.unread').forEach(item => {
+                    item.classList.remove('unread');
+                    item.classList.add('read');
+                });
+                document.querySelectorAll('.notif-dot').forEach(dot => dot.remove());
+                document.querySelectorAll('.notif-badge').forEach(badge => badge.remove());
+                document.querySelector('.notif-mark-read')?.remove();
+            }
+        });
+    }
 </script>
 
 @stack('scripts')

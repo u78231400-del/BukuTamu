@@ -10,18 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'profile_photo'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -30,52 +25,56 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi ke tabel reservations
-     * Seorang user bisa memiliki banyak reservasi
-     */
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
 
-    /**
-     * Relasi ke tabel favorites
-     * Seorang user bisa memiliki banyak venue favorit
-     */
     public function favorites()
     {
         return $this->hasMany(Favorite::class);
     }
 
-    /**
-     * Cek apakah user adalah admin
-     */
-    public function isAdmin(): bool
-    {
-        return $this->role === 'admin';
-    }
-
-    /**
-     * Cek apakah user adalah customer
-     */
-    public function isCustomer(): bool
-    {
-        return $this->role === 'customer';
-    }
-
-    /**
-     * Relasi ke tabel venues
-     * Seorang owner bisa memiliki banyak venue
-     */
     public function venues()
     {
         return $this->hasMany(Venue::class, 'owner_id');
     }
 
-    /**
-     * Cek apakah user adalah owner
-     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->latest();
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->hasMany(Notification::class)->where('is_read', false)->latest();
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function receivedMessages()
+    {
+        return $this->hasMany(Message::class, 'receiver_id');
+    }
+
+    public function unreadMessages()
+    {
+        return $this->receivedMessages()->whereNull('read_at');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === 'customer';
+    }
+
     public function isOwner(): bool
     {
         return $this->role === 'owner';

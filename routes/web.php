@@ -18,7 +18,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\OwnerVenueController;
 use App\Http\Controllers\AdminOwnerController;
-
+use App\Http\Controllers\OwnerReservationController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MessageController;
 
 // ==========================================
 // PREVIEW
@@ -122,18 +124,16 @@ Route::middleware('auth')->group(function () {
 
 
     // --------------------------------------
-    // Customer Profile
+    // Customer Profile (redirects to shared profile)
     // --------------------------------------
 
-    Route::get('/customer/profile', [
-        ProfileController::class,
-        'index'
-    ])->name('customer.profile');
+    Route::get('/customer/profile', function () {
+        return redirect()->route('profile.index');
+    })->name('customer.profile');
 
-    Route::put('/customer/profile', [
-        ProfileController::class,
-        'update'
-    ])->name('customer.profile.update');
+    Route::put('/customer/profile', function () {
+        return redirect()->route('profile.update');
+    })->name('customer.profile.update');
 
 
     // --------------------------------------
@@ -171,8 +171,35 @@ Route::middleware('auth')->group(function () {
         'destroy'
     ])->name('customer.favorites.destroy');
 
+    // --------------------------------------
+    // Notifications
+    // --------------------------------------
+
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
+
+    // --------------------------------------
+    // Messages
+    // --------------------------------------
+
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/create', [MessageController::class, 'create'])->name('messages.create');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/messages/{id}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/{id}/read', [MessageController::class, 'markAsRead'])->name('messages.markAsRead');
+
 });
 
+
+// ==========================================
+// PROFILE - SHARED FOR ALL ROLES
+// ==========================================
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 // ==========================================
 // ADMIN
@@ -272,6 +299,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'store'
     ])->name('admin.owners.store');
 
+    // Admin Profile (redirects to shared profile)
+    Route::get('/admin/profile', function () {
+        return redirect()->route('profile.index');
+    })->name('admin.profile');
+
+    Route::put('/admin/profile', function () {
+        return redirect()->route('profile.update');
+    })->name('admin.profile.update');
+
 });
 
 // ==========================================
@@ -303,6 +339,11 @@ Route::middleware(['auth', 'owner'])->group(function () {
         'create'
     ])->name('owner.venues.create');
 
+    Route::get('/owner/venues/{id}', [
+        OwnerVenueController::class,
+        'show'
+    ])->name('owner.venues.show');
+
     Route::post('/owner/venues', [
         OwnerVenueController::class,
         'store'
@@ -322,6 +363,20 @@ Route::middleware(['auth', 'owner'])->group(function () {
         OwnerVenueController::class,
         'destroy'
     ])->name('owner.venues.destroy');
+
+    Route::get('/owner/reservations', [
+        OwnerReservationController::class,
+        'index'
+    ])->name('owner.reservations.index');
+
+    // Owner Profile (redirects to shared profile)
+    Route::get('/owner/profile', function () {
+        return redirect()->route('profile.index');
+    })->name('owner.profile');
+
+    Route::put('/owner/profile', function () {
+        return redirect()->route('profile.update');
+    })->name('owner.profile.update');
 
 });
 

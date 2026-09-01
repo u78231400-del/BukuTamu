@@ -118,6 +118,7 @@
         .nav-item.active {
             background: var(--accent-light);
             color: var(--accent);
+            font-weight: 600;
         }
 
         .nav-item.active i {
@@ -264,12 +265,153 @@
 
         .notification-badge {
             position: absolute;
-            top: 6px;
-            right: 6px;
+            top: 4px;
+            right: 4px;
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 700;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        .notif-dropdown {
+            width: 340px;
+            padding: 0;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            margin-top: 10px !important;
+        }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .notif-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .notif-mark-read {
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .notif-mark-read:hover {
+            text-decoration: underline;
+        }
+
+        .notif-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            transition: background .15s ease;
+            position: relative;
+        }
+
+        .notif-item:hover {
+            background: var(--bg-light);
+        }
+
+        .notif-item.unread {
+            background: var(--accent-light);
+        }
+
+        .notif-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notif-icon-wrap i {
+            font-size: 16px;
+        }
+
+        .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-text {
+            font-size: 13px;
+            color: var(--text-dark);
+            font-weight: 500;
+            line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .notif-dot {
             width: 8px;
             height: 8px;
-            background: var(--accent);
             border-radius: 50%;
+            background: var(--accent);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .notif-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            color: var(--text-light);
+        }
+
+        .notif-empty i {
+            font-size: 32px;
+            margin-bottom: 8px;
+            opacity: 0.5;
+        }
+
+        .notif-empty span {
+            font-size: 13px;
+        }
+
+        .notif-footer {
+            display: block;
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .notif-footer:hover {
+            background: var(--bg-light);
         }
 
         .user-dropdown {
@@ -382,7 +524,7 @@
         }
 
         .welcome-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: var(--accent);
             border-radius: 16px;
             padding: 32px;
             color: white;
@@ -398,7 +540,7 @@
             right: -20%;
             width: 60%;
             height: 200%;
-            background: linear-gradient(135deg, rgba(233, 69, 96, 0.2) 0%, rgba(201, 169, 89, 0.1) 100%);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
             transform: rotate(-15deg);
         }
@@ -452,18 +594,18 @@
         }
 
         .stat-icon.gold {
-            background: rgba(201, 169, 89, 0.15);
-            color: var(--gold);
+            background: rgba(201, 169, 89, 0.12);
+            color: #b8963f;
         }
 
         .stat-icon.primary {
-            background: rgba(26, 26, 46, 0.08);
-            color: var(--primary);
+            background: rgba(100, 116, 139, 0.1);
+            color: #64748b;
         }
 
         .stat-icon.success {
             background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
+            color: #16a34a;
         }
 
         .stat-value {
@@ -685,20 +827,23 @@
 
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <div class="nav-section-title">Menu Utama</div>
-                    <a href="{{ route('customer.dashboard') }}" class="nav-item active">
+                    <a href="{{ route('customer.dashboard') }}" class="nav-item {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
-                    <a href="{{ route('customer.venues') }}" class="nav-item">
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Menu Utama</div>
+                    <a href="{{ route('customer.venues') }}" class="nav-item {{ request()->routeIs('customer.venues*') ? 'active' : '' }}">
                         <i class="bi bi-search"></i>
                         Cari Venue
                     </a>
-                    <a href="{{ route('customer.reservations') }}" class="nav-item">
+                    <a href="{{ route('customer.reservations') }}" class="nav-item {{ request()->routeIs('customer.reservations') ? 'active' : '' }}">
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
-                    <a href="{{ route('customer.favorites') }}" class="nav-item">
+                    <a href="{{ route('customer.favorites') }}" class="nav-item {{ request()->routeIs('customer.favorites*') ? 'active' : '' }}">
                         <i class="bi bi-heart"></i>
                         Favorit
                     </a>
@@ -722,13 +867,87 @@
                     </div>
 
                     <div class="topbar-icons">
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-bell"></i>
-                            <span class="notification-badge"></span>
-                        </a>
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </a>
+                        <div class="dropdown">
+                            <a href="#" class="topbar-icon" data-bs-toggle="dropdown" aria-expanded="false" id="custNotifDropdown">
+                                <i class="bi bi-bell"></i>
+                                @if(auth()->user()->unreadNotifications->count() > 0)
+                                    <span class="notification-badge" style="width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">{{ auth()->user()->unreadNotifications->count() }}</span>
+                                @endif
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end notif-dropdown" id="custNotifMenu">
+                                <div class="notif-header">
+                                    <span class="notif-title">Notifikasi</span>
+                                    @if(auth()->user()->unreadNotifications->count() > 0)
+                                        <a href="#" class="notif-mark-read" onclick="event.preventDefault(); markAllNotifications();">Tandai semua dibaca</a>
+                                    @endif
+                                </div>
+                                <div class="notif-list">
+                                    @forelse(auth()->user()->notifications->take(5) as $notif)
+                                        <a href="{{ $notif->link ? route($notif->link) : '#' }}"
+                                           class="notif-item {{ $notif->is_read ? 'read' : 'unread' }}"
+                                           data-id="{{ $notif->id }}">
+                                            <div class="notif-icon-wrap" style="background: {{ $notif->type === 'success' ? '#ecfdf5' : ($notif->type === 'warning' ? '#fffbeb' : ($notif->type === 'danger' ? '#fff1f2' : 'var(--accent-light)')) }};">
+                                                <i class="bi {{ $notif->icon ?: 'bi-bell' }}" style="color: {{ $notif->type === 'success' ? '#16a34a' : ($notif->type === 'warning' ? '#ca8a04' : ($notif->type === 'danger' ? '#dc2626' : 'var(--accent)')) }};"></i>
+                                            </div>
+                                            <div class="notif-content">
+                                                <div class="notif-text">{{ $notif->title }}</div>
+                                                <div class="notif-time">{{ $notif->created_at->diffForHumans() }}</div>
+                                            </div>
+                                            @if(!$notif->is_read)
+                                                <div class="notif-dot"></div>
+                                            @endif
+                                        </a>
+                                    @empty
+                                        <div class="notif-empty">
+                                            <i class="bi bi-bell-slash"></i>
+                                            <span>Tidak ada notifikasi</span>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route('notifications.index') }}" class="notif-footer">
+                                    Lihat semua notifikasi
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="dropdown">
+                            <a href="#" class="topbar-icon" data-bs-toggle="dropdown" aria-expanded="false" id="custMsgDropdown">
+                                <i class="bi bi-chat-dots"></i>
+                                @if(auth()->user()->unreadMessages->count() > 0)
+                                    <span class="notification-badge" style="width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center;">{{ auth()->user()->unreadMessages->count() }}</span>
+                                @endif
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end notif-dropdown" id="custMsgMenu">
+                                <div class="notif-header">
+                                    <span class="notif-title">Pesan</span>
+                                </div>
+                                <div class="notif-list">
+                                    @forelse(auth()->user()->receivedMessages()->latest()->take(5)->get() as $msg)
+                                        <a href="{{ route('messages.show', $msg->id) }}"
+                                           class="notif-item {{ $msg->read_at ? 'read' : 'unread' }}">
+                                            <div class="notif-icon-wrap" style="background: {{ $msg->read_at ? '#f8fafc' : 'var(--accent-light)' }};">
+                                                <i class="bi bi-envelope" style="color: {{ $msg->read_at ? '#94a3b8' : 'var(--accent)' }};"></i>
+                                            </div>
+                                            <div class="notif-content">
+                                                <div class="notif-text">{{ $msg->subject }}</div>
+                                                <div class="notif-time">{{ $msg->created_at->diffForHumans() }}</div>
+                                            </div>
+                                            @if(!$msg->read_at)
+                                                <div class="notif-dot"></div>
+                                            @endif
+                                        </a>
+                                    @empty
+                                        <div class="notif-empty">
+                                            <i class="bi bi-inbox"></i>
+                                            <span>Tidak ada pesan</span>
+                                        </div>
+                                    @endforelse
+                                </div>
+                                <a href="{{ route('messages.index') }}" class="notif-footer">
+                                    Lihat semua pesan
+                                </a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="user-dropdown" id="user-dropdown">
@@ -740,7 +959,7 @@
                         <i class="bi bi-chevron-down"></i>
 
                         <div class="dropdown-menu-custom" id="dropdown-menu">
-                            <a href="{{ route('customer.profile') }}" class="dropdown-item-custom">
+                            <a href="{{ route('profile.index') }}" class="dropdown-item-custom">
                                 <i class="bi bi-person"></i>
                                 Profil
                             </a>
@@ -869,6 +1088,44 @@
                 dropdownMenu.classList.remove('show');
             }
         });
+
+        document.querySelectorAll('.notif-item[data-id]').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                const notifId = this.dataset.id;
+                fetch('/notifications/' + notifId + '/read', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+    function markAllNotifications() {
+        fetch('{{ route('notifications.markAllRead') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.querySelectorAll('.notif-item.unread').forEach(item => {
+                    item.classList.remove('unread');
+                    item.classList.add('read');
+                });
+                document.querySelectorAll('.notif-dot').forEach(dot => dot.remove());
+                document.querySelectorAll('.notification-badge').forEach(badge => badge.remove());
+                document.querySelector('.notif-mark-read')?.remove();
+            }
+        });
+    }
     </script>
 </body>
 </html>

@@ -953,20 +953,23 @@
 
             <nav class="sidebar-nav">
                 <div class="nav-section">
-                    <div class="nav-section-title">Menu Utama</div>
-                    <a href="{{ route('customer.dashboard') }}" class="nav-item">
+                    <a href="{{ route('customer.dashboard') }}" class="nav-item {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
                     </a>
-                    <a href="{{ route('customer.venues') }}" class="nav-item active">
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Menu Utama</div>
+                    <a href="{{ route('customer.venues') }}" class="nav-item {{ request()->routeIs('customer.venues*') ? 'active' : '' }}">
                         <i class="bi bi-search"></i>
                         Cari Venue
                     </a>
-                    <a href="{{ route('customer.reservations') }}" class="nav-item">
+                    <a href="{{ route('customer.reservations') }}" class="nav-item {{ request()->routeIs('customer.reservations') ? 'active' : '' }}">
                         <i class="bi bi-calendar-check"></i>
                         Reservasi Saya
                     </a>
-                    <a href="{{ route('customer.favorites') }}" class="nav-item">
+                    <a href="{{ route('customer.favorites') }}" class="nav-item {{ request()->routeIs('customer.favorites*') ? 'active' : '' }}">
                         <i class="bi bi-heart"></i>
                         Favorit
                     </a>

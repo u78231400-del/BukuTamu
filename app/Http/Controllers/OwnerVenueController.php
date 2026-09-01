@@ -22,6 +22,13 @@ class OwnerVenueController extends Controller
         return view('owner.venues.create');
     }
 
+    public function show($id)
+    {
+        $venue = Venue::where('owner_id', Auth::id())->findOrFail($id);
+
+        return view('owner.venues.show', compact('venue'));
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

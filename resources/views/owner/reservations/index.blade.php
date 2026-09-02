@@ -226,6 +226,7 @@
                             <th>Waktu</th>
                             <th>Peserta</th>
                             <th>Status</th>
+                            <th>Aksi</th>
 
                         </tr>
 
@@ -366,6 +367,50 @@
                                               ">
                                             <i class="bi bi-slash-circle me-1"></i>
                                             Canceled
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Aksi --}}
+                                <td>
+
+                                    @if($reservation->status === 'pending')
+
+                                        <div class="d-flex gap-2">
+
+                                            <form method="POST"
+                                                  action="{{ route('owner.reservations.approve', $reservation->id) }}"
+                                                  class="d-inline">
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-sm"
+                                                        style="background: #ecfdf5; color: #16a34a; border: none;"
+                                                        onclick="return confirm('Yakin ingin menyetujui reservasi ini?');">
+                                                    <i class="bi bi-check-circle"></i>
+                                                </button>
+                                            </form>
+
+                                            <form method="POST"
+                                                  action="{{ route('owner.reservations.reject', $reservation->id) }}"
+                                                  class="d-inline">
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-sm"
+                                                        style="background: #fef2f2; color: #dc2626; border: none;"
+                                                        onclick="return confirm('Yakin ingin menolak reservasi ini?');">
+                                                    <i class="bi bi-x-circle"></i>
+                                                </button>
+                                            </form>
+
+                                        </div>
+
+                                    @else
+
+                                        <span style="font-size: 12px; color: var(--muted);">
+                                            -
                                         </span>
 
                                     @endif

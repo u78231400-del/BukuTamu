@@ -23,34 +23,54 @@ class MessageController extends Controller
 
     public function show($id)
     {
-        $message = Message::findOrFail($id);
+        $message = Message::with(['sender', 'receiver'])->findOrFail($id);
 
         if ($message->sender_id !== Auth::id() && $message->receiver_id !== Auth::id()) {
             abort(403);
         }
 
-        $message->markAsRead();
+        if ($message->receiver_id === Auth::id()) {
+            $message->markAsRead();
+        }
 
         return view('messages.show', compact('message'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $users = User::where('id', '!=', Auth::id())
             ->orderBy('role')
             ->orderBy('name')
             ->get();
 
-        return view('messages.create', compact('users'));
+        $selectedUser = null;
+        $subject = old('subject', '');
+
+        if ($request->has('reply_to')) {
+            $selectedUser = User::find($request->reply_to);
+            if ($selectedUser && $selectedUser->id !== Auth::id()) {
+                if (!$request->has('subject') && $request->has('_original_subject')) {
+                    $subject = 'Re: ' . $request->_original_subject;
+                }
+            }
+        }
+
+        return view('messages.create', compact('users', 'selectedUser', 'subject'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'receiver_id' => ['required', 'exists:users,id'],
+            'receiver_id' => ['required', 'exists:users,id', 'different:sender_id'],
             'subject' => ['required', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
+        ], [
+            'receiver_id.different' => 'Anda tidak dapat mengirim pesan kepada diri sendiri.',
         ]);
+
+        if ($validated['receiver_id'] == Auth::id()) {
+            return back()->with('error', 'Anda tidak dapat mengirim pesan kepada diri sendiri.')->withInput();
+        }
 
         Message::create([
             'sender_id' => Auth::id(),
@@ -75,7 +95,11 @@ class MessageController extends Controller
     {
         $message = Message::where('id', $id)
             ->where('receiver_id', Auth::id())
-            ->firstOrFail();
+            ->first();
+
+        if (!$message) {
+            return response()->json(['success' => false, 'message' => 'Pesan tidak ditemukan'], 404);
+        }
 
         $message->markAsRead();
 

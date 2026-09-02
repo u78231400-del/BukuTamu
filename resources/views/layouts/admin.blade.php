@@ -976,7 +976,45 @@
     {{-- NAV --}}
     <nav class="admin-nav">
 
-        @if(auth()->user()->role === 'admin')
+        @if(auth()->user()->role === 'customer')
+
+            <a
+                href="{{ route('customer.dashboard') }}"
+                class="nav-link {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}"
+            >
+                <i class="bi bi-grid-1x2"></i>
+                Dashboard
+            </a>
+
+            <div class="nav-label">
+                MENU UTAMA
+            </div>
+
+            <a
+                href="{{ route('customer.venues') }}"
+                class="nav-link {{ request()->routeIs('customer.venues*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-search"></i>
+                Cari Venue
+            </a>
+
+            <a
+                href="{{ route('customer.reservations') }}"
+                class="nav-link {{ request()->routeIs('customer.reservations') ? 'active' : '' }}"
+            >
+                <i class="bi bi-calendar-check"></i>
+                Reservasi Saya
+            </a>
+
+            <a
+                href="{{ route('customer.favorites') }}"
+                class="nav-link {{ request()->routeIs('customer.favorites*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-heart"></i>
+                Favorit
+            </a>
+
+        @elseif(auth()->user()->role === 'admin')
 
             <a
                 href="{{ route('admin.dashboard') }}"
@@ -1081,9 +1119,10 @@
                     </div>
                     <div class="notif-list">
                         @forelse(auth()->user()->notifications->take(5) as $notif)
-                            <a href="{{ $notif->link ? route($notif->link) : '#' }}"
+                            <a href="{{ route('notifications.show', $notif->id) }}"
                                class="notif-item {{ $notif->is_read ? 'read' : 'unread' }}"
-                               data-id="{{ $notif->id }}">
+                               data-id="{{ $notif->id }}"
+                               onclick="handleNotifClick(this, event)">
                                 <div class="notif-icon-wrap" style="background: {{ $notif->type === 'success' ? '#ecfdf5' : ($notif->type === 'warning' ? '#fffbeb' : ($notif->type === 'danger' ? '#fff1f2' : 'var(--primary-soft)')) }};">
                                     <i class="bi {{ $notif->icon ?: 'bi-bell' }}" style="color: {{ $notif->type === 'success' ? '#16a34a' : ($notif->type === 'warning' ? '#ca8a04' : ($notif->type === 'danger' ? '#dc2626' : 'var(--primary)')) }};"></i>
                                 </div>
@@ -1240,6 +1279,18 @@
             });
         });
     });
+
+    function handleNotifClick(element, event) {
+        const notifId = element.dataset.id;
+        fetch('/notifications/' + notifId + '/read', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+    }
 
     function markAllNotifications() {
         fetch('{{ route('notifications.markAllRead') }}', {

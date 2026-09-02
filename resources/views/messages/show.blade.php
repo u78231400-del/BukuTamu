@@ -52,7 +52,7 @@
 
         @if($isReceived && auth()->user()->role !== 'admin')
             <div class="message-actions mt-4 pt-4" style="border-top: 1px solid var(--border);">
-                <a href="{{ route('messages.create', ['reply_to' => $message->sender_id]) }}" class="btn-secondary-custom">
+                <a href="{{ route('messages.create', ['reply_to' => $message->sender_id, '_original_subject' => $message->subject]) }}" class="btn-secondary-custom">
                     <i class="bi bi-reply"></i>
                     Balas Pesan
                 </a>

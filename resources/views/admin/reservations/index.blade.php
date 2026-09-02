@@ -310,7 +310,7 @@
                 <h1>Daftar Reservasi</h1>
 
                 <p>
-                    Periksa dan proses reservasi customer.
+                    Pantau reservasi customer. Owner venue yang memproses persetujuan.
                 </p>
             </div>
 
@@ -473,38 +473,10 @@
 
                                     <div class="action-group">
 
-                                        <form method="POST"
-                                              action="{{ route('admin.reservations.approve', $reservation->id) }}">
-
-                                            @csrf
-
-                                            <button type="submit"
-                                                    class="btn-approve"
-                                                    title="Setujui reservasi">
-
-                                                <i class="bi bi-check-lg"></i>
-                                                Setujui
-
-                                            </button>
-
-                                        </form>
-
-
-                                        <form method="POST"
-                                              action="{{ route('admin.reservations.reject', $reservation->id) }}">
-
-                                            @csrf
-
-                                            <button type="submit"
-                                                    class="btn-reject"
-                                                    title="Tolak reservasi">
-
-                                                <i class="bi bi-x-lg"></i>
-                                                Tolak
-
-                                            </button>
-
-                                        </form>
+                                        <span style="font-size:11px; color:#64748b; background:#f1f5f9; padding:5px 10px; border-radius:6px;">
+                                            <i class="bi bi-info-circle me-1"></i>
+                                            Owner memproses
+                                        </span>
 
                                     </div>
 

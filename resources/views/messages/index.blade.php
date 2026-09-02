@@ -11,7 +11,7 @@
             <i class="bi bi-envelope me-2" style="color: var(--primary);"></i>
             Pesan
         </h5>
-        @if(auth()->user()->role === 'admin')
+        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'owner')
             <a href="{{ route('messages.create') }}" class="btn-primary-custom">
                 <i class="bi bi-plus-lg"></i>
                 Kirim Pesan

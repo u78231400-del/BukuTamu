@@ -883,9 +883,10 @@
                                 </div>
                                 <div class="notif-list">
                                     @forelse(auth()->user()->notifications->take(5) as $notif)
-                                        <a href="{{ $notif->link ? route($notif->link) : '#' }}"
+                                        <a href="{{ route('notifications.show', $notif->id) }}"
                                            class="notif-item {{ $notif->is_read ? 'read' : 'unread' }}"
-                                           data-id="{{ $notif->id }}">
+                                           data-id="{{ $notif->id }}"
+                                           onclick="handleNotifClick(this, event)">
                                             <div class="notif-icon-wrap" style="background: {{ $notif->type === 'success' ? '#ecfdf5' : ($notif->type === 'warning' ? '#fffbeb' : ($notif->type === 'danger' ? '#fff1f2' : 'var(--accent-light)')) }};">
                                                 <i class="bi {{ $notif->icon ?: 'bi-bell' }}" style="color: {{ $notif->type === 'success' ? '#16a34a' : ($notif->type === 'warning' ? '#ca8a04' : ($notif->type === 'danger' ? '#dc2626' : 'var(--accent)')) }};"></i>
                                             </div>
@@ -1089,43 +1090,42 @@
             }
         });
 
-        document.querySelectorAll('.notif-item[data-id]').forEach(function(item) {
-            item.addEventListener('click', function(e) {
-                const notifId = this.dataset.id;
-                fetch('/notifications/' + notifId + '/read', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                });
+        function handleNotifClick(element, event) {
+            const notifId = element.dataset.id;
+            fetch('/notifications/' + notifId + '/read', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             });
-        });
-    </script>
-    <script>
-    function markAllNotifications() {
-        fetch('{{ route('notifications.markAllRead') }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.querySelectorAll('.notif-item.unread').forEach(item => {
-                    item.classList.remove('unread');
-                    item.classList.add('read');
-                });
-                document.querySelectorAll('.notif-dot').forEach(dot => dot.remove());
-                document.querySelectorAll('.notification-badge').forEach(badge => badge.remove());
-                document.querySelector('.notif-mark-read')?.remove();
-            }
-        });
-    }
+        }
+
+        function markAllNotifications() {
+            fetch('{{ route('notifications.markAllRead') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelectorAll('.notif-item.unread').forEach(item => {
+                        item.classList.remove('unread');
+                        item.classList.add('read');
+                        const dot = item.querySelector('.notif-dot');
+                        if (dot) dot.remove();
+                    });
+                    document.querySelectorAll('#custNotifDropdown .notification-badge').forEach(badge => badge.remove());
+                    const markReadLink = document.querySelector('.notif-mark-read');
+                    if (markReadLink) markReadLink.remove();
+                }
+            });
+        }
     </script>
 </body>
 </html>

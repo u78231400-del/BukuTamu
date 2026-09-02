@@ -176,6 +176,7 @@ Route::middleware('auth')->group(function () {
     // --------------------------------------
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/{id}', [NotificationController::class, 'show'])->name('notifications.show');
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
     Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllRead');
 
@@ -368,6 +369,16 @@ Route::middleware(['auth', 'owner'])->group(function () {
         OwnerReservationController::class,
         'index'
     ])->name('owner.reservations.index');
+
+    Route::post('/owner/reservations/{id}/approve', [
+        OwnerReservationController::class,
+        'approve'
+    ])->name('owner.reservations.approve');
+
+    Route::post('/owner/reservations/{id}/reject', [
+        OwnerReservationController::class,
+        'reject'
+    ])->name('owner.reservations.reject');
 
     // Owner Profile (redirects to shared profile)
     Route::get('/owner/profile', function () {

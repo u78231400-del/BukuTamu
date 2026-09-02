@@ -42,9 +42,13 @@
     @else
         <div class="notif-list-full">
             @foreach($notifications as $notification)
-                <a href="{{ $notification->link ? route($notification->link) : '#' }}"
+                @php
+                    $detailLink = route('notifications.show', $notification->id);
+                @endphp
+                <a href="{{ $detailLink }}"
                    class="notif-row {{ $notification->is_read ? 'read' : 'unread' }}"
-                   onclick="markAsRead({{ $notification->id }})">
+                   data-id="{{ $notification->id }}"
+                   onclick="handleNotifClick(this, event)">
                     <div class="notif-icon-wrap" style="background: {{ $notification->type === 'success' ? '#ecfdf5' : ($notification->type === 'warning' ? '#fffbeb' : ($notification->type === 'danger' ? '#fff1f2' : 'var(--primary-soft)')) }};">
                         <i class="bi {{ $notification->icon ?: 'bi-bell' }}" style="color: {{ $notification->type === 'success' ? '#16a34a' : ($notification->type === 'warning' ? '#ca8a04' : ($notification->type === 'danger' ? '#dc2626' : 'var(--primary)')) }};"></i>
                     </div>
@@ -149,8 +153,9 @@
 
 @push('scripts')
 <script>
-    function markAsRead(id) {
-        fetch('/notifications/' + id + '/read', {
+    function handleNotifClick(element, event) {
+        const notifId = element.dataset.id;
+        fetch('/notifications/' + notifId + '/read', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

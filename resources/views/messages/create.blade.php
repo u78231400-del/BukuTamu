@@ -33,7 +33,7 @@
             <select name="receiver_id" class="form-select @error('receiver_id') is-invalid @enderror" required style="border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 14px;">
                 <option value="">-- Pilih Penerima --</option>
                 @foreach($users as $user)
-                    <option value="{{ $user->id }}" {{ old('receiver_id') == $user->id ? 'selected' : '' }}>
+                    <option value="{{ $user->id }}" {{ (old('receiver_id', $selectedUser->id ?? '') == $user->id) ? 'selected' : '' }}>
                         {{ $user->name }} ({{ ucfirst($user->role) }})
                     </option>
                 @endforeach
@@ -47,7 +47,7 @@
             <label class="form-label" style="font-size: 13px; color: var(--text); font-weight: 500;">
                 Subjek
             </label>
-            <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject') }}" required style="border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 14px;" placeholder="Masukkan subjek pesan">
+            <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject', $subject) }}" required style="border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 14px;" placeholder="Masukkan subjek pesan">
             @error('subject')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

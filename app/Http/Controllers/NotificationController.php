@@ -28,7 +28,14 @@ class NotificationController extends Controller
     {
         $notification = Notification::where('id', $id)
             ->where('user_id', Auth::id())
-            ->firstOrFail();
+            ->first();
+
+        if (!$notification) {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Notifikasi tidak ditemukan'], 404);
+            }
+            abort(404);
+        }
 
         $notification->markAsRead();
 
@@ -36,7 +43,14 @@ class NotificationController extends Controller
             return response()->json(['success' => true]);
         }
 
-        return redirect()->to($notification->link ?? route('notifications.index'));
+        if ($notification->link) {
+            if (str_starts_with($notification->link, '/') || str_starts_with($notification->link, 'http')) {
+                return redirect()->to($notification->link);
+            }
+            return redirect()->route($notification->link);
+        }
+
+        return redirect()->route('notifications.index');
     }
 
     public function markAllAsRead()
@@ -51,6 +65,21 @@ class NotificationController extends Controller
         }
 
         return back();
+    }
+
+    public function show($id)
+    {
+        $notification = Notification::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (!$notification) {
+            abort(404);
+        }
+
+        $notification->markAsRead();
+
+        return view('notifications.show', compact('notification'));
     }
 
     public function getUnreadCount()

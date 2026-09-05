@@ -51,4 +51,9 @@ class Venue extends Model
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(VenueSchedule::class);
+    }
 }

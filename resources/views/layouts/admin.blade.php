@@ -1074,6 +1074,14 @@
                 Reservasi
             </a>
 
+            <a
+                href="{{ route('owner.schedules.index') }}"
+                class="nav-link {{ request()->routeIs('owner.schedules.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-calendar3"></i>
+                Jadwal Venue
+            </a>
+
         @endif
 
     </nav>

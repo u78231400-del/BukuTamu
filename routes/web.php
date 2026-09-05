@@ -19,6 +19,7 @@ use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\OwnerVenueController;
 use App\Http\Controllers\AdminOwnerController;
 use App\Http\Controllers\OwnerReservationController;
+use App\Http\Controllers\OwnerScheduleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MessageController;
 
@@ -379,6 +380,40 @@ Route::middleware(['auth', 'owner'])->group(function () {
         OwnerReservationController::class,
         'reject'
     ])->name('owner.reservations.reject');
+
+    // --------------------------------------
+    // Owner Schedule
+    // --------------------------------------
+
+    Route::get('/owner/schedules', [
+        OwnerScheduleController::class,
+        'index'
+    ])->name('owner.schedules.index');
+
+    Route::get('/owner/schedules/create', [
+        OwnerScheduleController::class,
+        'create'
+    ])->name('owner.schedules.create');
+
+    Route::post('/owner/schedules', [
+        OwnerScheduleController::class,
+        'store'
+    ])->name('owner.schedules.store');
+
+    Route::get('/owner/schedules/{id}/edit', [
+        OwnerScheduleController::class,
+        'edit'
+    ])->name('owner.schedules.edit');
+
+    Route::put('/owner/schedules/{id}', [
+        OwnerScheduleController::class,
+        'update'
+    ])->name('owner.schedules.update');
+
+    Route::delete('/owner/schedules/{id}', [
+        OwnerScheduleController::class,
+        'destroy'
+    ])->name('owner.schedules.destroy');
 
     // Owner Profile (redirects to shared profile)
     Route::get('/owner/profile', function () {

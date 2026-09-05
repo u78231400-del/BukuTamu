@@ -31,4 +31,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function schedule()
+    {
+        return $this->hasOne(VenueSchedule::class);
+    }
 }

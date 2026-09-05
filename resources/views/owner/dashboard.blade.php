@@ -40,6 +40,10 @@
                     <i class="bi bi-calendar-check"></i>
                     Lihat Reservasi
                 </a>
+                <a href="{{ route('owner.schedules.index') }}" class="btn-secondary-custom">
+                    <i class="bi bi-calendar3"></i>
+                    Kelola Jadwal
+                </a>
             </div>
         </div>
     </div>
@@ -125,6 +129,29 @@
                 </div>
                 <div class="mt-2" style="font-size: 11px; color: var(--muted);">
                     Menunggu persetujuan
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-3">
+            <div class="admin-card p-3 h-100">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="mb-1" style="font-size: 12px; color: var(--muted);">
+                            Jadwal Aktif
+                        </div>
+                        <div class="fw-bold" style="font-size: 28px; color: var(--dark);">
+                            {{ $activeSchedulesCount ?? 0 }}
+                        </div>
+                    </div>
+                    <div class="stat-icon" style="background: #f5f3ff; color: #7c3aed;">
+                        <i class="bi bi-calendar3"></i>
+                    </div>
+                </div>
+                <div class="mt-2" style="font-size: 11px; color: var(--muted);">
+                    <a href="{{ route('owner.schedules.index') }}" style="color: var(--primary); text-decoration: none;">
+                        Kelola jadwal
+                    </a>
                 </div>
             </div>
         </div>

@@ -867,11 +867,6 @@
                 </div>
 
                 <div class="topbar-right">
-                    <div class="topbar-search">
-                        <i class="bi bi-search"></i>
-                        <input type="text" placeholder="Cari venue...">
-                    </div>
-
                     @include('customer.partials.topbar')
 
                     @auth
@@ -919,14 +914,14 @@
                         </div>
 
                         <div class="search-filter-section">
-                            <form action="{{ route('customer.venues') }}" method="GET" class="search-form">
+                            <div class="search-form">
                                 <div class="search-input-group">
                                     <i class="bi bi-search"></i>
-                                    <input type="text" name="search" placeholder="Cari nama venue atau lokasi..." value="{{ request('search') }}">
+                                    <input type="text" id="search-input" placeholder="Cari nama venue atau lokasi..." value="{{ request('search') }}">
                                 </div>
 
                                 <div class="filter-select">
-                                    <select name="lokasi">
+                                    <select id="lokasi-select" name="lokasi">
                                         <option value="">Semua Lokasi</option>
                                         <option value="Jakarta" {{ request('lokasi') == 'Jakarta' ? 'selected' : '' }}>Jakarta</option>
                                         <option value="Bandung" {{ request('lokasi') == 'Bandung' ? 'selected' : '' }}>Bandung</option>
@@ -935,12 +930,7 @@
                                         <option value="Bali" {{ request('lokasi') == 'Bali' ? 'selected' : '' }}>Bali</option>
                                     </select>
                                 </div>
-
-                                <button type="submit" class="btn-search">
-                                    <i class="bi bi-search"></i>
-                                    Cari
-                                </button>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -957,83 +947,85 @@
                             </a>
                         </div>
 
-                        <div class="venues-grid">
+                        <div id="venues-results">
+                            <div class="venues-grid">
 
-                    @forelse($venues as $venue)
+                        @forelse($venues as $venue)
 
-                        <div class="venue-card">
+                            <div class="venue-card">
 
-                            <div class="venue-image-wrapper">
+                                <div class="venue-image-wrapper">
 
-                                <img
-                                    src="{{ $venue->foto ? asset('storage/' . $venue->foto) : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80' }}"
-                                    alt="{{ $venue->nama_venue }}"
-                                    class="venue-image"
-                                >
-
-                                <span class="venue-category">
-                                    Venue
-                                </span>
-
-                                @if(Auth::check())
-                                    <button
-                                        type="button"
-                                        class="venue-favorite-btn {{ in_array($venue->id, $favoriteVenueIds) ? 'active' : '' }}"
-                                        data-venue-id="{{ $venue->id }}"
-                                        data-is-favorite="{{ in_array($venue->id, $favoriteVenueIds) ? 'true' : 'false' }}"
-                                        title="{{ in_array($venue->id, $favoriteVenueIds) ? 'Hapus dari Favorit' : 'Tambah ke Favorit' }}"
+                                    <img
+                                        src="{{ $venue->foto ? asset('storage/' . $venue->foto) : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&q=80' }}"
+                                        alt="{{ $venue->nama_venue }}"
+                                        class="venue-image"
                                     >
-                                        <i class="bi {{ in_array($venue->id, $favoriteVenueIds) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                                    </button>
-                                @else
-                                    <a href="{{ route('login') }}" class="venue-favorite-btn" title="Login untuk menambahkan favorit">
-                                        <i class="bi bi-heart"></i>
-                                    </a>
-                                @endif
 
-                            </div>
-
-                            <div class="venue-body">
-
-                                <h3 class="venue-name">
-                                    {{ $venue->nama_venue }}
-                                </h3>
-
-                                <div class="venue-info">
-
-                                    <span class="venue-location">
-                                        <i class="bi bi-geo-alt"></i>
-                                        {{ $venue->lokasi ?? 'Lokasi belum tersedia' }}
+                                    <span class="venue-category">
+                                        Venue
                                     </span>
 
+                                    @if(Auth::check())
+                                        <button
+                                            type="button"
+                                            class="venue-favorite-btn {{ in_array($venue->id, $favoriteVenueIds) ? 'active' : '' }}"
+                                            data-venue-id="{{ $venue->id }}"
+                                            data-is-favorite="{{ in_array($venue->id, $favoriteVenueIds) ? 'true' : 'false' }}"
+                                            title="{{ in_array($venue->id, $favoriteVenueIds) ? 'Hapus dari Favorit' : 'Tambah ke Favorit' }}"
+                                        >
+                                            <i class="bi {{ in_array($venue->id, $favoriteVenueIds) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}" class="venue-favorite-btn" title="Login untuk menambahkan favorit">
+                                            <i class="bi bi-heart"></i>
+                                        </a>
+                                    @endif
+
                                 </div>
 
-                                <div class="venue-price">
-                                    Kapasitas {{ $venue->kapasitas }} orang
-                                </div>
+                                <div class="venue-body">
 
-                                <a
-                                    href="{{ route('customer.venues.show', $venue->slug) }}"
-                                    class="btn-detail"
-                                >
-                                    Lihat Detail
-                                </a>
+                                    <h3 class="venue-name">
+                                        {{ $venue->nama_venue }}
+                                    </h3>
+
+                                    <div class="venue-info">
+
+                                        <span class="venue-location">
+                                            <i class="bi bi-geo-alt"></i>
+                                            {{ $venue->lokasi ?? 'Lokasi belum tersedia' }}
+                                        </span>
+
+                                    </div>
+
+                                    <div class="venue-price">
+                                        Kapasitas {{ $venue->kapasitas }} orang
+                                    </div>
+
+                                    <a
+                                        href="{{ route('customer.venues.show', $venue->slug) }}"
+                                        class="btn-detail"
+                                    >
+                                        Lihat Detail
+                                    </a>
+
+                                </div>
 
                             </div>
 
+                        @empty
+
+                            <div class="empty-state" style="grid-column: 1 / -1;">
+                                <i class="bi bi-building"></i>
+                                <h3>Belum ada venue tersedia</h3>
+                                <p>Belum ada venue yang dapat dipesan saat ini.</p>
+                            </div>
+
+                        @endforelse
+
                         </div>
-
-                    @empty
-
-                        <div class="empty-state" style="grid-column: 1 / -1;">
-                            <i class="bi bi-building"></i>
-                            <h3>Belum ada venue tersedia</h3>
-                            <p>Belum ada venue yang dapat dipesan saat ini.</p>
                         </div>
-
-                    @endforelse
-
-                    </div>
                 </section>
             </div>
         </main>
@@ -1086,80 +1078,140 @@
             }, 3000);
         }
 
-        document.querySelectorAll('.venue-favorite-btn[data-venue-id]').forEach(function(button) {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+        let searchTimeout = null;
+        const searchInput = document.getElementById('search-input');
+        const lokasiSelect = document.getElementById('lokasi-select');
+        const venuesResults = document.getElementById('venues-results');
 
-                const btn = this;
+        function fetchVenues() {
+            const search = searchInput.value;
+            const lokasi = lokasiSelect.value;
+            const params = new URLSearchParams();
 
-                if (btn.dataset.processing === 'true') {
-                    return;
+            if (search) {
+                params.append('search', search);
+            }
+            if (lokasi) {
+                params.append('lokasi', lokasi);
+            }
+
+            const url = '{{ route("customer.venues") }}' + (params.toString() ? '?' + params.toString() : '');
+
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'text/html'
                 }
-
-                const venueId = btn.dataset.venueId;
-                const isFavorite = btn.dataset.isFavorite === 'true';
-                const icon = btn.querySelector('i');
-
-                const wasFavorite = isFavorite;
-                const prevIconClass = icon.className;
-                const prevActiveClass = btn.classList.contains('active') ? 'active' : '';
-
-                btn.dataset.processing = 'true';
-
-                if (wasFavorite) {
-                    btn.classList.remove('active');
-                    icon.className = 'bi bi-heart';
-                    btn.dataset.isFavorite = 'false';
-                } else {
-                    btn.classList.add('active');
-                    icon.className = 'bi bi-heart-fill';
-                    btn.dataset.isFavorite = 'true';
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newResults = doc.getElementById('venues-results');
+                if (newResults && venuesResults) {
+                    venuesResults.innerHTML = newResults.innerHTML;
+                    bindFavoriteButtons();
                 }
+            })
+            .catch(error => {
+                console.error('Error fetching venues:', error);
+            });
+        }
 
-                const method = wasFavorite ? 'DELETE' : 'POST';
+        function bindFavoriteButtons() {
+            document.querySelectorAll('.venue-favorite-btn[data-venue-id]').forEach(function(button) {
+                if (button.dataset.bound) return;
+                button.dataset.bound = 'true';
 
-                fetch(`/customer/favorites/${venueId}`, {
-                    method: method,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const btn = this;
+
+                    if (btn.dataset.processing === 'true') {
+                        return;
                     }
-                })
-                .then(function(response) {
-                    if (response.status === 401) {
-                        window.location.href = '{{ route("login") }}';
-                        return null;
-                    }
 
-                    if (!response.ok) {
-                        throw new Error('Request failed');
-                    }
+                    const venueId = btn.dataset.venueId;
+                    const isFavorite = btn.dataset.isFavorite === 'true';
+                    const icon = btn.querySelector('i');
 
-                    return response.json();
-                })
-                .then(function(data) {
-                    btn.dataset.processing = 'false';
-                })
-                .catch(function(error) {
-                    btn.dataset.processing = 'false';
+                    const wasFavorite = isFavorite;
+                    const prevIconClass = icon.className;
+                    const prevActiveClass = btn.classList.contains('active') ? 'active' : '';
+
+                    btn.dataset.processing = 'true';
 
                     if (wasFavorite) {
-                        btn.classList.add('active');
-                        icon.className = 'bi bi-heart-fill';
-                        btn.dataset.isFavorite = 'true';
-                    } else {
                         btn.classList.remove('active');
                         icon.className = 'bi bi-heart';
                         btn.dataset.isFavorite = 'false';
+                    } else {
+                        btn.classList.add('active');
+                        icon.className = 'bi bi-heart-fill';
+                        btn.dataset.isFavorite = 'true';
                     }
 
-                    showToast('Terjadi kesalahan. Silakan coba lagi.', 'error');
+                    const method = wasFavorite ? 'DELETE' : 'POST';
+
+                    fetch(`/customer/favorites/${venueId}`, {
+                        method: method,
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(function(response) {
+                        if (response.status === 401) {
+                            window.location.href = '{{ route("login") }}';
+                            return null;
+                        }
+
+                        if (!response.ok) {
+                            throw new Error('Request failed');
+                        }
+
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        btn.dataset.processing = 'false';
+                    })
+                    .catch(function(error) {
+                        btn.dataset.processing = 'false';
+
+                        if (wasFavorite) {
+                            btn.classList.add('active');
+                            icon.className = 'bi bi-heart-fill';
+                            btn.dataset.isFavorite = 'true';
+                        } else {
+                            btn.classList.remove('active');
+                            icon.className = 'bi bi-heart';
+                            btn.dataset.isFavorite = 'false';
+                        }
+
+                        showToast('Terjadi kesalahan. Silakan coba lagi.', 'error');
+                    });
                 });
             });
-        });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(fetchVenues, 400);
+            });
+        }
+
+        if (lokasiSelect) {
+            lokasiSelect.addEventListener('change', fetchVenues);
+        }
+
+        bindFavoriteButtons();
+
+
     </script>
 </body>
 </html>

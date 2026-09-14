@@ -813,130 +813,10 @@
                 opacity: 1;
             }
         }
-
-        @media (max-width: 1199px) {
-            .venues-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 991px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .venues-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .search-form {
-                flex-direction: column;
-            }
-
-            .search-input-group,
-            .filter-select {
-                min-width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero-section {
-                padding: 60px 24px 48px 24px;
-            }
-
-            .page-title-main {
-                font-size: 2rem;
-            }
-
-            .venues-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-
-            .venue-image-wrapper {
-                height: 180px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .topbar {
-                padding: 12px 16px;
-            }
-
-            .page-title {
-                font-size: 1.2rem;
-            }
-
-            .topbar-search {
-                display: none;
-            }
-
-            .hero-section {
-                padding: 48px 16px 40px 16px;
-            }
-
-            .page-header {
-                margin-bottom: 24px;
-            }
-
-            .page-title-main {
-                font-size: 1.75rem;
-            }
-
-            .page-subtitle {
-                font-size: 1rem;
-            }
-
-            .search-filter-section {
-                padding: 20px;
-                border-radius: 12px;
-            }
-
-            .venues-container {
-                padding: 0 16px;
-            }
-
-            .venues-section {
-                padding: 32px 0 48px 0;
-            }
-
-            .section-header {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start;
-                margin-bottom: 24px;
-            }
-
-            .venues-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .venue-image-wrapper {
-                height: 200px;
-            }
-
-            .venue-body {
-                padding: 20px;
-            }
-
-            .user-info {
-                display: none;
-            }
-        }
     </style>
+
+    @include('customer.partials.topbar-css')
+
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
@@ -992,15 +872,7 @@
                         <input type="text" placeholder="Cari venue...">
                     </div>
 
-                    <div class="topbar-icons">
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-bell"></i>
-                            <span class="notification-badge"></span>
-                        </a>
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </a>
-                    </div>
+                    @include('customer.partials.topbar')
 
                     @auth
                         <div class="user-dropdown" id="user-dropdown">

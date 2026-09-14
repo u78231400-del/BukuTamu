@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-3">
                 <label class="form-label">
                     Lokasi <span class="text-danger">*</span>
                 </label>
@@ -99,6 +99,18 @@
                        value="{{ old('lokasi', $venue->lokasi) }}"
                        placeholder="Contoh: Jl. Sudirman No. 123, Jakarta"
                        required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Pemilik Venue</label>
+                <select name="owner_id" class="form-select">
+                    <option value="">Pilih Pemilik Venue</option>
+                    @foreach($owners as $owner)
+                        <option value="{{ $owner->id }}" {{ old('owner_id', $venue->owner_id) == $owner->id ? 'selected' : '' }}>
+                            {{ $owner->name }} ({{ $owner->email }})
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-3">

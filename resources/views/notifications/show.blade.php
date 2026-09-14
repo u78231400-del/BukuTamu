@@ -48,8 +48,8 @@
                 <span>{{ $notification->created_at->format('H:i') }} WIB</span>
             </div>
 
-            @if($notification->link)
-                <a href="{{ $notification->link }}" class="btn-primary-custom">
+            @if($notification->link && Route::has($notification->link))
+                <a href="{{ route($notification->link) }}" class="btn-primary-custom">
                     <i class="bi bi-arrow-right-circle"></i>
                     Lihat Detail
                 </a>

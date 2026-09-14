@@ -525,6 +525,9 @@
             }
         }
     </style>
+
+    @include('customer.partials.topbar-css')
+
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
@@ -574,6 +577,8 @@
                 </div>
 
                 <div class="topbar-right">
+                    @include('customer.partials.topbar')
+
                     <div class="user-dropdown" id="user-dropdown">
                         <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
                         <div class="user-info">
@@ -760,6 +765,7 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const sidebar = document.getElementById('sidebar');
         const menuToggle = document.getElementById('menu-toggle');

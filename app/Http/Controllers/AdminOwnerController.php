@@ -11,6 +11,7 @@ class AdminOwnerController extends Controller
     public function index()
     {
         $owners = User::where('role', 'owner')
+            ->withCount('venues')
             ->latest()
             ->get();
 

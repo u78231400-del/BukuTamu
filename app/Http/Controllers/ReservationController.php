@@ -7,8 +7,10 @@ use App\Models\Venue;
 use App\Models\VenueSchedule;
 use App\Models\Notification;
 use App\Models\User;
+use App\Services\VenueScheduleService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ReservationController extends Controller
@@ -52,64 +54,23 @@ class ReservationController extends Controller
 
         $kodeBooking = 'BK-' . strtoupper(Str::random(8));
 
-        $hasReservationConflict = Reservation::where('venue_id', $venue->id)
-            ->whereNotIn('status', ['rejected', 'canceled'])
-            ->where(function ($query) use ($validated) {
-                $query->where(function ($q) use ($validated) {
-                    $q->where('tanggal_mulai', '<=', $validated['tanggal_selesai'])
-                      ->where('tanggal_selesai', '>=', $validated['tanggal_mulai']);
-                });
-            })
-            ->where(function ($query) use ($validated) {
-                $query->where(function ($q) use ($validated) {
-                    $q->where('tanggal_mulai', $validated['tanggal_mulai'])
-                      ->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
-                })
-                ->orWhere(function ($q) use ($validated) {
-                    $q->where('tanggal_mulai', '>', $validated['tanggal_mulai'])
-                      ->where('tanggal_mulai', '<=', $validated['tanggal_selesai'])
-                      ->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
-                })
-                ->orWhere(function ($q) use ($validated) {
-                    $q->where('tanggal_selesai', '<', $validated['tanggal_selesai'])
-                      ->where('tanggal_selesai', '>=', $validated['tanggal_mulai'])
-                      ->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
-                })
-                ->orWhere(function ($q) use ($validated) {
-                    $q->where('tanggal_mulai', '<', $validated['tanggal_mulai'])
-                      ->where('tanggal_selesai', '>', $validated['tanggal_selesai'])
-                      ->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
-                });
-            })
-            ->exists();
+        $conflictType = VenueScheduleService::checkCustomerReservationConflict(
+            $venue->id,
+            $validated['tanggal_mulai'],
+            $validated['tanggal_selesai'],
+            $validated['waktu_mulai'],
+            $validated['waktu_selesai']
+        );
 
-        if ($hasReservationConflict) {
+        if ($conflictType) {
+            $message = $conflictType === 'schedule'
+                ? 'Jadwal yang dipilih sudah tidak tersedia. Silakan pilih tanggal atau waktu lain.'
+                : 'Jadwal yang dipilih sudah memiliki reservasi pada venue ini. Silakan pilih tanggal atau waktu lain.';
+
             return redirect()
                 ->back()
                 ->withInput()
-                ->with('error', 'Jadwal yang dipilih sudah memiliki reservasi pada venue ini. Silakan pilih tanggal atau waktu lain.');
-        }
-
-        $hasScheduleConflict = VenueSchedule::where('venue_id', $venue->id)
-            ->where(function ($query) use ($validated) {
-                $query->where('tanggal_mulai', '<=', $validated['tanggal_selesai'])
-                      ->where('tanggal_selesai', '>=', $validated['tanggal_mulai']);
-            })
-            ->where(function ($query) use ($validated) {
-                $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
-            })
-            ->exists();
-
-        if ($hasScheduleConflict) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Jadwal yang dipilih sudah tidak tersedia. Silakan pilih tanggal atau waktu lain.');
+                ->with('error', $message);
         }
 
         $reservation = Reservation::create([

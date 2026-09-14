@@ -596,8 +596,24 @@
             .profile-body {
                 padding: 20px;
             }
+
+            .profile-actions {
+                padding: 0 20px 16px;
+            }
+
+            .profile-form-actions {
+                flex-direction: column;
+            }
+
+            .btn-save, .btn-cancel {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
+
+    @include('customer.partials.topbar-css')
+
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
@@ -647,6 +663,8 @@
                 </div>
 
                 <div class="topbar-right">
+                    @include('customer.partials.topbar')
+
                     <div class="user-dropdown" id="user-dropdown">
                         <div class="user-avatar">{{ strtoupper(substr($user->name, 0, 2)) }}</div>
                         <div class="user-info">

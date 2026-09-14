@@ -12,6 +12,7 @@
             --primary: #1a1a2e;
             --secondary: #16213e;
             --accent: #e94560;
+            --accent-light: rgba(233, 69, 96, 0.1);
             --gold: #c9a959;
             --text-dark: #1a1a2e;
             --text-light: #6b7280;
@@ -151,153 +152,51 @@
             flex-direction: column;
         }
 
-        .topbar {
-            background: white;
-            padding: 20px 40px;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
+        .overlay {
+            display: none;
+            position: fixed;
             top: 0;
-            z-index: 50;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
         }
 
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-dark);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        .menu-toggle:hover {
-            background: var(--bg-light);
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .user-dropdown {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 8px 16px 8px 8px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .user-dropdown:hover {
-            background: var(--bg-light);
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .user-info {
-            text-align: left;
-        }
-
-        .user-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .user-role {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .user-dropdown i {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        .dropdown-menu-custom {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-            border: 1px solid #e5e7eb;
-            min-width: 200px;
-            padding: 8px;
-            display: none;
-            z-index: 100;
-        }
-
-        .dropdown-menu-custom.show {
+        .overlay.active {
             display: block;
         }
 
-        .dropdown-item-custom {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            color: var(--text-dark);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            border: none;
-            background: none;
-            width: 100%;
-            cursor: pointer;
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
         }
 
-        .dropdown-item-custom:hover {
-            background: var(--bg-light);
-        }
+        @media (max-width: 576px) {
+            .topbar {
+                padding: 12px 16px;
+            }
 
-        .dropdown-item-custom i {
-            font-size: 1.2rem;
-            color: var(--text-light);
-        }
+            .page-title {
+                font-size: 1.2rem;
+            }
 
-        .dropdown-item-custom.text-danger {
-            color: #ef4444;
-        }
-
-        .dropdown-item-custom.text-danger:hover {
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        .dropdown-item-custom.text-danger i {
-            color: #ef4444;
+            .user-info {
+                display: none;
+            }
         }
 
         .page-content {
@@ -574,21 +473,6 @@
             color: #d63651;
         }
 
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 99;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
         @media (max-width: 991px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -650,6 +534,9 @@
             }
         }
     </style>
+
+    @include('customer.partials.topbar-css')
+
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
@@ -709,6 +596,8 @@
                 </div>
 
                 <div class="topbar-right">
+                    @include('customer.partials.topbar')
+
                     <div class="user-dropdown" id="user-dropdown">
                         <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>
                         <div class="user-info">
@@ -867,6 +756,14 @@
                                 </div>
                             </li>
                         </ul>
+
+                        @if($venue->owner)
+                        <div class="mb-3">
+                            <a href="{{ route('messages.create', ['reply_to' => $venue->owner->id]) }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-chat-dots me-2"></i>Hubungi Owner
+                            </a>
+                        </div>
+                        @endif
 
                         <h2 class="form-title" style="border-top: 2px solid #f0f0f0; padding-top: 20px; margin-top: 8px;">
                             <i class="bi bi-calendar-check" style="color: var(--accent);"></i>

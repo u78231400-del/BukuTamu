@@ -1037,6 +1037,14 @@
             </a>
 
             <a
+                href="{{ route('admin.owners.index') }}"
+                class="nav-link {{ request()->routeIs('admin.owners.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-person-badge"></i>
+                Owner
+            </a>
+
+            <a
                 href="{{ route('admin.reservations.index') }}"
                 class="nav-link {{ request()->routeIs('admin.reservations.*') ? 'active' : '' }}"
             >

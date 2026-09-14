@@ -682,6 +682,9 @@
             }
         }
     </style>
+
+    @include('customer.partials.topbar-css')
+
 </head>
 <body>
     <div class="overlay" id="overlay"></div>
@@ -736,15 +739,7 @@
                         <input type="text" placeholder="Cari venue...">
                     </div>
 
-                    <div class="topbar-icons">
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-bell"></i>
-                            <span class="notification-badge"></span>
-                        </a>
-                        <a href="#" class="topbar-icon">
-                            <i class="bi bi-chat-dots"></i>
-                        </a>
-                    </div>
+                    @include('customer.partials.topbar')
 
                     <div class="user-dropdown" id="user-dropdown">
                         <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</div>

@@ -73,7 +73,7 @@ Route::get('/', function () {
         ->get();
 
     return view('welcome', compact('venues'));
-});
+})->name('home');
 
 
 // ==========================================

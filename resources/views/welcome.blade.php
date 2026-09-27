@@ -81,6 +81,17 @@
             width: calc(100% - 40px);
         }
 
+        .nav-link-custom.active {
+            color: var(--accent) !important;
+            font-weight: 600;
+            background: rgba(233, 69, 96, 0.08);
+            border-radius: 8px;
+        }
+
+        .nav-link-custom.active::after {
+            width: calc(100% - 40px);
+        }
+
         .btn-masuk {
             color: var(--primary);
             font-weight: 600;
@@ -133,6 +144,7 @@
             background: linear-gradient(135deg, #fafbfc 0%, #f0f4f8 100%);
             position: relative;
             overflow: hidden;
+            padding-top: 80px;
         }
 
         .hero-section::before {
@@ -446,7 +458,32 @@
             }
 
             .floating-card {
-                display: none;
+                padding: 10px 12px;
+                gap: 8px;
+            }
+
+            .floating-card-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+            }
+
+            .floating-card-text .title {
+                font-size: 0.75rem;
+            }
+
+            .floating-card-text .subtitle {
+                font-size: 0.65rem;
+            }
+
+            .floating-card-1 {
+                left: 5px;
+                top: 5px;
+            }
+
+            .floating-card-2 {
+                right: 5px;
+                bottom: 5px;
             }
         }
 
@@ -856,10 +893,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ url('/') }}">Beranda</a>
+                        <a class="nav-link nav-link-custom" href="/">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="{{ route('venues.index') }}">Venue</a>
+                        <a class="nav-link nav-link-custom {{ request()->routeIs('venues.index') ? 'active' : '' }}" href="{{ route('venues.index') }}">Venue</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom" href="#cara-kerja">Cara Kerja</a>
@@ -870,7 +907,6 @@
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
-                    <a href="/login" class="btn btn-masuk">Masuk</a>
                     <a href="{{ route('register') }}" class="btn btn-daftar">Daftar</a>
                 </div>
             </div>
@@ -878,7 +914,7 @@
     </nav>
 
     {{-- Hero Section --}}
-    <section class="hero-section">
+    <section id="beranda" class="hero-section">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 hero-content">
@@ -895,7 +931,7 @@
                         Temukan venue untuk pernikahan, meeting, lomba, jamuan, seminar, dan berbagai acara lainnya.
                     </p>
 
-                    <form action="{{ route('customer.venues') }}" method="GET" class="search-box">
+                    <form action="{{ route('venues.index') }}" method="GET" class="search-box">
                         <div class="search-icon">
                             <i class="bi bi-search"></i>
                         </div>
@@ -1351,6 +1387,23 @@
             }
         });
     });
+
+    const navLinks = document.querySelectorAll('.nav-link-custom');
+
+    function updateActiveNav() {
+        const hash = window.location.hash;
+        navLinks.forEach(link => link.classList.remove('active'));
+        
+        if (!hash) {
+            document.querySelector('.nav-link-custom[href="/"]').classList.add('active');
+        } else {
+            const link = document.querySelector('.nav-link-custom[href="' + hash + '"]');
+            if (link) link.classList.add('active');
+        }
+    }
+
+    updateActiveNav();
+    window.addEventListener('hashchange', updateActiveNav);
 </script>
 
 </body>

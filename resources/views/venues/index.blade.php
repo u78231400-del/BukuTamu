@@ -83,6 +83,9 @@
 
         .nav-link-custom.active {
             color: var(--accent) !important;
+            font-weight: 600;
+            background: rgba(233, 69, 96, 0.08);
+            border-radius: 8px;
         }
 
         .nav-link-custom.active::after {
@@ -525,7 +528,7 @@
                         <a class="nav-link nav-link-custom" href="{{ url('/') }}">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="{{ route('venues.index') }}">Venue</a>
+                        <a class="nav-link nav-link-custom {{ request()->routeIs('venues.index') ? 'active' : '' }}" href="{{ route('venues.index') }}">Venue</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom" href="{{ url('/') }}#cara-kerja">Cara Kerja</a>

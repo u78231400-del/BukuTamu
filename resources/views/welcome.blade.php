@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bukutamu - Reservasi Ruangan & Fasilitas</title>
+    <title>GrandVenue - Reservasi Ruangan & Fasilitas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -883,7 +883,7 @@
         <div class="container">
             <a class="navbar-brand-custom" href="#">
                 <i class="bi bi-building"></i>
-                Bukutamu
+                GrandVenue
             </a>
 
             <button class="navbar-toggler navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -1127,7 +1127,7 @@
     <div class="container">
 
         <div class="section-header">
-            <h2 class="section-title">Cara Kerja Bukutamu</h2>
+            <h2 class="section-title">Cara Kerja GrandVenue</h2>
             <p class="section-subtitle">
                 Reservasi venue menjadi lebih mudah dengan beberapa langkah sederhana.
             </p>
@@ -1255,7 +1255,7 @@
     <section class="kenapa-section">
         <div class="container">
             <div class="kenapa-header">
-                <h2 class="section-title">Kenapa Memilih Bukutamu?</h2>
+                <h2 class="section-title">Kenapa Memilih GrandVenue?</h2>
                 <p class="section-subtitle">Semua yang Anda butuhkan untuk menemukan dan mengatur reservasi venue dengan lebih mudah.</p>
             </div>
 
@@ -1303,18 +1303,18 @@
 
             <div class="col-lg-6">
                 <div class="section-header text-start mb-4">
-                    <h2 class="section-title">Tentang Bukutamu</h2>
+                    <h2 class="section-title">Tentang GrandVenue</h2>
                 </div>
 
                 <p style="color: var(--text-light); line-height: 1.8;">
-                    Bukutamu adalah platform yang membantu pengguna menemukan
+                    GrandVenue adalah platform yang membantu pengguna menemukan
                     dan melakukan reservasi berbagai venue untuk kebutuhan acara.
                     Mulai dari pernikahan, meeting, seminar, lomba, jamuan,
                     hingga berbagai acara lainnya.
                 </p>
 
                 <p style="color: var(--text-light); line-height: 1.8;">
-                    Dengan Bukutamu, pengguna dapat melihat informasi venue,
+                    Dengan GrandVenue, pengguna dapat melihat informasi venue,
                     mengetahui kapasitas dan lokasi, kemudian mengajukan
                     reservasi dengan lebih mudah dan terorganisir.
                 </p>
@@ -1406,5 +1406,6 @@
     window.addEventListener('hashchange', updateActiveNav);
 </script>
 
+@include('partials.footer')
 </body>
 </html>

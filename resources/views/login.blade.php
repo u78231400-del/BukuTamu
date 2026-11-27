@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Masuk - Bukutamu</title>
+    <title>Masuk - GrandVenue</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -557,7 +557,7 @@
 
             <div class="brand-logo">
                 <i class="bi bi-building"></i>
-                <span>Bukutamu</span>
+                <span>GrandVenue</span>
             </div>
 
             <div class="hero-badge">
@@ -570,7 +570,7 @@
             </h1>
 
             <p class="hero-description">
-                Masuk ke akun Bukutamu dan temukan venue terbaik
+                Masuk ke akun GrandVenue dan temukan venue terbaik
                 untuk berbagai kebutuhan acara kamu.
             </p>
 
@@ -618,12 +618,6 @@
 
         <div class="form-card">
 
-            <a href="/" class="back-link"
-               style="color: var(--text-light); margin-bottom: 24px;">
-                <i class="bi bi-arrow-left"></i>
-                Kembali ke Beranda
-            </a>
-
             <div class="form-header">
 
                 <h2 class="form-title">
@@ -631,7 +625,7 @@
                 </h2>
 
                 <p class="form-subtitle">
-                    Selamat datang kembali di Bukutamu
+                    Selamat datang kembali di GrandVenue
                 </p>
 
             </div>

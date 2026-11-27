@@ -29,7 +29,7 @@
                     Halo, {{ auth()->user()->name }}!
                 </h4>
                 <p class="mb-0" style="color: var(--muted); font-size: 14px;">
-                    Berikut ringkasan data Bukutamu hari ini.
+                    Berikut ringkasan data GrandVenue hari ini.
                 </p>
             </div>
             <a href="{{ route('admin.venues.create') }}" class="btn-primary-custom">

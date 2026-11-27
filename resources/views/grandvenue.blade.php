@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Buku Tamu')
-@section('page-title', 'Buku Tamu')
+@section('title', 'GrandVenue')
+@section('page-title', 'GrandVenue')
 
 @section('content')
 <style>
@@ -37,8 +37,8 @@
 <div class="row g-4">
     <div class="col-lg-5">
         <div class="form-box scrollbar-thin">
-            <h3>Isi Buku Tamu</h3>
-            <form action="/bukutamu" method="POST">
+            <h3>Isi GrandVenue</h3>
+            <form action="/grandvenue" method="POST">
                 @csrf
                 <label>Nama/Instansi:</label>
                 <input type="text" name="nama" placeholder="Nama atau instansi..." value="{{ old('nama') }}" required>
@@ -103,12 +103,12 @@
                     <h3 class="mb-0">Daftar Tamu</h3>
                     <span class="badge bg-primary">{{ $tamus->total() }} tamu</span>
                 </div>
-                <form action="/bukutamu" method="GET" class="mb-0">
+                <form action="/grandvenue" method="GET" class="mb-0">
                     <div class="search-box">
                         <input type="text" name="search" class="form-control" placeholder="Cari..." value="{{ request('search') }}">
                         <button class="btn btn-primary" type="submit">Cari</button>
                         @if(request('search'))
-                            <a href="/bukutamu" class="btn btn-outline-secondary">Reset</a>
+                            <a href="/grandvenue" class="btn btn-outline-secondary">Reset</a>
                         @endif
                     </div>
                 </form>
@@ -203,7 +203,7 @@
 
 @push('scripts')
 <script>
-    document.querySelector('form[action="/bukutamu"]').addEventListener('submit', function() {
+    document.querySelector('form[action="/grandvenue"]').addEventListener('submit', function() {
         var waktuInput = document.querySelector('input[name="waktu_kedatangan"]');
         if (!waktuInput.value) {
             var now = new Date();

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        @yield('title', 'Admin Panel') - Bukutamu
+        @yield('title', 'Admin Panel') - GrandVenue
     </title>
 
     <link
@@ -1052,6 +1052,14 @@
                 Reservasi
             </a>
 
+            <a
+                href="{{ route('admin.reports.index') }}"
+                class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-bar-chart"></i>
+                Laporan
+            </a>
+
         @elseif(auth()->user()->role === 'owner')
 
             <a
@@ -1088,6 +1096,14 @@
             >
                 <i class="bi bi-calendar3"></i>
                 Jadwal Venue
+            </a>
+
+            <a
+                href="{{ route('owner.reports.index') }}"
+                class="nav-link {{ request()->routeIs('owner.reports.*') ? 'active' : '' }}"
+            >
+                <i class="bi bi-bar-chart"></i>
+                Laporan
             </a>
 
         @endif

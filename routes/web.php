@@ -22,6 +22,8 @@ use App\Http\Controllers\OwnerReservationController;
 use App\Http\Controllers\OwnerScheduleController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\AdminReportController;
+use App\Http\Controllers\OwnerReportController;
 
 // ==========================================
 // PREVIEW
@@ -310,6 +312,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return redirect()->route('profile.update');
     })->name('admin.profile.update');
 
+    // --------------------------------------
+    // Admin Reports
+    // --------------------------------------
+    Route::get('/admin/reports', [
+        AdminReportController::class,
+        'index'
+    ])->name('admin.reports.index');
+
 });
 
 // ==========================================
@@ -424,41 +434,49 @@ Route::middleware(['auth', 'owner'])->group(function () {
         return redirect()->route('profile.update');
     })->name('owner.profile.update');
 
+    // --------------------------------------
+    // Owner Reports
+    // --------------------------------------
+    Route::get('/owner/reports', [
+        OwnerReportController::class,
+        'index'
+    ])->name('owner.reports.index');
+
 });
 
 // ==========================================
-// BUKU TAMU - LEGACY
+// GRANDVENUE - BUKU TAMU
 // ==========================================
 
-// Halaman Buku Tamu lama
-Route::get('/bukutamu', [
+// Halaman GrandVenue
+Route::get('/grandvenue', [
     TamuController::class,
     'index'
 ]);
 
-Route::post('/bukutamu', [
+Route::post('/grandvenue', [
     TamuController::class,
     'store'
 ]);
 
-Route::get('/bukutamu/{id}/edit', [
+Route::get('/grandvenue/{id}/edit', [
     TamuController::class,
     'edit'
 ])->name('buku-tamu.edit');
 
-Route::put('/bukutamu/{id}', [
+Route::put('/grandvenue/{id}', [
     TamuController::class,
     'update'
 ])->name('buku-tamu.update');
 
-Route::delete('/bukutamu/{id}', [
+Route::delete('/grandvenue/{id}', [
     TamuController::class,
     'destroy'
 ])->name('buku-tamu.destroy');
 
 
 // ==========================================
-// LEGACY DASHBOARD BUKU TAMU
+// GRANDVENUE DASHBOARD
 // ==========================================
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -468,7 +486,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'dashboard'
     ])->name('dashboard');
 
-    Route::get('/bukutamu/export', [
+    Route::get('/grandvenue/export', [
         TamuController::class,
         'export'
     ])->name('buku-tamu.export');

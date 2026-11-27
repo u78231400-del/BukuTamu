@@ -309,7 +309,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Buku Tamu')</title>
+    <title>@yield('title', 'GrandVenue')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -543,9 +543,9 @@
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="/" class="nav-link {{ request()->is('/') || request()->is('bukutamu') ? 'active' : '' }}">
+                    <a href="/grandvenue" class="nav-link {{ request()->is('/') || request()->is('grandvenue') ? 'active' : '' }}">
                         <i class="fas fa-hospital-user"></i>
-                        <span>Kunjungan Pasien</span>
+                        <span>GrandVenue</span>
                     </a>
                 </div>
                 <div class="nav-item">
@@ -628,7 +628,7 @@
                     </div>
                     <div class="notif-body">
                         @if($pendingCount > 0)
-                        <a href="/bukutamu?status=menunggu" class="notif-item">
+                        <a href="/grandvenue?status=menunggu" class="notif-item">
                             <div class="notif-icon warning"><i class="fas fa-clock"></i></div>
                             <div class="notif-content">
                                 <div class="notif-text">{{ $pendingCount }} janji menunggu persetujuan</div>
@@ -728,10 +728,10 @@
             <span class="page-label">Dashboard</span>
         </div>
         <div class="menu-icon-item">
-            <a href="/bukutamu" class="{{ Request::is('bukutamu') ? 'active' : '' }}" title="Buku Tamu">
+            <a href="/grandvenue" class="{{ Request::is('grandvenue') ? 'active' : '' }}" title="GrandVenue">
                 <i class="fas fa-users"></i>
             </a>
-            <span class="page-label">Buku Tamu</span>
+            <span class="page-label">GrandVenue</span>
         </div>
         <div class="menu-icon-item">
             <a href="/buat-janji" class="{{ Request::is('buat-janji') ? 'active' : '' }}" title="Buat Janji">
@@ -749,7 +749,7 @@
     
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h4><i class="fas fa-book"></i> Buku Tamu</h4>
+            <h4><i class="fas fa-book"></i> GrandVenue</h4>
             <p>Admin Panel</p>
         </div>
         
@@ -758,8 +758,8 @@
             <a href="/dashboard" class="menu-item {{ Request::is('dashboard') ? 'active' : '' }}">
                 <i class="fas fa-chart-line"></i> Dashboard
             </a>
-            <a href="/bukutamu" class="menu-item {{ Request::is('bukutamu') ? 'active' : '' }}">
-                <i class="fas fa-users"></i> Buku Tamu
+            <a href="/grandvenue" class="menu-item {{ Request::is('grandvenue') ? 'active' : '' }}">
+                <i class="fas fa-users"></i> GrandVenue
             </a>
             <a href="/buat-janji" class="menu-item {{ Request::is('buat-janji') ? 'active' : '' }}">
                 <i class="fas fa-calendar-plus"></i> Buat Janji
@@ -839,7 +839,6 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
->>>>>>> 16e400a (Update design system and add people feature)
                 confirmButtonText: 'Ya, Keluar',
                 cancelButtonText: 'Batal'
             }).then((result) => {
@@ -849,12 +848,8 @@
             });
         }
     </script>
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> 16e400a (Update design system and add people feature)
     @stack('scripts')
     @include('partials.toast')
+    @include('partials.footer')
 </body>
 </html>

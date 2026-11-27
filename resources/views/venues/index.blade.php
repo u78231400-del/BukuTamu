@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cari Venue - Bukutamu</title>
+    <title>Cari Venue - GrandVenue</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -515,7 +515,7 @@
         <div class="container">
             <a class="navbar-brand-custom" href="{{ url('/') }}">
                 <i class="bi bi-building"></i>
-                Bukutamu
+                GrandVenue
             </a>
 
             <button class="navbar-toggler navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -645,52 +645,7 @@
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="footer-brand">
-                        <i class="bi bi-building"></i>
-                        Bukutamu
-                    </div>
-                    <p class="footer-text">
-                        Platform reservasi venue terpercaya untuk berbagai acara Anda.
-                    </p>
-                </div>
-                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-                    <h6 style="font-weight: 600; margin-bottom: 16px;">Menu</h6>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ url('/') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Beranda</a>
-                        </li>
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ route('venues.index') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Venue</a>
-                        </li>
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ url('/') }}#cara-kerja" style="color: rgba(255,255,255,0.7); text-decoration: none;">Cara Kerja</a>
-                        </li>
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ url('/') }}#tentang" style="color: rgba(255,255,255,0.7); text-decoration: none;">Tentang</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h6 style="font-weight: 600; margin-bottom: 16px;">Akun</h6>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ route('login') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Masuk</a>
-                        </li>
-                        <li style="margin-bottom: 8px;">
-                            <a href="{{ route('register') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Daftar</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                &copy; {{ date('Y') }} Bukutamu. All rights reserved.
-            </div>
-        </div>
-    </footer>
+    @include('partials.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

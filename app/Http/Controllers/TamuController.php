@@ -39,7 +39,7 @@ class TamuController extends Controller
                             ->whereYear('created_at', Carbon::now()->year)
                             ->count();
 
-        return view('bukutamu', compact('tamus', 'totalTamu', 'tamuHariIni', 'tamuBulanIni'));
+        return view('grandvenue', compact('tamus', 'totalTamu', 'tamuHariIni', 'tamuBulanIni'));
     }
 
     /**
@@ -98,7 +98,7 @@ class TamuController extends Controller
             'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
         ]);
 
-        return redirect('/bukutamu')->with('success', 'Pesan berhasil terkirim!');
+        return redirect('/grandvenue')->with('success', 'Pesan berhasil terkirim!');
     }
 
     /**
@@ -163,13 +163,13 @@ class TamuController extends Controller
             'tujuan' => ucwords($request->tujuan),
             'pesan' => $request->pesan ? ucfirst($request->pesan) : null,
         ]);
-        return redirect('/bukutamu')->with('success', 'Pesan berhasil diperbarui!');
+        return redirect('/grandvenue')->with('success', 'Pesan berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
     DB::table('tamus')->where('id', $id)->delete();
-    return redirect('/bukutamu')->with('success', 'Data berhasil dihapus!');
+    return redirect('/grandvenue')->with('success', 'Data berhasil dihapus!');
     }
 
 public function export(Request $request)

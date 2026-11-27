@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daftar - Bukutamu</title>
+    <title>Daftar - GrandVenue</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -160,8 +160,7 @@
             position: relative;
             z-index: 2;
             margin-top: 60px;
-            display: flex;
-            gap: 20px;
+            display: none;
         }
 
         .venue-card-visual {
@@ -423,6 +422,11 @@
                 display: none;
             }
 
+            .register-left {
+                min-height: auto;
+                padding-bottom: 20px;
+            }
+
             .register-right {
                 padding: 40px 24px;
             }
@@ -476,7 +480,7 @@
 
                 <div class="brand-logo">
                     <i class="bi bi-building"></i>
-                    <span>Bukutamu</span>
+                    <span>GrandVenue</span>
                 </div>
 
                 <div class="hero-content-left">
@@ -539,7 +543,7 @@
 
                 <div class="form-header">
                     <h2 class="form-title">Buat Akun</h2>
-                    <p class="form-subtitle">Daftar sebagai customer Bukutamu</p>
+                    <p class="form-subtitle">Daftar sebagai customer GrandVenue</p>
                 </div>
 
                 <form action="{{ route('register') }}" method="POST">

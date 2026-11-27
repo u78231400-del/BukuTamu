@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="form-body">
-            <form action="/bukutamu" method="POST" novalidate>
+            <form action="/grandvenue" method="POST" novalidate>
                 @csrf
                 <div class="input-icon-wrap mb-3">
                     <i class="fas fa-user"></i>
@@ -126,7 +126,7 @@
                 <h3>Daftar Kunjungan</h3>
                 <span class="badge badge-primary">{{ $tamus->total() }} kunjungan</span>
             </div>
-            <form action="/bukutamu" method="GET" class="search-wrap">
+            <form action="/grandvenue" method="GET" class="search-wrap">
                 <input type="text" name="search" class="form-control" placeholder="Cari nama atau instansi..." value="{{ request('search') }}">
                 <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i></button>
                 @if(request('search'))

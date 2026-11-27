@@ -11,7 +11,7 @@
             <i class="fas fa-file-excel"></i> Export Excel
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/bukutamu/export"><i class="fas fa-book"></i> Export Buku Tamu</a></li>
+            <li><a class="dropdown-item" href="/grandvenue/export"><i class="fas fa-book"></i> Export GrandVenue</a></li>
             <li><a class="dropdown-item" href="/buat-janji/export"><i class="fas fa-calendar-check"></i> Export Janji Tamu</a></li>
         </ul>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Favorit - Bukutamu</title>
+    <title>Favorit - GrandVenue</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -694,7 +694,7 @@
             <div class="sidebar-header">
                 <a href="/" class="sidebar-logo">
                     <i class="bi bi-building"></i>
-                    <span>Bukutamu</span>
+                    <span>GrandVenue</span>
                 </a>
             </div>
 

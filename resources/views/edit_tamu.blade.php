@@ -16,7 +16,7 @@
 </style>
 
 <div class="form-box">
-    <a href="/bukutamu" class="btn-back">← Kembali</a>
+    <a href="/grandvenue" class="btn-back">← Kembali</a>
     <h1>Edit Tamu</h1>
     
     <form action="{{ route('buku-tamu.update', $tamu->id) }}" method="POST">
